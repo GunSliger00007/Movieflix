@@ -1,0 +1,63 @@
+:root {
+  --primary-color: #ff055f;
+  --neutral-100: #666666;
+  --neutral-75: #999999;
+  --neutral-50: #cfcfcf;
+  --neutral-25: #e8e8e8;
+  --neutral-0: #ffffff;
+  --neutral-1000: #393939;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "Roboto";
+  background-color: #fff;
+}
+.main-div {
+  display: flex;
+  justify-content: space-between;
+
+}
+.aside{
+    width: 20%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-right: 1px solid var(--neutral-50);
+    height: 1024px;
+  
+}
+
+
+.movie-list{
+  
+    
+    display: flex;
+}
+.main-div .aside svg {
+  width: 113px;
+  height: 60px;
+ 
+  padding-top: 60px;
+  color: var(--neutral-1000);
+}
+
+.nav{
+  
+  padding-right: 43px;
+}
+.nav .movie-list-nav{
+  margin: 30px;
+}
+
+.nav a{
+  font-family:"Inter";
+  text-decoration: none;
+  color: var(--neutral-1000);
+  
+}
+.nav .active{
+  font-weight: bold;
+}
