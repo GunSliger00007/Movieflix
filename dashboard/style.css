@@ -111,7 +111,7 @@ body {
   font-weight: 400;
   color: var(--neutral-100);
 }
-.popup-overlay {
+.popup-overlay,.popup-overlay1 {
 
   display: none;
 
@@ -129,9 +129,9 @@ body {
 
 }
 
-.popup {
+.popup,.popup1 {
 
-font-family: Arial, sans-serif;
+font-family: 'Inter';
 
   position: absolute;
 
@@ -151,13 +151,13 @@ font-family: Arial, sans-serif;
 
 }
 
-.popup-content {
+.popup-content,.popup-content1 {
 
   text-align: center;
 
 }
 
-.popup .close {
+.popup .close,.popup1 .close1 {
 
   position: absolute;
 
@@ -173,7 +173,9 @@ font-family: Arial, sans-serif;
 
 }
 
-.popup #emailInput {
+.popup #emailInput,.popup1 #emailInput {
+  
+  font-family: 'Inter';
 
   width: 80%;
 
@@ -187,20 +189,23 @@ font-family: Arial, sans-serif;
 
 }
 
-.popup button {
+.popup button,.popup1 button {
 
-  background-color: #4caf50;
-
-  color: #fff;
-
-  padding: 10px 20px;
-
-  border: none;
-
-  border-radius: 4px;
-
-  cursor: pointer;
-
+  border-radius: 12px;
+  background: var(--primary-color, #ff055f);
+  font-family: "inter";
+  color: var(--neutral-0, #fff);
+  font-family: Roboto;
   font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  width: 91px;
+  height: 40px;
+  border: 1px solid var(--primary-color);
 
+}
+.movie-column .update_img{
+  width: 13.5px;
+  height: 15px;
 }
