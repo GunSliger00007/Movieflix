@@ -18,4 +18,16 @@ activeclass.forEach((element) => {
 });
 
 
+var header = document.getElementById("myHeader");
 
+  window.onscroll = function() {
+    myFunction();
+  };
+
+  function myFunction() {
+    if (window.scrollY >= 100) {
+      header.classList.add("fixed");
+    } else {
+      header.classList.remove("fixed");
+    }
+  }
