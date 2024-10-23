@@ -172,11 +172,31 @@
             <div class="popup-content">
                 <p>Welcome to our website!</p>
                 <p>Sign up to receive exclusive offers:</p>
-                <form>
-                <input type="email" placeholder="Your email" id="emailInput">
-                <input type="email" placeholder="your email" id="emailInput">
-                <button onclick="submitForm()">Sign Up</button>
+                <form action="../php_connection/upload.php" method="POST">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" maxlength="255" required><br><br>
+                    
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+                    
+                    <label for="release_date">Release Date:</label>
+                    <input type="date" id="release_date" name="release_date" required><br><br>
+                    
+                    <label for="genre">Genre:</label>
+                    <input type="text" id="genre" name="genre" maxlength="255" required><br><br>
+                    
+                    <label for="duration">Duration (in minutes):</label>
+                    <input type="number" id="duration" name="duration" required><br><br>
+                    
+                    <label for="file_path">File Path:</label>
+                    <input type="text" id="file_path" name="file_path" maxlength="255" required><br><br>
+                    
+                    <label for="cover_image">Cover Image Path (optional):</label>
+                    <input type="text" id="cover_image" name="cover_image" maxlength="255"><br><br>
+                    
+                    <input type="submit" value="Submit Movie">
                 </form>
+                
             </div>
         </div>
     </div>
