@@ -3,59 +3,94 @@ include("connection.php"); // Ensure connection.php includes the database connec
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Retrieve form data
-    $id = $_POST['id'];
+    $movie_id = $_POST['id']; // Ensure this is the correct name
     $title = $_POST['title'];
     $description = $_POST['description'];
     $release_date = $_POST['release_date'];
     $genre = $_POST['genre'];
     $duration = $_POST['duration'];
 
-    // Fetch the existing movie data to get the current file paths
-    $sql = "SELECT file_path, cover_image FROM movies WHERE movie_id = $id";
-    $result = $conn->query($sql);
-    $currentMovie = $result->fetch_assoc();
+    // Retrieve uploaded files
+    $movie_file = $_FILES['movie_file'];
+    $cover_image = $_FILES['cover_image'];
 
     // Define upload directories
     $movie_file_dir = 'uploads/movies/';
     $image_file_dir = 'uploads/images/';
 
+    // Create directories if they do not exist
+    if (!is_dir($movie_file_dir)) {
+        mkdir($movie_file_dir, 0777, true);
+    }
+    if (!is_dir($image_file_dir)) {
+        mkdir($image_file_dir, 0777, true);
+    }
+
+    // Initialize file paths
+    $movie_file_path = '';
+    $cover_image_path = '';
+
     // Handle movie file upload
-    if ($_FILES['movie_file']['error'] === UPLOAD_ERR_OK) {
-        // Delete the old movie file if it exists
-        if (file_exists($currentMovie['file_path'])) {
-            unlink($currentMovie['file_path']); // Delete old file
+    if ($movie_file['error'] === UPLOAD_ERR_OK) {
+        $movie_file_path = $movie_file_dir . basename($movie_file['name']);
+        if (!move_uploaded_file($movie_file['tmp_name'], $movie_file_path)) {
+            echo "Error uploading movie file.<br>";
         }
-        // Move new file
-        $movie_file_path = $movie_file_dir . basename($_FILES['movie_file']['name']);
-        move_uploaded_file($_FILES['movie_file']['tmp_name'], $movie_file_path);
     } else {
-        $movie_file_path = $currentMovie['file_path']; // Keep the existing file path if no new file is uploaded
+        echo "Error with movie file upload: " . $movie_file['error'] . "<br>";
     }
 
     // Handle cover image upload
-    if ($_FILES['cover_image']['error'] === UPLOAD_ERR_OK) {
-        // Delete the old cover image if it exists
-        if (file_exists($currentMovie['cover_image'])) {
-            unlink($currentMovie['cover_image']); // Delete old cover image
+    if ($cover_image['error'] === UPLOAD_ERR_OK) {
+        $cover_image_path = $image_file_dir . basename($cover_image['name']);
+        if (!move_uploaded_file($cover_image['tmp_name'], $cover_image_path)) {
+            echo "Error uploading cover image.<br>";
         }
-        // Move new cover image
-        $cover_image_path = $image_file_dir . basename($_FILES['cover_image']['name']);
-        move_uploaded_file($_FILES['cover_image']['tmp_name'], $cover_image_path);
     } else {
-        $cover_image_path = $currentMovie['cover_image']; // Keep the existing cover image path if no new image is uploaded
+        echo "Error with cover image upload: " . $cover_image['error'] . "<br>";
     }
 
-    // Update movie information in the database
-    $sql = "UPDATE movies 
-            SET title = '$title', description = '$description', release_date = '$release_date', 
-                genre = '$genre', duration = '$duration', 
-                file_path = '$movie_file_path', cover_image = '$cover_image_path' 
-            WHERE movie_id = $id";
+    // Prepare the update SQL query
+    $sql = "UPDATE movies SET 
+            title = '$title', 
+            description = '$description', 
+            release_date = '$release_date', 
+            genre = '$genre', 
+            duration = '$duration'";
+
+    // Only update file paths if they were uploaded
+    if ($movie_file_path) {
+        $sql .= ", file_path = '$movie_file_path'";
+    }
+    if ($cover_image_path) {
+        $sql .= ", cover_image = '$cover_image_path'";
+    }
+
+    $sql .= " WHERE movie_id = $movie_id"; // Ensure you update the correct movie
+
+    // Debugging: Print SQL query
+    echo "SQL Query: " . $sql . "<br>";
 
     if ($conn->query($sql) === TRUE) {
-        // Redirect to the dashboard after updating the movie
-        header('Location: ../dashboard/dashboard.php'); // Move one directory back and into dashboard
-        exit(); // Ensure no further code is executed after redirection
+        // Delete existing category associations
+        $delete_categories_sql = "DELETE FROM movie_categories WHERE movie_id = $movie_id";
+        if (!$conn->query($delete_categories_sql)) {
+            echo "Error deleting categories: " . $conn->error . "<br>";
+        }
+
+        // Insert new categories if any are selected
+        if (isset($_POST['category_id']) && !empty($_POST['category_id'])) {
+            foreach ($_POST['category_id'] as $category_id) {
+                $category_sql = "INSERT INTO movie_categories (movie_id, category_id) VALUES ('$movie_id', '$category_id')";
+                if (!$conn->query($category_sql)) {
+                    echo "Error inserting category ID $category_id: " . $conn->error . "<br>";
+                }
+            }
+        }
+
+        // Redirect to the dashboard
+        header("Location: ../dashboard/dashboard.php");
+        exit();
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }

@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Handle active class toggle for navigation links
+ 
+
     let activeClass = document.querySelectorAll(".nav a");
 
     activeClass.forEach((link) => {
@@ -14,8 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // No event.preventDefault() here, so it should navigate
         });
     });
-
-
     // First popup elements (Add Movies)
     const popupOverlay = document.getElementById('popupOverlay');
     const closePopup = document.getElementById('closePopup');
@@ -60,7 +60,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    document.getElementById('movie_id').value = movie_id;
+                    document.getElementById('movie_id1').value = movie_id;
+                    console.log(movie_id)
                     titleInput.value = data.movie.title;
                     descriptionInput.value = data.movie.description;
                     releaseDateInput.value = data.movie.release_date;
