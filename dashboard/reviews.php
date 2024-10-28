@@ -1,7 +1,20 @@
 <?php
 include("../php_connection/connection.php");
-$sql = "SELECT movie_id, title, release_date, genre, duration,created_at FROM movies";
+$sql = "SELECT category_id,category_name FROM categories";
 $result = $conn->query($sql);
+$movies_sql = "SELECT movie_id, title FROM movies";
+$movies_result = $conn->query($movies_sql);
+
+// Fetch available users
+$users_sql = "SELECT user_id, username FROM users";
+$users_result = $conn->query($users_sql);
+$reviewsql = "SELECT r.review_id, r.review_text, r.rating, r.created_at, u.username, m.title 
+        FROM reviews r 
+        JOIN users u ON r.user_id = u.user_id
+        JOIN movies m ON r.movie_id = m.movie_id";
+
+$result = $conn->query($reviewsql); 
+
 
 ?>
 <!DOCTYPE html>
@@ -34,7 +47,7 @@ $result = $conn->query($sql);
                     <a href="dashboard.php" class="active">Movies</a>
                 </div>
                 <div class="movie-list_nav">
-                    <a href="reviews.php">Reviews</a>
+                    <a href="#">Reviews</a>
                 </div>
                 <div class="movie-list-nav">
                     <a href="categories.php">Categories</a>
@@ -45,9 +58,9 @@ $result = $conn->query($sql);
         <div class="movie-list">
             <div class="container">
                 <div class="movie-nav ">
-                    <h1>Movie list</h1>
+                    <h1>Categories list</h1>
 
-                    <button id="addmovies" type="submit">Add movies</button>
+                    <button id="addmovies" type="submit">Add reviews</button>
                 </div>
                 <div class="movie-card">
                     <?php while ($row = $result->fetch_assoc()) { ?>
@@ -55,14 +68,14 @@ $result = $conn->query($sql);
                         <div class="movie-column">
                             <div class="movie-header">
 
-                                <h1><?php echo $row['title']; ?></h1>
-                                <form action="delete.php" method="POST">
-                                    <input type="hidden" id="movie_id" name="id" value="<?php echo $row['movie_id'] ?>">
+                                <h1><?php echo $row['username']; ?></h1>
+                                <form action="delete_category.php" method="POST">
+                                    <input type="hidden" id="movie_id" name="category_id" value="<?php echo $row['review_id']; ?>">
                                     <button onclick="myFunction()" style="border: none; background: none; padding: 0;">
                                         <img src="../assets/images/Frame 199.svg" alt="Button Image">
                                     </button>
                                 </form>
-                                <a href="#" class="movie-card-link" onclick="openPopup1(<?php echo $row['movie_id']; ?>)">
+                                <a href="#" class="movie-card-link" onclick="openPopup1(<?php echo $row['category_id']; ?>)">
                                     <img class="update_img" src="../assets/images/loop2.svg">
                                 </a>
                             </div>
@@ -84,42 +97,53 @@ $result = $conn->query($sql);
             <div class="popup-content">
                 <p>Welcome to our website!</p>
                 <p>Sign up to receive exclusive offers:</p>
-                <form action="../php_connection/upload.php" method="POST" enctype="multipart/form-data">
-                    <label for="title">Title:</label>
-                    <input type="text" id="title" name="title" maxlength="255" required><br><br>
-
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
-
-                    <label for="release_date">Release Date:</label>
-                    <input type="date" id="release_date" name="release_date" required><br><br>
-
-                    <label for="genre">Genre:</label>
-                    <input type="text" id="genre" name="genre" maxlength="255" required><br><br>
-
-                    <label for="duration">Duration (in minutes):</label>
-                    <input type="number" id="duration" name="duration" required><br><br>
-
-                    <label for="category">Categories:</label>
-                    <select name="category_id[]" multiple required>
+                <form method="post" action="add_review.php">
+                    <label for="user_id">User:</label>
+                    <select name="user_id" required>
+                        <option value="">Select User</option>
                         <?php
-                        // Fetch categories from the database
-                        $category_query = "SELECT category_id, category_name FROM categories";
-                        $category_result = $conn->query($category_query);
-                        while ($category_row = $category_result->fetch_assoc()) {
-                            echo '<option value="' . $category_row['category_id'] . '">' . $category_row['category_name'] . '</option>';
+                        if ($users_result->num_rows > 0) {
+                            while ($user = $users_result->fetch_assoc()) {
+                                echo "<option value='{$user['user_id']}'>{$user['username']}</option>";
+                            }
                         }
                         ?>
-                    </select><br><br> <!-- Closing select tag added -->
+                    </select><br>
 
-                    <label for="movie_file">Upload Movie File:</label>
-                    <input type="file" id="movie_file" name="movie_file" accept="video/*" required><br>
+                    <label for="movie_id">Movie:</label>
+                    <select name="movie_id" required>
+                        <option value="">Select Movie</option>
+                        <?php
+                        if ($movies_result->num_rows > 0) {
+                            while ($movie = $movies_result->fetch_assoc()) {
+                                echo "<option value='{$movie['movie_id']}'>{$movie['title']}</option>";
+                            }
+                        }
+                        ?>
+                    </select><br>
 
-                    <label for="cover_image">Upload Cover Image:</label>
-                    <input type="file" id="cover_image" name="cover_image" accept="image/*" required><br><br>
+                    <div class="star-rating">
+                        <p>Your Rating</p>
+                        <div class="rate">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            <label for="star5" title="5 stars">5 stars</label>
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            <label for="star4" title="4 stars">4 stars</label>
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            <label for="star3" title="3 stars">3 stars</label>
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            <label for="star2" title="2 stars">2 stars</label>
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            <label for="star1" title="1 star">1 star</label>
+                        </div>
+                    </div><br>
 
-                    <input type="submit" value="Submit Movie">
+                    <label for="review_text">Review Text:</label>
+                    <textarea name="review_text"></textarea><br>
+
+                    <button type="submit">Submit Review</button>
                 </form>
+
 
             </div>
         </div>
@@ -132,7 +156,7 @@ $result = $conn->query($sql);
                 <p>Welcome to our website!</p>
                 <p>Sign up to receive exclusive offers:</p>
                 <form action="../php_connection/update.php" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="id" id="movie_id1" value="">
+                    <input type="hidden" name="id" id="movie_id">
                     <label for="title">Title:</label>
                     <input type="text" id="title1" name="title" maxlength="255" required><br><br>
 
@@ -148,22 +172,13 @@ $result = $conn->query($sql);
                     <label for="duration">Duration (in minutes):</label>
                     <input type="number" id="duration1" name="duration" required><br><br>
 
+
                     <label for="movie_file">Upload Movie File:</label>
                     <input type="file" id="movie_file1" name="movie_file" accept="video/*" required><br>
 
                     <label for="cover_image">Upload Cover Image:</label>
                     <input type="file" id="cover_image1" name="cover_image" accept="image/*" required><br>
 
-                    <select name="category_id[]" multiple required>
-                        <?php
-                        // Fetch categories from the database
-                        $category_query = "SELECT category_id, category_name FROM categories";
-                        $category_result = $conn->query($category_query);
-                        while ($category_row = $category_result->fetch_assoc()) {
-                            echo '<option value="' . $category_row['category_id'] . '">' . $category_row['category_name'] . '</option>';
-                        }
-                        ?>
-                    </select>
 
                     <input type="submit" value="Submit Movie">
                 </form>

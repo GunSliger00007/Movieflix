@@ -34,7 +34,7 @@ $result = $conn->query($sql);
                     <a href="dashboard.php" class="active">Movies</a>
                 </div>
                 <div class="movie-list_nav">
-                    <a href="#">Reviews</a>
+                    <a href="reviews.php">Reviews</a>
                 </div>
                 <div class="movie-list-nav">
                     <a href="#">Categories</a>
