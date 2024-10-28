@@ -75,7 +75,7 @@ $result = $conn->query($reviewsql);
                                         <img src="../assets/images/Frame 199.svg" alt="Button Image">
                                     </button>
                                 </form>
-                                <a href="#" class="movie-card-link" onclick="openPopup1(<?php echo $row['category_id']; ?>)">
+                                <a href="#" class="movie-card-link" onclick="openPopup1(<?php echo $row['review_id']; ?>)">
                                     <img class="update_img" src="../assets/images/loop2.svg">
                                 </a>
                             </div>
@@ -155,38 +155,58 @@ $result = $conn->query($reviewsql);
             <div class="popup-content1">
                 <p>Welcome to our website!</p>
                 <p>Sign up to receive exclusive offers:</p>
-                <form action="../php_connection/update.php" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id" id="movie_id">
-                    <label for="title">Title:</label>
-                    <input type="text" id="title1" name="title" maxlength="255" required><br><br>
+                <form method="post" action="update_review.php">
+                    <label for="user_id">User:</label>
+                    <select name="user_id" required>
+                        <option value="">Select User</option>
+                        <?php
+                        if ($users_result->num_rows > 0) {
+                            while ($user = $users_result->fetch_assoc()) {
+                                echo "<option value='{$user['user_id']}'>{$user['username']}</option>";
+                            }
+                        }
+                        ?>
+                    </select><br>
 
-                    <label for="description">Description:</label>
-                    <textarea id="description1" name="description" rows="4" cols="50" required></textarea><br><br>
+                    <label for="movie_id">Movie:</label>
+                    <select name="movie_id" required>
+                        <option value="">Select Movie</option>
+                        <?php
+                        if ($movies_result->num_rows > 0) {
+                            while ($movie = $movies_result->fetch_assoc()) {
+                                echo "<option value='{$movie['movie_id']}'>{$movie['title']}</option>";
+                            }
+                        }
+                        ?>
+                    </select><br>
 
-                    <label for="release_date">Release Date:</label>
-                    <input type="date" id="release_date1" name="release_date" required><br><br>
+                    <div class="star-rating">
+                        <p>Your Rating</p>
+                        <div class="rate">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            <label for="star5" title="5 stars">5 stars</label>
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            <label for="star4" title="4 stars">4 stars</label>
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            <label for="star3" title="3 stars">3 stars</label>
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            <label for="star2" title="2 stars">2 stars</label>
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            <label for="star1" title="1 star">1 star</label>
+                        </div>
+                    </div><br>
 
-                    <label for="genre">Genre:</label>
-                    <input type="text" id="genre1" name="genre" maxlength="255" required><br><br>
+                    <label for="review_text">Review Text:</label>
+                    <textarea name="review_text" id="review_text"></textarea><br>
 
-                    <label for="duration">Duration (in minutes):</label>
-                    <input type="number" id="duration1" name="duration" required><br><br>
-
-
-                    <label for="movie_file">Upload Movie File:</label>
-                    <input type="file" id="movie_file1" name="movie_file" accept="video/*" required><br>
-
-                    <label for="cover_image">Upload Cover Image:</label>
-                    <input type="file" id="cover_image1" name="cover_image" accept="image/*" required><br>
-
-
-                    <input type="submit" value="Submit Movie">
+                    <button type="submit">Submit Review</button>
                 </form>
+
 
             </div>
         </div>
     </div>
-    <script src="lane.js"></script>
+    <script src="get_review_script.js"></script>
 </body>
 
 </html>
