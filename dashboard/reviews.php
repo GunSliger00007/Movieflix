@@ -13,9 +13,17 @@ $reviewsql = "SELECT r.review_id, r.review_text, r.rating, r.created_at, u.usern
         JOIN users u ON r.user_id = u.user_id
         JOIN movies m ON r.movie_id = m.movie_id";
 
-$result = $conn->query($reviewsql); 
+$result = $conn->query($reviewsql);
 
 
+?>
+<?php
+// Re-fetch data before the second popup
+// Fetching users again for the second popup
+$users_result1 = $conn->query("SELECT user_id, username FROM users");
+
+// Fetching movies again for the second popup
+$movies_result1 = $conn->query("SELECT movie_id, title FROM movies");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,8 +77,8 @@ $result = $conn->query($reviewsql);
                             <div class="movie-header">
 
                                 <h1><?php echo $row['username']; ?></h1>
-                                <form action="delete_category.php" method="POST">
-                                    <input type="hidden" id="movie_id" name="category_id" value="<?php echo $row['review_id']; ?>">
+                                <form action="delete_reviews.php" method="POST">
+                                    <input type="hidden" id="review_id" name="review_id" value="<?php echo $row['review_id']; ?>">
                                     <button onclick="myFunction()" style="border: none; background: none; padding: 0;">
                                         <img src="../assets/images/Frame 199.svg" alt="Button Image">
                                     </button>
@@ -102,8 +110,9 @@ $result = $conn->query($reviewsql);
                     <select name="user_id" required>
                         <option value="">Select User</option>
                         <?php
-                        if ($users_result->num_rows > 0) {
-                            while ($user = $users_result->fetch_assoc()) {
+                        // Use the re-fetched $users_result1 for the second popup
+                        if ($users_result1->num_rows > 0) {
+                            while ($user = $users_result1->fetch_assoc()) {
                                 echo "<option value='{$user['user_id']}'>{$user['username']}</option>";
                             }
                         }
@@ -114,8 +123,9 @@ $result = $conn->query($reviewsql);
                     <select name="movie_id" required>
                         <option value="">Select Movie</option>
                         <?php
-                        if ($movies_result->num_rows > 0) {
-                            while ($movie = $movies_result->fetch_assoc()) {
+                        // Use the re-fetched $movies_result1 for the second popup
+                        if ($movies_result1->num_rows > 0) {
+                            while ($movie = $movies_result1->fetch_assoc()) {
                                 echo "<option value='{$movie['movie_id']}'>{$movie['title']}</option>";
                             }
                         }
@@ -167,7 +177,7 @@ $result = $conn->query($reviewsql);
                         }
                         ?>
                     </select><br>
-
+                    <input type="hidden"  name="review_id"  id="review_id"><br>
                     <label for="movie_id">Movie:</label>
                     <select name="movie_id" required>
                         <option value="">Select Movie</option>
@@ -199,10 +209,10 @@ $result = $conn->query($reviewsql);
                     <label for="review_text">Review Text:</label>
                     <textarea name="review_text" id="review_text"></textarea><br>
 
-                    <button type="submit">Submit Review</button>
+                    <button type="submit">Update Review</button>
                 </form>
 
-
+                
             </div>
         </div>
     </div>

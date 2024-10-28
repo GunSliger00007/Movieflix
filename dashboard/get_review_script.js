@@ -45,7 +45,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Make openPopup1 function globally accessible
     window.openPopup1 = function (review_id) {
-        console.log(`Fetching movie for review ID: ${review_id}`);
+        console.log(`Fetching movie for review ID: ${review_id}`)
+        document.getElementById('review_id').value=review_id;
 
         fetch(`get_review.php?id=${review_id}`)
             .then(response => response.json())
