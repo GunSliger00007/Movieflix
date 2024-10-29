@@ -8,10 +8,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Prepare the SQL query to delete the review
     $sql = "DELETE FROM reviews WHERE review_id = '$review_id'";
 
-    // Execute the delete query
+ 
     $conn->query($sql);
 
-    // Redirect after successful deletion
+   
     header("Location: ../dashboard/reviews.php");
     exit();
 }
