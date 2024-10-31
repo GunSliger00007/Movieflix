@@ -55,7 +55,7 @@ $result = $conn->query($sql);
             </ul>
             <div class="search-menu-wrapper">
               <div class="search-icon">
-                <form action="search.php" method="post">
+                <form action="search.php" method="get">
                 <input type="text" name="search_query" id="search" placeholder="Search Something..."/>
                 <button>
                   <img src="assets/images/Frame.svg">
