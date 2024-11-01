@@ -110,8 +110,9 @@ $result = $conn->query($sql);
       </div>
     </div>
     <div class="movies-list">
-      <?php while ($row = $result->fetch_assoc()) { ?>
+      
         <div class="column">
+        <?php while ($row = $result->fetch_assoc()) { ?>
           <a href="#" class="card">
             <img src="./php_connection/<?php echo $row['cover_image'] ?>">
             <h1><?php echo $row['title'] ?></h1>
@@ -122,9 +123,10 @@ $result = $conn->query($sql);
                 <img src="assets/images/Frame (1).svg" width="11.41" height="10.85">
                 <h5>7.5</h5>
               </div>
-            <?php } ?>
+            
             </div>
           </a>
+          <?php } ?>
     
       </div>
         

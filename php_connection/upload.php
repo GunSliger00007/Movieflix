@@ -54,8 +54,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           VALUES ('$title', '$description', '$release_date', '$genre', '$duration', '$movie_file_path', '$cover_image_path')";
 
   if ($conn->query($sql) === TRUE) {
-    echo "Movie added successfully!";
-    
+    // Get the last inserted movie ID
+    $movie_id = $conn->insert_id;
+
+    // Process categories if any are selected
+    if (isset($_POST['category_id']) && !empty($_POST['category_id'])) {
+      foreach ($_POST['category_id'] as $category_id) {
+        // Insert the movie categories into movie_categories table
+        $category_sql = "INSERT INTO movie_categories (movie_id, category_id) VALUES ('$movie_id', '$category_id')";
+        if (!$conn->query($category_sql)) {
+          echo "Error inserting category ID $category_id: " . $conn->error . "<br>";
+        }
+      }
+    }
+
+    header("Location: ../dashboard/dashboard.php");
   } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
   }
