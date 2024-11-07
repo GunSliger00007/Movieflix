@@ -196,12 +196,27 @@ $result = $conn->query($sql);
   <div class="popup-overlay" id="popupOverlay" style="display: none;">
     <div class="popup" id="popup">
         <span class="close" id="closePopup">&times;</span>
-        <div class="popup-content">
+        <div class="popup-content" id="signupForm">
             <p>Welcome to our website!</p>
-            <p>Sign up to receive exclusive offers:</p>
+            <p>login up to receive exclusive offers:</p>
+            <form>
             <input type="email" placeholder="Your email" id="emailInput">
+            <input type="username" placeholder="your username" id="userInput">
+            <input type="password" placeholder="password" id="passwordInput">
+            <input type="password" placeholder="password" id="passwordInput1">
+
             <button id="submitFormBtn">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="#" id="loginLink">Please login</a></p>
         </div>
+        <div class="popup-content" id="loginForm" style="display: none; ">
+          <form>
+                <input type="email" placeholder="Your email" id="emailInput">
+                <input type="password" placeholder="Your password" id="passwordInput">
+                <button id="loginFormBtn">Login</button>
+          </form>
+                <p>Don't have an account? <a href="#" id="signupLink">Sign Up</a></p>
+            </div>
     </div>
 </div>
 

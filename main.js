@@ -73,12 +73,22 @@ var header = document.getElementById("myHeader");
         }
     }
   // Get elements
+// Get elements
 const popupOverlay = document.getElementById('popupOverlay');
 const popup = document.getElementById('popup');
 const closePopup = document.getElementById('closePopup');
 const emailInput = document.getElementById('emailInput');
+const loginEmailInput = document.getElementById('loginEmailInput');
+const passwordInput = document.getElementById('passwordInput');
 const openPopupBtn = document.getElementById('signup');
 const submitFormBtn = document.getElementById('submitFormBtn');
+const loginFormBtn = document.getElementById('loginFormBtn');
+const loginLink = document.getElementById('loginLink');
+const signupLink = document.getElementById('signupLink');
+const signupForm = document.getElementById('signupForm');
+const loginForm = document.getElementById('loginForm');
+const popupTitle = document.getElementById('popupTitle');
+const popupSubtitle = document.getElementById('popupSubtitle');
 
 // Function to open the popup
 function openPopup() {
@@ -91,10 +101,18 @@ function closePopupFunc() {
 }
 
 // Function to submit the signup form
-function submitForm() {
+function submitSignUpForm() {
     const email = emailInput.value;
-    console.log(`Email submitted: ${email}`);
+    console.log(`Email submitted for Sign Up: ${email}`);
     closePopupFunc(); // Close the popup after form submission
+}
+
+// Function to submit the login form
+function submitLoginForm() {
+    const email = loginEmailInput.value;
+    const password = passwordInput.value;
+    console.log(`Email: ${email}, Password: ${password}`);
+    closePopupFunc(); // Close the popup after login
 }
 
 // Event listeners
@@ -111,5 +129,27 @@ popupOverlay.onclick = function (event) {
     }
 };
 
-// Handle form submission
-submitFormBtn.onclick = submitForm;
+// Handle form submission for signup
+submitFormBtn.onclick = submitSignUpForm;
+
+// Handle form submission for login
+loginFormBtn.onclick = submitLoginForm;
+
+// Switch to the login form when "Please login" is clicked
+loginLink.onclick = function (event) {
+    event.preventDefault();
+    signupForm.style.display = 'none';
+    loginForm.style.display = 'block';
+    
+    popup.style.width='23%';
+};
+
+// Switch to the signup form when "Sign Up" is clicked
+signupLink.onclick = function (event) {
+    event.preventDefault();
+    loginForm.style.display = 'none';
+    signupForm.style.display = 'block';
+    popupTitle.textContent = 'Welcome to our website!';
+    popupSubtitle.textContent = 'Sign up to receive exclusive offers:';
+    popup.style.width = '35%';
+};
