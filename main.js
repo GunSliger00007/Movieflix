@@ -72,40 +72,44 @@ var header = document.getElementById("myHeader");
             searchResults.innerHTML = '<li>No results found</li>';
         }
     }
-  const container = document.querySelector(".container"),
-  pwShowHide = document.querySelectorAll(".showHidePw"),
-  pwFields = document.querySelectorAll(".password"),
-  signUp = document.getElementById("signup");
-  login = document.querySelector("#login-link");
+  // Get elements
+const popupOverlay = document.getElementById('popupOverlay');
+const popup = document.getElementById('popup');
+const closePopup = document.getElementById('closePopup');
+const emailInput = document.getElementById('emailInput');
+const openPopupBtn = document.getElementById('signup');
+const submitFormBtn = document.getElementById('submitFormBtn');
 
-// js code to show/hide password and change icon
-pwShowHide.forEach((eyeIcon) => {
-  eyeIcon.addEventListener("click", () => {
-    pwFields.forEach((pwField) => {
-      if (pwField.type === "password") {
-        pwField.type = "text";
+// Function to open the popup
+function openPopup() {
+    popupOverlay.style.display = 'block';
+}
 
-        pwShowHide.forEach((icon) => {
-          icon.classList.replace("uil-eye-slash", "uil-eye");
-        });
-      } else {
-        pwField.type = "password";
+// Function to close the popup
+function closePopupFunc() {
+    popupOverlay.style.display = 'none';
+}
 
-        pwShowHide.forEach((icon) => {
-          icon.classList.replace("uil-eye", "uil-eye-slash");
-        });
-      }
-    });
-  });
-});
+// Function to submit the signup form
+function submitForm() {
+    const email = emailInput.value;
+    console.log(`Email submitted: ${email}`);
+    closePopupFunc(); // Close the popup after form submission
+}
 
-// js code to appear signup and login form
-signUp.addEventListener("click", (e) => {
-  e.preventDefault();
-  container.classList.add("active");
-});
+// Event listeners
+// Open the popup when the button is clicked
+openPopupBtn.onclick = openPopup;
 
-login.addEventListener("click", (e) => {
-  e.preventDefault();
-  container.classList.remove("active");
-});
+// Close the popup when the close button is clicked
+closePopup.onclick = closePopupFunc;
+
+// Close the popup when clicking outside the popup content
+popupOverlay.onclick = function (event) {
+    if (event.target === popupOverlay) {
+        closePopupFunc();
+    }
+};
+
+// Handle form submission
+submitFormBtn.onclick = submitForm;

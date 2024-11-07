@@ -15,7 +15,7 @@ $result = $conn->query($sql);
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">   
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <div class="header" id="myHeader">
@@ -66,8 +66,8 @@ $result = $conn->query($sql);
 
             </div>
            <div class="right-btn">
-            <a href="#">Log in</a>
-            <a href="#">Sign up</a>
+            <a href="#" id="login">Log in</a>
+            <a href="#" id="signup">Sign up</a>
            </div>
           </div>
       </div>
@@ -193,6 +193,19 @@ $result = $conn->query($sql);
       </div>
     </div>
   </div>
-    <script src="lain.js"></script>
+  <div class="popup-overlay" id="popupOverlay" style="display: none;">
+    <div class="popup" id="popup">
+        <span class="close" id="closePopup">&times;</span>
+        <div class="popup-content">
+            <p>Welcome to our website!</p>
+            <p>Sign up to receive exclusive offers:</p>
+            <input type="email" placeholder="Your email" id="emailInput">
+            <button id="submitFormBtn">Sign Up</button>
+        </div>
+    </div>
+</div>
+
+ 
+    <script src="main.js"></script>
   </body>
 </html>
