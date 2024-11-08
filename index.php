@@ -222,14 +222,20 @@ $result = $conn->query($sql);
         </form>
         <p>Already have an account? <a href="#" id="loginLink">Please login</a></p>
       </div>
-      <div class="popup-content" id="loginForm" style="display: none; ">
-        <form>
-          <input type="email" placeholder="Your email" id="emailInput">
-          <input type="password" placeholder="Your password" id="passwordInput">
+      <div class="popup-content" id="loginForm" style="display: none;">
+        <form method="POST" action="login.php" onsubmit="return validateForm()">
+          <input type="email" placeholder="Your email" id="emailInput" name="email" required>
+          <input type="password" placeholder="Your password" id="passwordInput" name="password" required>
           <button id="loginFormBtn">Login</button>
         </form>
         <p>Don't have an account? <a href="#" id="signupLink">Sign Up</a></p>
+        <?php if (isset($error)): ?>
+          <p style="color:red;"><?php echo $error; ?></p>
+        <?php endif; ?>
+        <p id="responseMessage" style="color:red;"></p>
+
       </div>
+
     </div>
   </div>
 

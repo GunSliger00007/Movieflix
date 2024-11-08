@@ -164,7 +164,7 @@ const responseMessage = document.getElementById('responseMessage');
 // Regex patterns for validation
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const usernamePattern = /^[a-zA-Z0-9_-]{3,16}$/; // Username: 3-16 chars, letters, numbers, _ or -
-const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // Password: at least 8 chars, 1 letter and 1 number
+const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; // Password: at least 8 chars, 1 letter and 1 number
 
 // Function to validate the form
 function validateForm() {
@@ -235,3 +235,21 @@ submitformBtn.onclick = function (event) {
         });
     }
 };
+function validateForm() {
+    const email = document.getElementById('emailinput').value;
+    const password = document.getElementById('passwordinput').value;
+    const responseMessage = document.getElementById('responseMessage');
+
+    if (!emailPattern.test(email)) {
+        responseMessage.textContent = "Please enter a valid email.";
+        return false;
+    }
+
+    if (!passwordPattern.test(password)) {
+        responseMessage.textContent = "Password must be at least 8 characters long and contain at least one letter and one number.";
+        return false;
+    }
+
+    responseMessage.textContent = "";
+    return true;
+}
