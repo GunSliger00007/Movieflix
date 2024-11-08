@@ -225,11 +225,7 @@ submitformBtn.onclick = function (event) {
                 responseMessage.textContent = data.message; // Show error message
                 responseMessage.style.color = 'red';
             } else if (data.status === 'success') {
-                responseMessage.textContent = data.message; // Show success message
-                responseMessage.style.color = 'green';
-                // Optionally, you can clear the form or redirect the user
-                // document.getElementById('registerForm').reset();
-                // window.location.href = "welcome.html"; // Redirect after successful signup
+                location.reload();
             }
         })
         .catch(error => {

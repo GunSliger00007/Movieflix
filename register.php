@@ -1,4 +1,5 @@
 <?php
+session_start(); 
 include('./php_connection/connection.php');
 
 header('Content-Type: application/json');
@@ -20,8 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $sql = "INSERT INTO users (email, username, password) VALUES ('$email', '$user', '$password')";
 
         if (mysqli_query($conn, $sql)) {
-            // Return success message
-            header("Location: index.php");
+            // Return success message in JSON format
+            $_SESSION['user_id'] = mysqli_insert_id($conn);  // Store user ID
+            $_SESSION['username'] = $user;
+            $_SESSION['email'] = $email;
+            echo json_encode(['status' => 'success', 'message' => 'User registered successfully.']);
         } else {
             // Return error message if insert failed
             echo json_encode(['status' => 'error', 'message' => 'Error inserting the data.']);
