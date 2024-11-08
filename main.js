@@ -153,3 +153,89 @@ signupLink.onclick = function (event) {
     popupSubtitle.textContent = 'Sign up to receive exclusive offers:';
     popup.style.width = '35%';
 };
+// Get elements
+const emailinput = document.getElementById('emailInput');
+const userInput = document.getElementById('userInput');
+const passwordinput = document.getElementById('passwordInput');
+const passwordInput1 = document.getElementById('passwordInput1');
+const submitformBtn = document.getElementById('submitFormBtn');
+const responseMessage = document.getElementById('responseMessage');
+
+// Regex patterns for validation
+const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const usernamePattern = /^[a-zA-Z0-9_-]{3,16}$/; // Username: 3-16 chars, letters, numbers, _ or -
+const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // Password: at least 8 chars, 1 letter and 1 number
+
+// Function to validate the form
+function validateForm() {
+    const email = emailinput.value;
+    const username = userInput.value;
+    const password = passwordinput.value;
+    const confirmPassword = passwordInput1.value;
+
+    // Validate email
+    if (!emailPattern.test(email)) {
+        responseMessage.textContent = "Please enter a valid email!";
+        responseMessage.style.color = 'red';
+        return false;
+    }
+
+    // Validate username
+    if (!usernamePattern.test(username)) {
+        responseMessage.textContent = "Username must be 3-16 characters and can include letters, numbers, underscores, or hyphens.";
+        responseMessage.style.color = 'red';
+        return false;
+    }
+
+    // Validate password
+    if (!passwordPattern.test(password)) {
+        responseMessage.textContent = "Password must be at least 8 characters long and contain at least one letter and one number.";
+        responseMessage.style.color = 'red';
+        return false;
+    }
+
+    // Validate confirm password
+    if (password !== confirmPassword) {
+        responseMessage.textContent = "Passwords do not match!";
+        responseMessage.style.color = 'red';
+        return false;
+    }
+
+    return true;
+}
+
+// Handle form submission
+submitformBtn.onclick = function (event) {
+    event.preventDefault(); // Prevent the form from submitting
+
+    // Validate the form before submission
+    if (validateForm()) {
+        // Create FormData object to send the form data
+        const formData = new FormData(document.getElementById('registerForm'));
+
+        // Send the form data using fetch
+        fetch('register.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response from the server
+            if (data.status === 'error') {
+                responseMessage.textContent = data.message; // Show error message
+                responseMessage.style.color = 'red';
+            } else if (data.status === 'success') {
+                responseMessage.textContent = data.message; // Show success message
+                responseMessage.style.color = 'green';
+                // Optionally, you can clear the form or redirect the user
+                // document.getElementById('registerForm').reset();
+                // window.location.href = "welcome.html"; // Redirect after successful signup
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            responseMessage.textContent = "An error occurred while processing your request.";
+            responseMessage.style.color = 'red';
+        });
+    }
+};

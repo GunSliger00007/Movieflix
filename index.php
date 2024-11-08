@@ -60,7 +60,7 @@ $result = $conn->query($sql);
                 <button>
                   <img src="assets/images/Frame.svg">
                 </button>
-                <form>
+             </form>
                 <ul id="searchResults" class="search-results-list"></ul>
               </div>
 
@@ -199,10 +199,11 @@ $result = $conn->query($sql);
         <div class="popup-content" id="signupForm">
             <p>Welcome to our website!</p>
             <p>login up to receive exclusive offers:</p>
-            <form>
-            <input type="email" placeholder="Your email" id="emailInput">
-            <input type="username" placeholder="your username" id="userInput">
-            <input type="password" placeholder="password" id="passwordInput">
+            <p id="responseMessage" style="color: red;"></p> 
+            <form action="register.php" method="post" id="registerForm">
+            <input type="email" name="email" placeholder="Your email" id="emailInput">
+            <input type="username" name="username" placeholder="your username" id="userInput">
+            <input type="password" name="password" placeholder="password" id="passwordInput">
             <input type="password" placeholder="password" id="passwordInput1">
 
             <button id="submitFormBtn">Sign Up</button>
@@ -220,7 +221,8 @@ $result = $conn->query($sql);
     </div>
 </div>
 
- 
+  
+
     <script src="main.js"></script>
   </body>
 </html>
