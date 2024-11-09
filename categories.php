@@ -34,7 +34,7 @@ $result = $conn->query($sql);
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style1.css">
+  <link rel="stylesheet" href="categories_style.css">
 </head>
 
 <body>
@@ -63,10 +63,10 @@ $result = $conn->query($sql);
       <div class="nav nav-container">
         <ul>
           <li>
-            <a href="#" class="active">Home</a>
+            <a href="index.php" class="active">Home</a>
           </li>
           <li>
-            <a href="#">Movies</a>
+            <a href="categories.php">Categories</a>
           </li>
 
         </ul>
@@ -83,8 +83,21 @@ $result = $conn->query($sql);
 
         </div>
         <div class="right-btn">
-          <a href="#">Log in</a>
-          <a href="#">Sign up</a>
+          <?php
+          session_start();  // Start the session
+
+          if (isset($_SESSION['username'])) {
+            // Slice the first five letters of the username
+            $username = $_SESSION['username'];
+            $shortenedUsername = substr($username, 0, 5);
+
+            echo '<a href="#">' . $shortenedUsername . '</a>';
+            echo '<a href="logout.php">Log out</a>';
+          } else {
+            echo '<a href="#" id="login">Log in</a>';
+            echo '<a href="#" id="signup">Sign up</a>';
+          }
+          ?>￼
         </div>
       </div>
     </div>
@@ -200,7 +213,42 @@ $result = $conn->query($sql);
       </div>
     </div>
   </div>
-  <script src="lain.js"></script>
+  <div class="popup-overlay" id="popupOverlay" style="display: none;">
+    <div class="popup" id="popup">
+      <span class="close" id="closePopup">&times;</span>
+      <div class="popup-content" id="signupForm">
+        <p>Welcome to our website!</p>
+        <p>login up to receive exclusive offers:</p>
+        <p id="responseMessage" style="color: red;"></p>
+        <form action="register.php" method="post" id="registerForm">
+          <input type="email" name="email" placeholder="Your email" id="emailInput">
+          <input type="username" name="username" placeholder="your username" id="userInput">
+          <input type="password" name="password1" placeholder="password" id="passwordInput">
+          <input type="password" placeholder="password" id="passwordInput1">
+
+          <button id="submitFormBtn">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="#" id="loginLink">Please login</a></p>
+      </div>
+      <div class="popup-content" id="loginForm" style="display: none;">
+        <form method="POST" action="login.php" onsubmit="return validateForm()">
+          <input type="email" placeholder="Your email" id="emailInput" name="email" required>
+          <input type="password" placeholder="Your password" id="passwordInput" name="password" required>
+          <button id="loginFormBtn">Login</button>
+        </form>
+        <p>Don't have an account? <a href="#" id="signupLink">Sign Up</a></p>
+        <?php if (isset($error)): ?>
+          <p style="color:red;"><?php echo $error; ?></p>
+        <?php endif; ?>
+        <p id="responseMessage" style="color:red;"></p>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <script src="main.js"></script>
 </body>
 
 </html>

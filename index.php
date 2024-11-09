@@ -46,10 +46,10 @@ $result = $conn->query($sql);
       <div class="nav nav-container">
         <ul>
           <li>
-            <a href="#" class="active">Home</a>
+            <a href="index.php" class="active">Home</a>
           </li>
           <li>
-            <a href="#">Movies</a>
+            <a href="categories.php">Categories</a>
           </li>
 
         </ul>
@@ -103,10 +103,7 @@ $result = $conn->query($sql);
         <p>
           Synopsis When a failed nuclear fusion experiment results in an explosion that kills his wife, Dr. Otto Octavius (Alfred Molina) is transformed into Dr. Octopus, a cyborg with deadly metal tentacles. Doc Ock blames Spider-Man (Tobey Maguire) for the accident and seeks revenge.
         </p>
-        <div class="buttons">
-          <a href="#">Watch Now</a>
-          <a href="#">Add to Wishlist</a>
-        </div>
+      
       </div>
     </div>
   </div>
