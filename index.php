@@ -238,7 +238,7 @@ $result = $conn->query($sql);
 
 
 
-  <script src="main.js"></script>
+  <script src="script.js"></script>
 </body>
 
 </html>

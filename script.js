@@ -236,8 +236,8 @@ submitformBtn.onclick = function (event) {
     }
 };
 function validateForm() {
-    const email = document.getElementById('emailinput').value;
-    const password = document.getElementById('passwordinput').value;
+    const email = document.getElementById('emailInput').value;
+    const password = document.getElementById('passwordInput').value;
     const responseMessage = document.getElementById('responseMessage');
 
     if (!emailPattern.test(email)) {
