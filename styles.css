@@ -442,7 +442,7 @@ img {
 
   color: #333;
 }
-
+.popup #loginEmailInput,
 .popup #emailInput,
 .popup #userInput,
 .popup #passwordInput,
@@ -472,4 +472,72 @@ img {
   cursor: pointer;
 
   font-size: 16px;
+}
+.wishlist-section {
+  padding: 90px 0;
+  background-color: #1f232c; /* Matches the body background */
+}
+
+.wishlist-section .container {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.wishlist-section h2 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 2rem;
+  color: var(--neutral-0); /* White */
+  margin-bottom: 20px;
+}
+
+.wishlist-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(207px, 1fr));
+  gap: 20px;
+}
+
+.movie {
+  background-color: var(--neutral-1000); /* Dark background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.movie:hover {
+  transform: scale(1.03);
+}
+
+.movie-poster {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.movie-info {
+  margin-top: 10px;
+}
+
+.movie-info h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.5rem;
+  color: var(--neutral-0); /* White */
+}
+
+.movie-info p {
+  margin: 5px 0;
+  color: var(--neutral-0); /* White */
+}
+
+.remove-btn {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #ff055f; /* Primary color */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  background-color: #ff4c4c;
 }

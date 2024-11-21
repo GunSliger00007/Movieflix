@@ -79,10 +79,10 @@ const popup = document.getElementById('popup');
 const closePopup = document.getElementById('closePopup');
 const emailInput = document.getElementById('emailInput');
 const loginEmailInput = document.getElementById('loginEmailInput');
-const passwordInput = document.getElementById('passwordInput1');
+const passwordInput = document.getElementById('passwordInput');
 const openPopupBtn = document.getElementById('signup');
 const submitFormBtn = document.getElementById('submitFormBtn');
-
+const loginFormBtn = document.getElementById('loginFormBtn');
 const loginLink = document.getElementById('loginLink');
 const signupLink = document.getElementById('signupLink');
 const signupForm = document.getElementById('signupForm');
@@ -107,9 +107,7 @@ function submitSignUpForm() {
     closePopupFunc(); // Close the popup after form submission
 }
 
-
 // Function to submit the login form
-
 
 // Event listeners
 // Open the popup when the button is clicked
@@ -128,7 +126,9 @@ popupOverlay.onclick = function (event) {
 // Handle form submission for signup
 submitFormBtn.onclick = submitSignUpForm;
 
-
+loginFormBtn.addEventListener('click',function(){
+    document.getElementById("formLogin").submit();
+});
 
 // Switch to the login form when "Please login" is clicked
 loginLink.onclick = function (event) {
@@ -152,12 +152,10 @@ signupLink.onclick = function (event) {
 const emailinput = document.getElementById('emailInput');
 const userInput = document.getElementById('userInput');
 const passwordinput = document.getElementById('passwordInput');
-const emailInput1=document.getElementById("loginEmailInput");
 const passwordInput1 = document.getElementById('passwordInput1');
 const submitformBtn = document.getElementById('submitFormBtn');
 const responseMessage = document.getElementById('responseMessage');
-const loginResponseMessage=document.getElementById('loginResponseMessage')
-const loginFormBtn = document.getElementById('loginFormBtn');
+
 // Regex patterns for validation
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const usernamePattern = /^[a-zA-Z0-9_-]{3,16}$/; // Username: 3-16 chars, letters, numbers, _ or -
@@ -200,53 +198,9 @@ function validateForm() {
 
     return true;
 }
-function validateForm1(){
-   const email=emailInput1.value;
-   const password=passwordInput1.value;
-   if(!emailPattern.test(email)){
-    loginResponseMessage.textContent="please enter a vaild email!";
-    loginResponseMessage.style.color='red';
-    return false;
-   }
-   if(!passwordPattern.test(password)){
-    loginResponseMessage.textContent="Password must be at least 8 characters long and contain at least one letter and one number.";
-    loginResponseMessage.style.color='red'
-    return false;
-   }
-   
-}
-// Handle the form submission for login
-;
-
-loginForm.addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent default form submission
-
-        if(validateForm1()){
-        const formData = new FormData(document.getElementById('loginForm1'));
-
-        // Send data via AJAX (fetch)
-        fetch('login.php', {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => response.json()) // Parse JSON response
-        .then(data => {
-            if (data.status === 'success') {
-                window.location.href = 'index.php'; // Redirect on success
-            } else {
-                loginResponseMessage.textContent = data.message+data.password+data.email; // Show error message
-            }
-        })
-        .catch(error => {
-            loginResponseMessage.textContent = 'An error occurred. Please try again later.';
-        });
-}
-});
-
 
 // Handle form submission
 submitformBtn.onclick = function (event) {
-    console.log('clicked')
     event.preventDefault(); // Prevent the form from submitting
 
     // Validate the form before submission
@@ -276,3 +230,27 @@ submitformBtn.onclick = function (event) {
         });
     }
 };
+function validateForm() {
+    const email = document.getElementById('emailInput').value;
+    const password = document.getElementById('passwordInput').value;
+    const responseMessage = document.getElementById('responseMessage');
+
+    if (!emailPattern.test(email)) {
+        responseMessage.textContent = "Please enter a valid email.";
+        return false;
+    }
+
+    if (!passwordPattern.test(password)) {
+        responseMessage.textContent = "Password must be at least 8 characters long and contain at least one letter and one number.";
+        return false;
+    }
+
+    responseMessage.textContent = "";
+    return true;
+}
+// Function to submit the login form
+
+
+// Function to validate the login form
+
+

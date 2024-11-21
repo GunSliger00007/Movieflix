@@ -1,4 +1,11 @@
 <?php
+session_start();  // Start the session at the beginning of the file
+
+if (!isset($_SESSION['user_id'])) {
+    
+    header("Location: login_form.php");
+    exit();
+}
 include("../php_connection/connection.php");
 $sql = "SELECT movie_id, title, release_date, genre, duration,created_at FROM movies";
 $result = $conn->query($sql);
@@ -48,6 +55,7 @@ $result = $conn->query($sql);
                     <h1>Movie list</h1>
 
                     <button id="addmovies" type="submit">Add movies</button>
+                    
                 </div>
                 <div class="movie-card">
                     <?php while ($row = $result->fetch_assoc()) { ?>

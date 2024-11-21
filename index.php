@@ -103,7 +103,7 @@ $result = $conn->query($sql);
         <p>
           Synopsis When a failed nuclear fusion experiment results in an explosion that kills his wife, Dr. Otto Octavius (Alfred Molina) is transformed into Dr. Octopus, a cyborg with deadly metal tentacles. Doc Ock blames Spider-Man (Tobey Maguire) for the accident and seeks revenge.
         </p>
-      
+
       </div>
     </div>
   </div>
@@ -135,6 +135,7 @@ $result = $conn->query($sql);
                 <img src="assets/images/Frame (1).svg" width="11.41" height="10.85">
                 <h5>7.5</h5>
               </div>
+
 
             </div>
           </a>
@@ -220,10 +221,11 @@ $result = $conn->query($sql);
         <p>Already have an account? <a href="#" id="loginLink">Please login</a></p>
       </div>
       <div class="popup-content" id="loginForm" style="display: none;">
-        <form method="POST" action="login.php" onsubmit="return validateForm()">
-          <input type="email" placeholder="Your email" id="emailInput" name="email" required>
-          <input type="password" placeholder="Your password" id="passwordInput" name="password" required>
-          <button id="loginFormBtn">Login</button>
+      <p id="loginResponseMessage" style="color: red;"></p>
+        <form method="POST" action="login.php" id="loginForm1">
+          <input  name="email1" id="loginEmailInput" placeholder="Enter your email"  >
+          <input type="password" name="password2" id="passwordInput1"  placeholder="Enter your password" required>
+          <button id="loginFormBtn" type="submit">Login</button>
         </form>
         <p>Don't have an account? <a href="#" id="signupLink">Sign Up</a></p>
         <?php if (isset($error)): ?>

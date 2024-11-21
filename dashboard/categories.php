@@ -1,4 +1,11 @@
 <?php
+session_start();  // Start the session at the beginning of the file
+
+if (!isset($_SESSION['user_id'])) {
+    
+    header("Location: login_form.php");
+    exit();
+}
 include("../php_connection/connection.php");
 $sql = "SELECT category_id,category_name FROM categories";
 $result = $conn->query($sql);
@@ -31,7 +38,7 @@ $result = $conn->query($sql);
             </div>
             <div class="nav">
                 <div class="movie-list-nav">
-                    <a href="dashboard.php" class="active">Movies</a>
+                    <a href="index.php" class="active">Movies</a>
                 </div>
                 <div class="movie-list_nav">
                     <a href="reviews.php">Reviews</a>
