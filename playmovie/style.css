@@ -1,0 +1,351 @@
+:root {
+    --primary-color: #ff055f;
+    --neutral-100: #666666;
+    --neutral-75: #999999;
+    --neutral-50: #cfcfcf;
+    --neutral-25: #e8e8e8;
+    --neutral-0: #ffffff;
+    --neutral-1000: #393939;
+    --body-color: #1f232c;
+  }
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: "Roboto";
+    background-color: var(--body-color);
+  }
+  li {
+    list-style: none;
+  }
+  a {
+    text-decoration: none;
+  }
+  .container {
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+    display: block;
+  }
+  .custom-container {
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+    display: block;
+  }
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+  .nav-container {
+    display: flex;
+    align-items: center;
+    gap: 56px;
+  }
+  .nav-container ul {
+    display: flex;
+    align-items: center;
+  }
+  .nav-container ul li a {
+    width: 100px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--neutral-0);
+  }
+  .nav-container .active {
+    color: var(--primary-color);
+  }
+  .nav-container .right-btn {
+    display: flex;
+    gap: 12px;
+  }
+  .nav-container .right-btn a {
+    width: 100px;
+    height: 40px;
+    background-color: var(--primary-color);
+    border-radius: 12px;
+    color: var(--neutral-0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .menu-btn {
+    width: 32px;
+    height: 32px;
+    display: none;
+  }
+  .menu-btn img {
+    filter: invert(1);
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+    width: 100%;
+    z-index: 999;
+    position: fixed;
+    transition: 0.3s all ease-in-out;
+    top: 0;
+  }
+  .header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90px;
+    transition: 0.3s all ease-in-out;
+  }
+  .fixed {
+    background-color: #171717;
+  }
+  .right-sec-nav {
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-menu-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+  
+  .search-icon {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+  }
+  .search-icon {
+    width: 241px;
+    height: 40px;
+    position: relative;
+    border: 1px solid var(--neutral-25, #e8e8e8);
+    border-radius: 12px;
+    text-align: center;
+    background-color: transparent;
+  }
+  .search-icon input {
+    border: none;
+    background: none;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    color: var(--neutral-0);
+    padding: 0 16px;
+    font-size: 15px;
+    font-family: "Roboto";
+  }
+  .search-icon button {
+    background-color: transparent;
+    border: none;
+    top: 4px;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .custom-container{
+    padding-bottom: 50px ;
+  }
+
+  .play-sec{
+    margin-top: 90px;
+    height: 550px;
+    border-radius: 16px;
+    position: relative;
+  }
+  .play-sec img{
+    border-radius: 8px;
+    height: 100%;
+  }
+  .play-sec .overlay{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  .play-sec .play-btn{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background-color: var(--primary-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .play-btn img{
+    width: 20px;
+    height: 30px;
+  }
+  .movie-detail-wrapper{
+    display: flex;
+  margin-top: 28px;
+  }
+  .movie-detail{
+    color: var(--neutral-0);
+    width: 474px;
+  }
+  .movie-detail .thumb{
+    width: 158px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .movie-detail .detail-wrapper h3{
+    font-size: 32px;
+    font-weight: normal;
+  }
+  .movie-detail .rating-badges{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    margin-top: 8px;
+  }
+  .movie-detail .rating-badges .badge-1{
+    border-radius: 4px;
+    border: 1px solid #BFBFBF;
+    padding: 4px 8px;
+    width: fit-content;
+    font-size: 15px;
+  }
+  .movie-detail .rating-badges .badge-2{
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 15px;
+    background: #FFA500;
+  }
+  .movie-detail .descp{
+    margin:  16px 0;
+    color: #FFF;
+    font-size: 16px;
+    line-height: normal;
+  }
+  .all-detail ul{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .all-detail ul li{
+    font-weight: 500;
+  }
+  .all-detail ul li span{
+    font-weight: 400;
+    color: #bebebe;
+  }
+  .review{
+    color: var(--neutral-0);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  /* Rating stars */
+  .rate {
+      width: fit-content;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+  /* Rating stars */
+
+  .review .review-btn{
+    width: 116px;
+    height: 40px;
+    background-color: var(--primary-color);
+    border-radius: 8px;
+    color: var(--neutral-0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    font-size: 16px;
+  }
+  @media screen and (max-width: 1120px) {
+    .container {
+      width: 100%;
+      padding: 0 40px;
+    }
+    main{
+      padding: 0 40px;
+    }
+
+  }
+  @media screen and (max-width: 992px) {
+    .nav-container {
+      display: none;
+    }
+    .menu-btn {
+      display: block;
+    }
+    .play-sec{
+      height: 400px;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .movie-detail-wrapper{
+      flex-direction: column-reverse;
+      gap: 16px;
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .container {
+      padding: 0 20px;
+    }
+    main{
+      padding: 0 20px;
+    }
+    .hero-content {
+      padding: 0 20px;
+    }
+    .search-icon {
+      display: none;
+    }
+    .menu-btn {
+      display: block;
+    }
+    .movie-detail{
+      width: 100%;
+    }
+  }

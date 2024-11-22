@@ -125,7 +125,7 @@ $result = $conn->query($sql);
 
       <div class="column">
         <?php while ($row = $result->fetch_assoc()) { ?>
-          <a href="#" class="card">
+          <a href="playmovie/play.php?id=<?php echo $row['movie_id'] ?>" class="card">
             <img src="./php_connection/<?php echo $row['cover_image'] ?>">
             <h1><?php echo $row['title'] ?></h1>
             <div class="genre">

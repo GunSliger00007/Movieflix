@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       }
     }
 
-    header("Location: ../dashboard/dashboard.php");
+    header("Location: ../dashboard/index.php");
   } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
   }

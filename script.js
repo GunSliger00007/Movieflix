@@ -254,14 +254,13 @@ submitformBtn.onclick = function (event) {
         // Create FormData object to send the form data
         const formData = new FormData(document.getElementById('registerForm'));
 
-        // Send the form data using fetch
         fetch('register.php', {
             method: 'POST',
             body: formData
         })
         .then(response => response.json())
         .then(data => {
-            // Handle the response from the server
+            
             if (data.status === 'error') {
                 responseMessage.textContent = data.message; // Show error message
                 responseMessage.style.color = 'red';
