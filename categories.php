@@ -130,7 +130,8 @@ $result = $conn->query($sql);
 
         // Generate movie card for the current category
         echo '<div class="column">';
-        echo '<a href="#" class="card">';
+        echo '<a href="./playmovie/play.php?id=' . $row['movie_id'] . '" class="card">';
+
         echo '<img src="./php_connection/' . htmlspecialchars($row['image'] ?: 'assets/images/default_image.png') . '" alt="' . htmlspecialchars($row['title']) . '">';
         echo '<h1>' . htmlspecialchars($row['title'] ?: 'Untitled Movie') . '</h1>';
         echo '<div class="genre">';

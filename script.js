@@ -20,59 +20,59 @@ activeclass.forEach((element) => {
 
 var header = document.getElementById("myHeader");
 
-  window.onscroll = function() {
+window.onscroll = function () {
     myFunction();
-  };
+};
 
-  function myFunction() {
+function myFunction() {
     if (window.scrollY >= 100) {
-      header.classList.add("fixed");
+        header.classList.add("fixed");
     } else {
-      header.classList.remove("fixed");
+        header.classList.remove("fixed");
     }
-  }
+}
 
-  const searchInput = document.getElementById('search');
-    const searchResults = document.getElementById('searchResults');
-  
-    searchInput.addEventListener('input', function() {
-        const query = searchInput.value.trim();
-  
-        if (query.length > 0) {
-            // Create an AJAX request
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', 'live_search.php?q=' + encodeURIComponent(query), true);
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    displayResults(response);
-                }
-            };
-            xhr.send();
-        } else {
-            searchResults.innerHTML = ''; // Clear results when the input is empty
-        }
-    });
-  
-    // Function to display search results
-    function displayResults(results) {
-        searchResults.innerHTML = ''; // Clear previous results
-  
-        if (results.length > 0) {
-            results.forEach(function(result) {
-                const li = document.createElement('li');
-                li.textContent = result.title;
-                li.addEventListener('click', function() {
-                    searchInput.value = result.title; // Set the input value to the selected result
-                    searchResults.innerHTML = ''; // Clear the results
-                });
-                searchResults.appendChild(li);
-            });
-        } else {
-            searchResults.innerHTML = '<li>No results found</li>';
-        }
+const searchInput = document.getElementById('search');
+const searchResults = document.getElementById('searchResults');
+
+searchInput.addEventListener('input', function () {
+    const query = searchInput.value.trim();
+
+    if (query.length > 0) {
+        // Create an AJAX request
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'live_search.php?q=' + encodeURIComponent(query), true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                displayResults(response);
+            }
+        };
+        xhr.send();
+    } else {
+        searchResults.innerHTML = ''; // Clear results when the input is empty
     }
-  // Get elements
+});
+
+// Function to display search results
+function displayResults(results) {
+    searchResults.innerHTML = ''; // Clear previous results
+
+    if (results.length > 0) {
+        results.forEach(function (result) {
+            const li = document.createElement('li');
+            li.textContent = result.title;
+            li.addEventListener('click', function () {
+                searchInput.value = result.title; // Set the input value to the selected result
+                searchResults.innerHTML = ''; // Clear the results
+            });
+            searchResults.appendChild(li);
+        });
+    } else {
+        searchResults.innerHTML = '<li>No results found</li>';
+    }
+}
+// Get elements
 // Get elements
 const popupOverlay = document.getElementById('popupOverlay');
 const popup = document.getElementById('popup');
@@ -135,8 +135,8 @@ loginLink.onclick = function (event) {
     event.preventDefault();
     signupForm.style.display = 'none';
     loginForm.style.display = 'block';
-    
-    popup.style.width='23%';
+
+    popup.style.width = '23%';
 };
 
 // Switch to the signup form when "Sign Up" is clicked
@@ -152,11 +152,11 @@ signupLink.onclick = function (event) {
 const emailinput = document.getElementById('emailInput');
 const userInput = document.getElementById('userInput');
 const passwordinput = document.getElementById('passwordInput');
-const emailInput1=document.getElementById("loginEmailInput");
+const emailInput1 = document.getElementById("loginEmailInput");
 const passwordInput1 = document.getElementById('passwordInput1');
 const submitformBtn = document.getElementById('submitFormBtn');
 const responseMessage = document.getElementById('responseMessage');
-const loginResponseMessage=document.getElementById('loginResponseMessage')
+const loginResponseMessage = document.getElementById('loginResponseMessage')
 const loginFormBtn = document.getElementById('loginFormBtn');
 // Regex patterns for validation
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -200,28 +200,28 @@ function validateForm() {
 
     return true;
 }
-function validateForm1(){
-   const email=emailInput1.value;
-   const password=passwordInput1.value;
-   if(!emailPattern.test(email)){
-    loginResponseMessage.textContent="please enter a vaild email!";
-    loginResponseMessage.style.color='red';
-    return false;
-   }
-   if(!passwordPattern.test(password)){
-    loginResponseMessage.textContent="Password must be at least 8 characters long and contain at least one letter and one number.";
-    loginResponseMessage.style.color='red'
-    return false;
-   }
-   
+function validateForm1() {
+    const email = emailInput1.value;
+    const password = passwordInput1.value;
+    if (!emailPattern.test(email)) {
+        loginResponseMessage.textContent = "please enter a vaild email!";
+        loginResponseMessage.style.color = 'red';
+        return false;
+    }
+    if (!passwordPattern.test(password)) {
+        loginResponseMessage.textContent = "Password must be at least 8 characters long and contain at least one letter and one number.";
+        loginResponseMessage.style.color = 'red'
+        return false;
+    }
+
 }
 // Handle the form submission for login
 ;
 
-loginForm.addEventListener('submit', function(event) {
+loginForm.addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent default form submission
 
-        if(validateForm1()){
+    if (validateForm1()) {
         const formData = new FormData(document.getElementById('loginForm1'));
 
         // Send data via AJAX (fetch)
@@ -229,18 +229,18 @@ loginForm.addEventListener('submit', function(event) {
             method: 'POST',
             body: formData,
         })
-        .then(response => response.json()) // Parse JSON response
-        .then(data => {
-            if (data.status === 'success') {
-                window.location.href = 'index.php'; // Redirect on success
-            } else {
-                loginResponseMessage.textContent = data.message+data.password+data.email; // Show error message
-            }
-        })
-        .catch(error => {
-            loginResponseMessage.textContent = 'An error occurred. Please try again later.';
-        });
-}
+            .then(response => response.json()) // Parse JSON response
+            .then(data => {
+                if (data.status === 'success') {
+                    window.location.href = 'index.php'; // Redirect on success
+                } else {
+                    loginResponseMessage.textContent = data.message + data.password + data.email; // Show error message
+                }
+            })
+            .catch(error => {
+                loginResponseMessage.textContent = 'An error occurred. Please try again later.';
+            });
+    }
 });
 
 
@@ -258,20 +258,35 @@ submitformBtn.onclick = function (event) {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
-        .then(data => {
-            
-            if (data.status === 'error') {
-                responseMessage.textContent = data.message; // Show error message
+            .then(response => response.json())
+            .then(data => {
+
+                if (data.status === 'error') {
+                    responseMessage.textContent = data.message; // Show error message
+                    responseMessage.style.color = 'red';
+                } else if (data.status === 'success') {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                responseMessage.textContent = "An error occurred while processing your request.";
                 responseMessage.style.color = 'red';
-            } else if (data.status === 'success') {
-                location.reload();
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            responseMessage.textContent = "An error occurred while processing your request.";
-            responseMessage.style.color = 'red';
-        });
+            });
     }
 };
+const video = document.getElementById('myVideo');
+const playButton = document.getElementById('playButton');
+
+playButton.addEventListener('click', function () {
+    video.play(); // Start the video
+    playButton.style.display = 'none'; // Hide the play button after clicking
+});
+video.addEventListener('pause', function () {
+    playButton.style.display = 'block'; // Show the play button when the video is paused
+});
+
+// Hide the play button when the video starts playing again
+video.addEventListener('play', function () {
+    playButton.style.display = 'none'; // Ensure play button is hidden when video is playing
+});

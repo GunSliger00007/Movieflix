@@ -63,7 +63,7 @@ $result = $conn->query($sql);
             </form>
             <ul id="searchResults" class="search-results-list"></ul>
           </div>
-
+          
         </div>
         <div class="right-btn">
           <?php
