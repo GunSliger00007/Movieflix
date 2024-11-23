@@ -5,6 +5,8 @@ if (isset($_GET['id'])) {
   $id = $_GET['id'];
   $sql = "SELECT movie_id, title, release_date,file_path, genre,cover_image, duration,created_at FROM movies where movie_id=$id";
   $result = $conn->query($sql);
+  $sql1="SELECT u.username, r.review_text, r.rating, COUNT(r.review_text) AS total_reviews FROM reviews r JOIN users u ON r.user_id = u.user_id WHERE r.movie_id = $id GROUP BY u.username, r.review_text, r.rating;";
+  $result1=$conn->query($sql1);
 }
 ?>
 
@@ -143,25 +145,27 @@ if (isset($_GET['id'])) {
           </div>
           <div class="review">
             <span class="total-review">
-              Movie reviews (7)
+              Movie reviews (<?php echo $result1->num_rows; ?>)
             </span>
-            <p>This is my the first visiting the movie it is the best movie is the worst time and lol its fanta
-              stic way to end it</p>
+            <?php while ($row1=$result1->fetch_assoc()){ ?>
+            <div class="rating-card">
+            <p><?php echo $row1['review_text']?></p>
+
             <div class="rate">
-              
-              <label for="star5" title="text">5 stars</label>
-              
-              <label for="star4" title="text">4 stars</label>
-              
-              <label for="star3" title="text">3 stars</label>
-              
-              <label for="star2" title="text">2 stars</label>
-             
-              <label for="star1" title="text">1 star</label>
-            </div>
-            <div class="user-name">Gehendra Chaudhary</div>
+              <?php 
+              $rating=$row1['rating'];
+              for($i=1;$i<=$rating;$i++){
+                echo "<label for='star5' title='text'>5 stars</label>";
+              }
+              ?>
+              </div>
+
+            <div class="user-name"><?php echo $row1["username"]?></div>
+      </div><?php }?>
+        
             <button class="review-btn" id="reviewLink">Add Review</button>
           </div>
+          
         </div>
     </div>
   </main>

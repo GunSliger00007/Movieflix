@@ -199,7 +199,7 @@
   }
   .movie-detail{
     color: var(--neutral-0);
-    width: 474px;
+    width: 597px;
   }
   .movie-detail .thumb{
     width: 158px;
@@ -253,7 +253,7 @@
     color: var(--neutral-0);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 34px;
   }
   /* Rating stars */
   .rate {
@@ -452,4 +452,9 @@
     cursor: pointer;
   
     font-size: 16px;
+  }
+  .total-review{
+    font-weight: Bold;
+    font-size: 16px;
+    text-decoration: underline;
   }
