@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $row = mysqli_fetch_assoc($result);
 
         // Set session for the logged-in user
-        $_SESSION['user_id'] = $row['id'];  // Assuming 'id' is the primary key
+        $_SESSION['user_id'] = $row['user_id'];  // Assuming 'id' is the primary key
         $_SESSION['username'] = $row['username'];
         $_SESSION['email'] = $row['email'];
 

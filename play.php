@@ -65,12 +65,12 @@ if (isset($_GET['id'])) {
             <form action="search.php" method="get">
               <input type="text" name="search_query" id="search" placeholder="Search Something..." />
               <button>
-                <img src="./assets/images/Frame.svg" >
+                <img src="./assets/images/Frame.svg">
               </button>
             </form>
             <ul id="searchResults" class="search-results-list"></ul>
           </div>
-          
+
         </div>
         <div class="right-btn">
           <?php
@@ -78,13 +78,13 @@ if (isset($_GET['id'])) {
 
           if (isset($_SESSION['username'])) {
             // Slice the first five letters of the username
+            $user_id=$_SESSION['user_id'];
             $username = $_SESSION['username'];
             $shortenedUsername = substr($username, 0, 5);
 
-            echo '<a href="#">' . $shortenedUsername . '</a>';
+            echo '<a href="#">' . $shortenedUsername.'</a>';
             echo '<a href="logout.php" >Log out</a>';
             echo '<input type="hidden" id="signup">';
-            
           } else {
             echo '<a href="#" id="login">Log in</a>';
             echo '<a href="#" id="signup">Sign up</a>';
@@ -94,75 +94,75 @@ if (isset($_GET['id'])) {
 
 
       </div>
-      </div>
     </div>
+  </div>
   </div>
   <main>
     <div class="custom-container">
-    <?php while ($row = $result->fetch_assoc()) { ?>
-      <div class="play-sec">
-        <video class="background-video" controls height="100%" width="100%" id="myVideo">
-          <source src="./php_connection/<?php echo $row['file_path']?>" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        <div class="overlay"></div>
-        <button class="play-btn" id="playButton">
-          <img src="./assets/images/play.svg" alt="icon" />
-        </button>
-      </div>
-      <div class="movie-detail-wrapper">
-        <div class="movie-detail">
-          <div class="thumb">
-            
+      <?php while ($row = $result->fetch_assoc()) { ?>
+        <div class="play-sec">
+          <video class="background-video" controls height="100%" width="100%" id="myVideo">
+            <source src="./php_connection/<?php echo $row['file_path'] ?>" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="overlay"></div>
+          <button class="play-btn" id="playButton">
+            <img src="./assets/images/play.svg" alt="icon" />
+          </button>
+        </div>
+        <div class="movie-detail-wrapper">
+          <div class="movie-detail">
+            <div class="thumb">
+
               <img src="./php_connection/<?php echo $row['cover_image'] ?>" alt="thumbnail" />
+            </div>
+            <div class="detail-wrapper">
+              <h3><?php echo $row['title'] ?></h3>
+              <div class="rating-badges">
+                <p class="badge-1">HD</p>
+
+              </div>
+              <p class="descp">
+                A listless Wade Wilson toils away in civilian life with his days as
+                the morally flexible mercenary, Deadpool, behind him. But when his
+                homeworld faces an existential threat, Wade must reluctantly suit-up
+                again with an even more reluctant Wolverine.
+              </p>
+              <div class="all-detail">
+                <ul>
+                  <li>Released: <span><?php echo $row['release_date'] ?></span></li>
+                  <li>Genre: <span><?php echo $row['genre'] ?></span></li>
+
+                  <li>Duration: <span><?php echo $row['duration'] ?> min</span></li>
+                  <li>Country: <span>United States of America</span></li>
+
+                </ul>
+              <?php } ?>
+              </div>
+            </div>
           </div>
-          <div class="detail-wrapper">
-            <h3><?php echo $row['title'] ?></h3>
-            <div class="rating-badges">
-              <p class="badge-1">HD</p>
-
+          <div class="review">
+            <span class="total-review">
+              Movie reviews (7)
+            </span>
+            <p>This is my the first visiting the movie it is the best movie is the worst time and lol its fanta
+              stic way to end it</p>
+            <div class="rate">
+              
+              <label for="star5" title="text">5 stars</label>
+              
+              <label for="star4" title="text">4 stars</label>
+              
+              <label for="star3" title="text">3 stars</label>
+              
+              <label for="star2" title="text">2 stars</label>
+             
+              <label for="star1" title="text">1 star</label>
             </div>
-            <p class="descp">
-              A listless Wade Wilson toils away in civilian life with his days as
-              the morally flexible mercenary, Deadpool, behind him. But when his
-              homeworld faces an existential threat, Wade must reluctantly suit-up
-              again with an even more reluctant Wolverine.
-            </p>
-            <div class="all-detail">
-              <ul>
-                <li>Released: <span><?php echo $row['release_date'] ?></span></li>
-                <li>Genre: <span><?php echo $row['genre'] ?></span></li>
-
-                <li>Duration: <span><?php echo $row['duration'] ?> min</span></li>
-                <li>Country: <span>United States of America</span></li>
-
-              </ul>
-            <?php } ?>
-            </div>
+            <div class="user-name">Gehendra Chaudhary</div>
+            <button class="review-btn" id="reviewLink">Add Review</button>
           </div>
         </div>
-        <div class="review">
-          <span class="total-review">
-            Movie reviews (7)
-          </span>
-          <p>This is my the first visiting the movie it is the best movie is the worst time and lol its fanta
-            stic way to end it</p>
-          <div class="rate">
-            <input type="radio" id="star5" name="rate" value="5" />
-            <label for="star5" title="text">5 stars</label>
-            <input type="radio" id="star4" name="rate" value="4" />
-            <label for="star4" title="text">4 stars</label>
-            <input type="radio" id="star3" name="rate" value="3" />
-            <label for="star3" title="text">3 stars</label>
-            <input type="radio" id="star2" name="rate" value="2" />
-            <label for="star2" title="text">2 stars</label>
-            <input type="radio" id="star1" name="rate" value="1" />
-            <label for="star1" title="text">1 star</label>
-          </div>
-          <div class="user-name">Gehendra Chaudhary</div>
-          <button class="review-btn" id="reviewLink">Add Review</button>
-        </div>
-      </div>
     </div>
   </main>
   <div class="popup-overlay" id="popupOverlay" style="display: none;">
@@ -183,10 +183,10 @@ if (isset($_GET['id'])) {
         <p>Already have an account? <a href="#" id="loginLink">Please login</a></p>
       </div>
       <div class="popup-content" id="loginForm" style="display: none;">
-      <p id="loginResponseMessage" style="color: red;"></p>
+        <p id="loginResponseMessage" style="color: red;"></p>
         <form method="POST" action="login.php" id="loginForm1">
-          <input  name="email1" id="loginEmailInput" placeholder="Enter your email"  >
-          <input type="password" name="password2" id="passwordInputlogin"  placeholder="Enter your password" required>
+          <input name="email1" id="loginEmailInput" placeholder="Enter your email">
+          <input type="password" name="password2" id="passwordInputlogin" placeholder="Enter your password" required>
           <button id="loginFormBtn" type="submit">Login</button>
         </form>
         <p>Don't have an account? <a href="#" id="signupLink">Sign Up</a></p>
@@ -197,24 +197,30 @@ if (isset($_GET['id'])) {
 
       </div>
       <div class="popup-content" id="reviewForm" style="display: none;">
-      <p id="reviewResponseMessage" style="color: red;"></p>
-        <form method="POST" action="login.php" id="loginForm1">
-        <textarea name="review" id="reviewInput" placeholder="Write your review here" rows="4" cols="50"></textarea>
-        <div class="rate">
+        <p id="reviewResponseMessage" style="color: red;"></p>
+        <form method="POST" action="add_review.php">
+          <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
+          <input type="hidden" name="movie_id" value="<?php echo $id ?>">
+          <textarea name="review" id="reviewInput" placeholder="Write your review here" rows="4" cols="50"></textarea>
+          <div class="rate">
             <input type="radio" id="star5" name="rate" value="5" />
-            <label for="star5" title="text">5 stars</label>
+            <label for="star5" title="5 stars">5 stars</label>
+
             <input type="radio" id="star4" name="rate" value="4" />
-            <label for="star4" title="text">4 stars</label>
+            <label for="star4" title="4 stars">4 stars</label>
+
             <input type="radio" id="star3" name="rate" value="3" />
-            <label for="star3" title="text">3 stars</label>
+            <label for="star3" title="3 stars">3 stars</label>
+
             <input type="radio" id="star2" name="rate" value="2" />
-            <label for="star2" title="text">2 stars</label>
+            <label for="star2" title="2 stars">2 stars</label>
+
             <input type="radio" id="star1" name="rate" value="1" />
-            <label for="star1" title="text">1 star</label>
+            <label for="star1" title="1 star">1 star</label>
           </div>
           <button id="reviewFormBtn" type="submit">Submit</button>
         </form>
-        
+
         <?php if (isset($error)): ?>
           <p style="color:red;"><?php echo $error; ?></p>
         <?php endif; ?>
@@ -227,9 +233,9 @@ if (isset($_GET['id'])) {
   <script>
     var username = "<?php echo isset($_SESSION['username']) ? $_SESSION['username'] : ''; ?>";
     if (username) {
-        console.log("User is logged in as: " + username);
+      console.log("User is logged in as: " + username);
     } else {
-        console.log("User is not logged in.");
+      console.log("User is not logged in.");
     }
   </script>
   <script src="script.js"></script>
