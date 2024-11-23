@@ -258,6 +258,8 @@
   /* Rating stars */
   .rate {
       width: fit-content;
+      
+      
 }
 .rate:not(:checked) > input {
     position:absolute;
@@ -410,7 +412,8 @@
   .popup #emailInput,
   .popup #userInput,
   .popup #passwordInput,
-  .popup #passwordInput1 {
+  .popup #passwordInput1,
+  .popup #passwordInputlogin{
     width: 80%;
   
     padding: 10px;
@@ -420,6 +423,19 @@
     border: 1px solid #ddd;
   
     border-radius: 4px;
+  }
+  .popup #reviewInput{
+    width: 100%;
+    padding: 4px;
+  
+    margin: 10px 0;
+  
+    border: 1px solid #ddd;
+  
+    border-radius: 4px;
+  }
+  .popup .rate{
+    padding-left: 100px;
   }
   
   .popup button {

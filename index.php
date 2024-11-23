@@ -125,7 +125,7 @@ $result = $conn->query($sql);
 
       <div class="column">
         <?php while ($row = $result->fetch_assoc()) { ?>
-          <a href="playmovie/play.php?id=<?php echo $row['movie_id'] ?>" class="card">
+          <a href="play.php?id=<?php echo $row['movie_id'] ?>" class="card">
             <img src="./php_connection/<?php echo $row['cover_image'] ?>">
             <h1><?php echo $row['title'] ?></h1>
             <div class="genre">
@@ -224,7 +224,7 @@ $result = $conn->query($sql);
       <p id="loginResponseMessage" style="color: red;"></p>
         <form method="POST" action="login.php" id="loginForm1">
           <input  name="email1" id="loginEmailInput" placeholder="Enter your email"  >
-          <input type="password" name="password2" id="passwordInput1"  placeholder="Enter your password" required>
+          <input type="password" name="password2" id="passwordInputlogin"  placeholder="Enter your password" required>
           <button id="loginFormBtn" type="submit">Login</button>
         </form>
         <p>Don't have an account? <a href="#" id="signupLink">Sign Up</a></p>

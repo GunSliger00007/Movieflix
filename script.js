@@ -89,6 +89,11 @@ const signupForm = document.getElementById('signupForm');
 const loginForm = document.getElementById('loginForm');
 const popupTitle = document.getElementById('popupTitle');
 const popupSubtitle = document.getElementById('popupSubtitle');
+const reviewLink=document.getElementById('reviewLink');
+const reviewForm=document.getElementById('reviewForm');
+
+
+//not signed in logic to open popup if user is not signed in
 
 // Function to open the popup
 function openPopup() {
@@ -107,13 +112,20 @@ function submitSignUpForm() {
     closePopupFunc(); // Close the popup after form submission
 }
 
-
+// Function to switch forms
+function switchToForm(showForm, hideForms) {
+    hideForms.forEach(form => form.style.display = 'none');
+    showForm.style.display = 'block';
+    popup.style.width = '23%';  // Adjust width if necessary
+}
 // Function to submit the login form
 
 
 // Event listeners
 // Open the popup when the button is clicked
-openPopupBtn.onclick = openPopup;
+
+    openPopupBtn.onclick = openPopup;
+
 
 // Close the popup when the close button is clicked
 closePopup.onclick = closePopupFunc;
@@ -130,30 +142,62 @@ submitFormBtn.onclick = submitSignUpForm;
 
 
 
-// Switch to the login form when "Please login" is clicked
 loginLink.onclick = function (event) {
+    
+    event.preventDefault();
     event.preventDefault();
     signupForm.style.display = 'none';
     loginForm.style.display = 'block';
 
     popup.style.width = '23%';
-};
+    
 
-// Switch to the signup form when "Sign Up" is clicked
-signupLink.onclick = function (event) {
-    event.preventDefault();
+    popup.style.width = '23%';
+};
+if (reviewLink) {
+    reviewLink.onclick = function (event) {
+        event.preventDefault();
+        
+        // If the user is not logged in, show the signup form
+        if (!username) {
+            popupOverlay.style.display = 'block';  // Show popup
+            signupForm.style.display = 'block';
+            loginForm.style.display='none'; 
+            const messageElement=document.getElementById('responseMessage');   // Show signup form
+            if (messageElement) {
+                messageElement.textContent = "Please sign up to leave a review.";
+            }
+        } else {
+            console.log('lol');
+            popupOverlay.style.display='block';
+            signupForm.style.display='none';
+            
+            reviewForm.style.display='block';
+        }
+    };
+}
+
+function  SignupIfnotLoggedIn(){
+    
+    console.log("signin");
+}
+function SignupEvent(){
+    
     loginForm.style.display = 'none';
     signupForm.style.display = 'block';
-    popupTitle.textContent = 'Welcome to our website!';
-    popupSubtitle.textContent = 'Sign up to receive exclusive offers:';
+    
     popup.style.width = '35%';
+}
+signupLink.onclick = function (event) {
+   event.preventDefault();
+   SignupEvent();
 };
 // Get elements
 const emailinput = document.getElementById('emailInput');
 const userInput = document.getElementById('userInput');
 const passwordinput = document.getElementById('passwordInput');
 const emailInput1 = document.getElementById("loginEmailInput");
-const passwordInput1 = document.getElementById('passwordInput1');
+const passwordInput1 = document.getElementById('passwordInputlogin');
 const submitformBtn = document.getElementById('submitFormBtn');
 const responseMessage = document.getElementById('responseMessage');
 const loginResponseMessage = document.getElementById('loginResponseMessage')
@@ -161,7 +205,10 @@ const loginFormBtn = document.getElementById('loginFormBtn');
 // Regex patterns for validation
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const usernamePattern = /^[a-zA-Z0-9_-]{3,16}$/; // Username: 3-16 chars, letters, numbers, _ or -
-const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; // Password: at least 8 chars, 1 letter and 1 number
+const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+
+
+
 
 // Function to validate the form
 function validateForm() {
@@ -203,16 +250,22 @@ function validateForm() {
 function validateForm1() {
     const email = emailInput1.value;
     const password = passwordInput1.value;
+    if(!password){
+        console.log("null pass");
+    }else{
+        console.log(password)
+    }
     if (!emailPattern.test(email)) {
         loginResponseMessage.textContent = "please enter a vaild email!";
         loginResponseMessage.style.color = 'red';
         return false;
     }
     if (!passwordPattern.test(password)) {
-        loginResponseMessage.textContent = "Password must be at least 8 characters long and contain at least one letter and one number.";
+        loginResponseMessage.textContent = "Password must be at least 8 characters long and contain at least one letter and one number,one wildcaharacter.";
         loginResponseMessage.style.color = 'red'
         return false;
     }
+    return true;
 
 }
 // Handle the form submission for login
@@ -232,7 +285,7 @@ loginForm.addEventListener('submit', function (event) {
             .then(response => response.json()) // Parse JSON response
             .then(data => {
                 if (data.status === 'success') {
-                    window.location.href = 'index.php'; // Redirect on success
+                    window.location.href = ''; // Redirect on success
                 } else {
                     loginResponseMessage.textContent = data.message + data.password + data.email; // Show error message
                 }

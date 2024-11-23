@@ -1,5 +1,6 @@
 <?php
-include "../php_connection/connection.php";
+session_start();
+include "./php_connection/connection.php";
 if (isset($_GET['id'])) {
   $id = $_GET['id'];
   $sql = "SELECT movie_id, title, release_date,file_path, genre,cover_image, duration,created_at FROM movies where movie_id=$id";
@@ -24,14 +25,14 @@ if (isset($_GET['id'])) {
   <link
     href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="playmovie/style.css" />
 </head>
 
 <body>
   <div class="header" id="myHeader">
     <div class="container">
       <div class="logo">
-        <a href="../index.php">
+        <a href="index.php">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="113"
@@ -53,10 +54,10 @@ if (isset($_GET['id'])) {
       <div class="nav nav-container">
         <ul>
           <li>
-            <a href="../index.php" class="active">Home</a>
+            <a href="index.php" class="active">Home</a>
           </li>
           <li>
-            <a href="../categories.php">Categories</a>
+            <a href="categories.php">Categories</a>
           </li>
         </ul>
         <div class="search-menu-wrapper">
@@ -64,7 +65,7 @@ if (isset($_GET['id'])) {
             <form action="search.php" method="get">
               <input type="text" name="search_query" id="search" placeholder="Search Something..." />
               <button>
-                <img src="../assets/images/Frame.svg">
+                <img src="./assets/images/Frame.svg" >
               </button>
             </form>
             <ul id="searchResults" class="search-results-list"></ul>
@@ -81,7 +82,9 @@ if (isset($_GET['id'])) {
             $shortenedUsername = substr($username, 0, 5);
 
             echo '<a href="#">' . $shortenedUsername . '</a>';
-            echo '<a href="logout.php">Log out</a>';
+            echo '<a href="logout.php" >Log out</a>';
+            echo '<input type="hidden" id="signup">';
+            
           } else {
             echo '<a href="#" id="login">Log in</a>';
             echo '<a href="#" id="signup">Sign up</a>';
@@ -99,19 +102,19 @@ if (isset($_GET['id'])) {
     <?php while ($row = $result->fetch_assoc()) { ?>
       <div class="play-sec">
         <video class="background-video" controls height="100%" width="100%" id="myVideo">
-          <source src="../php_connection/<?php echo $row['file_path']?>" type="video/mp4" />
+          <source src="./php_connection/<?php echo $row['file_path']?>" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         <div class="overlay"></div>
         <button class="play-btn" id="playButton">
-          <img src="../assets/images/play.svg" alt="icon" />
+          <img src="./assets/images/play.svg" alt="icon" />
         </button>
       </div>
       <div class="movie-detail-wrapper">
         <div class="movie-detail">
           <div class="thumb">
             
-              <img src="../php_connection/<?php echo $row['cover_image'] ?>" alt="thumbnail" />
+              <img src="./php_connection/<?php echo $row['cover_image'] ?>" alt="thumbnail" />
           </div>
           <div class="detail-wrapper">
             <h3><?php echo $row['title'] ?></h3>
@@ -157,7 +160,7 @@ if (isset($_GET['id'])) {
             <label for="star1" title="text">1 star</label>
           </div>
           <div class="user-name">Gehendra Chaudhary</div>
-          <button class="review-btn">Add Review</button>
+          <button class="review-btn" id="reviewLink">Add Review</button>
         </div>
       </div>
     </div>
@@ -183,7 +186,7 @@ if (isset($_GET['id'])) {
       <p id="loginResponseMessage" style="color: red;"></p>
         <form method="POST" action="login.php" id="loginForm1">
           <input  name="email1" id="loginEmailInput" placeholder="Enter your email"  >
-          <input type="password" name="password2" id="passwordInput1"  placeholder="Enter your password" required>
+          <input type="password" name="password2" id="passwordInputlogin"  placeholder="Enter your password" required>
           <button id="loginFormBtn" type="submit">Login</button>
         </form>
         <p>Don't have an account? <a href="#" id="signupLink">Sign Up</a></p>
@@ -193,10 +196,43 @@ if (isset($_GET['id'])) {
         <p id="responseMessage" style="color:red;"></p>
 
       </div>
+      <div class="popup-content" id="reviewForm" style="display: none;">
+      <p id="reviewResponseMessage" style="color: red;"></p>
+        <form method="POST" action="login.php" id="loginForm1">
+        <textarea name="review" id="reviewInput" placeholder="Write your review here" rows="4" cols="50"></textarea>
+        <div class="rate">
+            <input type="radio" id="star5" name="rate" value="5" />
+            <label for="star5" title="text">5 stars</label>
+            <input type="radio" id="star4" name="rate" value="4" />
+            <label for="star4" title="text">4 stars</label>
+            <input type="radio" id="star3" name="rate" value="3" />
+            <label for="star3" title="text">3 stars</label>
+            <input type="radio" id="star2" name="rate" value="2" />
+            <label for="star2" title="text">2 stars</label>
+            <input type="radio" id="star1" name="rate" value="1" />
+            <label for="star1" title="text">1 star</label>
+          </div>
+          <button id="reviewFormBtn" type="submit">Submit</button>
+        </form>
+        
+        <?php if (isset($error)): ?>
+          <p style="color:red;"><?php echo $error; ?></p>
+        <?php endif; ?>
+        <p id="responseMessage" style="color:red;"></p>
+
+      </div>
 
     </div>
   </div>
-  <script src="../script.js"></script>
+  <script>
+    var username = "<?php echo isset($_SESSION['username']) ? $_SESSION['username'] : ''; ?>";
+    if (username) {
+        console.log("User is logged in as: " + username);
+    } else {
+        console.log("User is not logged in.");
+    }
+  </script>
+  <script src="script.js"></script>
 </body>
 
 </html>

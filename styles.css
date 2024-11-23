@@ -446,7 +446,8 @@ img {
 .popup #emailInput,
 .popup #userInput,
 .popup #passwordInput,
-.popup #passwordInput1 {
+.popup #passwordInput1,
+.popup #passwordInputlogin {
   width: 80%;
 
   padding: 10px;
