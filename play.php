@@ -164,10 +164,13 @@ if (isset($_GET['id'])) {
       </div><?php }?>
         
             <button class="review-btn" id="reviewLink">Add Review</button>
+            
           </div>
-          
+          <button class="review-btn" id="reviewLink">Add Review</button>
         </div>
+       
     </div>
+    
   </main>
   <div class="popup-overlay" id="popupOverlay" style="display: none;">
     <div class="popup" id="popup">

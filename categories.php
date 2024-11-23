@@ -3,13 +3,28 @@ session_start();
 
 include('./php_connection/connection.php');
 $sql = "
-    SELECT categories.category_id, categories.category_name, 
-           movies.movie_id AS movie_id, movies.title, movies.cover_image AS image, 
-           movies.genre, movies.duration AS rating
-    FROM categories
-    JOIN movie_categories ON categories.category_id = movie_categories.category_id
-    JOIN movies ON movie_categories.movie_id = movies.movie_id
-    ORDER BY categories.category_id, movies.movie_id
+    SELECT 
+    categories.category_id, 
+    categories.category_name, 
+    movies.movie_id AS movie_id, 
+    movies.title, 
+    movies.cover_image AS image, 
+    movies.genre, 
+    movies.duration AS rating,
+    AVG(r.rating) AS average_rating  
+FROM 
+    categories
+JOIN 
+    movie_categories ON categories.category_id = movie_categories.category_id
+JOIN 
+    movies ON movie_categories.movie_id = movies.movie_id
+LEFT JOIN 
+    reviews r ON movies.movie_id = r.movie_id  -- Join the reviews table to get ratings
+GROUP BY 
+    categories.category_id, movies.movie_id  -- Group by category and movie to get average rating
+ORDER BY 
+    categories.category_id, movies.movie_id;
+
 ";
 
 // Execute the query
@@ -139,7 +154,7 @@ $result = $conn->query($sql);
         echo '<span>' . htmlspecialchars($row['genre'] ?: 'Genre Unknown') . '</span>';
         echo '<div class="rate">';
         echo '<img src="assets/images/Frame (1).svg" width="11.41" height="10.85">';
-        echo '<h5>' . htmlspecialchars($row['duration']) . '</h5>'; // Display duration
+        echo '<h5>' . htmlspecialchars(number_format($row['average_rating'],1)) . '</h5>'; // Display duration
         echo '</div>';
         echo '</div>'; // Close genre div
         echo '</a>'; // Close card link

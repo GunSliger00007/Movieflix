@@ -1,7 +1,7 @@
 <?php
 session_start();
 include('./php_connection/connection.php');
-$sql = "SELECT movie_id, title, release_date, genre,cover_image, duration,created_at FROM movies";
+$sql = "SELECT m.movie_id, m.title, m.release_date, m.genre, m.cover_image, m.duration, m.created_at, AVG(r.rating) AS average_rating, COUNT(r.rating) AS total_ratings FROM movies m LEFT JOIN reviews r ON m.movie_id = r.movie_id GROUP BY m.movie_id;";
 $result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
@@ -50,6 +50,9 @@ $result = $conn->query($sql);
           </li>
           <li>
             <a href="categories.php">Categories</a>
+          </li>
+          <li>
+            <a href="categories.php">Watchlist</a>
           </li>
 
         </ul>
@@ -133,7 +136,7 @@ $result = $conn->query($sql);
               <span><?php echo $row['genre'] ?></span>
               <div class="rate">
                 <img src="assets/images/Frame (1).svg" width="11.41" height="10.85">
-                <h5>7.5</h5>
+                <h5><?php echo (number_format($row["average_rating"],1))?></h5>
               </div>
 
 

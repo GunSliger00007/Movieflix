@@ -96,7 +96,7 @@
       if (isset($_GET['search_query'])) {
         $search_query = mysqli_real_escape_string($conn, $_GET['search_query']);
 
-        $sql = "SELECT * FROM movies WHERE title LIKE '%$search_query%'";
+        $sql = "SELECT m.movie_id, m.title, m.release_date, m.genre, m.cover_image, m.duration, m.created_at, AVG(r.rating) AS average_rating, COUNT(r.rating) AS total_ratings FROM movies m LEFT JOIN reviews r ON m.movie_id = r.movie_id WHERE m.title LIKE '%$search_query%' GROUP BY m.movie_id;";
         $result = $conn->query($sql);
 
         echo "<h2>Search Results for: " . htmlspecialchars($search_query) . "</h2>";
@@ -106,14 +106,14 @@
 
           while ($row = $result->fetch_assoc()) {
             echo "
-                <a href='#' class='card'>
+                <a href='play.php?id=" . $row['movie_id'] . "' class='card'>
                     <img src='./php_connection/" . htmlspecialchars($row['cover_image']) . "' alt='" . htmlspecialchars($row['title']) . "'>
                     <h1>" . htmlspecialchars($row['title']) . "</h1>
                     <div class='genre'>
                         <span>" . htmlspecialchars($row['genre']) . "</span>
                         <div class='rate'>
                             <img src='assets/images/Frame (1).svg' width='11.41' height='10.85'>
-                            <h5>" . htmlspecialchars($row['rating']) . "</h5>
+                            <h5>" . htmlspecialchars(number_format($row['average_rating'],1)) . "</h5>
                         </div>
                     </div>
                 </a>
