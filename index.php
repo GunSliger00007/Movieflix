@@ -52,7 +52,7 @@ $result = $conn->query($sql);
             <a href="categories.php">Categories</a>
           </li>
           <li>
-            <a href="categories.php">Watchlist</a>
+            <a href="watchlist.php" id="wishlistLink">Watchlist</a>
           </li>
 
         </ul>
@@ -240,8 +240,14 @@ $result = $conn->query($sql);
 
     </div>
   </div>
-
-
+  <script>
+    var username = "<?php echo isset($_SESSION['username']) ? $_SESSION['username'] : ''; ?>";
+    if (username) {
+      console.log("User is logged in as: " + username);
+    } else {
+      console.log("User is not logged in.");
+    }
+  </script>
 
   <script src="script.js"></script>
 </body>

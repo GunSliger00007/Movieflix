@@ -61,6 +61,9 @@ if (isset($_GET['id'])) {
           <li>
             <a href="categories.php">Categories</a>
           </li>
+          <li>
+            <a href="watchlist.php" id="wishlistLink">Watchlist</a>
+          </li>
         </ul>
         <div class="search-menu-wrapper">
           <div class="search-icon">
@@ -167,7 +170,7 @@ if (isset($_GET['id'])) {
             <form method="post" action="add_wishlist.php" id="wishlistForm">
               <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_id ?>">
               <input type="hidden" name="movie_id" id="movie_id" value="<?php echo $id ?>">
-            <button class="wishlist-btn" id="wishlistLink">Add to wishlist</button>
+            <button class="wishlist-btn" id="wishlistButton">Add to wishlist</button>
             </form>
            
           </div>

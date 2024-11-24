@@ -70,7 +70,7 @@ $result=$conn->query($sql);
             <a href="categories.php">Categories</a>
           </li>
           <li>
-            <a href="categories.php">Watchlist</a>
+            <a href="watchlist.php">Watchlist</a>
           </li>
 
         </ul>

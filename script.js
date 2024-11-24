@@ -92,6 +92,7 @@ const popupSubtitle = document.getElementById('popupSubtitle');
 const reviewLink=document.getElementById('reviewLink');
 const reviewForm=document.getElementById('reviewForm');
 const wishlistLink=document.getElementById('wishlistLink');
+const wishlistButton=document.getElementById('wishlistButton');
 
 //not signed in logic to open popup if user is not signed in
 
@@ -142,10 +143,11 @@ submitFormBtn.onclick = submitSignUpForm;
 
 
 
+
 loginLink.onclick = function (event) {
     
     event.preventDefault();
-    event.preventDefault();
+    
     signupForm.style.display = 'none';
     loginForm.style.display = 'block';
 
@@ -192,11 +194,49 @@ if (wishlistLink) {
             }
         } else {
             // If the user is logged in, allow the form to be submitted
-            document.getElementById('wishlistForm').submit();  // Submit the form normally
+            window.location.href = 'watchlist.php'; // Submit the form normally
         }
     };
 }
+if (wishlistButton) {
+    wishlistButton.onclick = function (event) {
+        event.preventDefault();  // Prevent the default form submission behavior
+        
+        // If the user is not logged in (i.e., username is empty)
+        if (!username) {
+            popupOverlay.style.display = 'block';  // Show the popup overlay
+            signupForm.style.display = 'block';    // Show the signup form
+            loginForm.style.display = 'none';      // Hide the login form (if applicable)
 
+            const messageElement = document.getElementById('responseMessage');   // Display a message
+            if (messageElement) {
+                messageElement.textContent = "Please sign up to add to wishlist.";
+            }
+        } else {
+            const formData = new FormData(document.getElementById('wishlistForm'));  // Gather form data
+
+            fetch('add_wishlist.php', {  // Send the form data to the server using POST
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())  // Parse JSON response
+            .then(data => {
+                // Handle the response from the server
+                if (data.status === 'success') {
+                    alert('Movie added to wishlist successfully!');
+                    // Optionally redirect or update UI
+                } else if (data.status === 'exists') {
+                    alert('Movie already in wishlist.');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    };
+}
 function  SignupIfnotLoggedIn(){
     
     console.log("signin");
