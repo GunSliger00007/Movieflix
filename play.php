@@ -164,9 +164,14 @@ if (isset($_GET['id'])) {
       </div><?php }?>
         
             <button class="review-btn" id="reviewLink">Add Review</button>
-            
+            <form method="post" action="add_wishlist.php" id="wishlistForm">
+              <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_id ?>">
+              <input type="hidden" name="movie_id" id="movie_id" value="<?php echo $id ?>">
+            <button class="wishlist-btn" id="wishlistLink">Add to wishlist</button>
+            </form>
+           
           </div>
-          <button class="review-btn" id="reviewLink">Add Review</button>
+          
         </div>
        
     </div>

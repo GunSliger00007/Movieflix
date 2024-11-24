@@ -294,7 +294,7 @@
 
   /* Rating stars */
 
-  .review .review-btn{
+  .review .review-btn ,.review .wishlist-btn{
     width: 116px;
     height: 40px;
     background-color: var(--primary-color);

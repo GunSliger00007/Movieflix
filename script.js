@@ -91,7 +91,7 @@ const popupTitle = document.getElementById('popupTitle');
 const popupSubtitle = document.getElementById('popupSubtitle');
 const reviewLink=document.getElementById('reviewLink');
 const reviewForm=document.getElementById('reviewForm');
-
+const wishlistLink=document.getElementById('wishlistLink');
 
 //not signed in logic to open popup if user is not signed in
 
@@ -173,6 +173,26 @@ if (reviewLink) {
             signupForm.style.display='none';
             
             reviewForm.style.display='block';
+        }
+    };
+}
+if (wishlistLink) {
+    wishlistLink.onclick = function (event) {
+        event.preventDefault();  // Prevent the default form submission behavior
+        
+        // If the user is not logged in (i.e., username is empty)
+        if (!username) {
+            popupOverlay.style.display = 'block';  // Show the popup overlay
+            signupForm.style.display = 'block';    // Show the signup form
+            loginForm.style.display = 'none';      // Hide the login form (if applicable)
+
+            const messageElement = document.getElementById('responseMessage');   // Display a message
+            if (messageElement) {
+                messageElement.textContent = "Please sign up to add to wishlist.";
+            }
+        } else {
+            // If the user is logged in, allow the form to be submitted
+            document.getElementById('wishlistForm').submit();  // Submit the form normally
         }
     };
 }
