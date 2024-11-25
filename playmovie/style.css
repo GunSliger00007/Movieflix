@@ -1,3 +1,14 @@
+@font-face {
+  font-family: Roboto;
+  src: url(./assets/fonts/roboto.ttf);
+}
+@font-face {
+  font-family: Inter;
+  src: url(./assets/fonts/inter.ttf);
+}
+
+
+
 :root {
     --primary-color: #ff055f;
     --neutral-100: #666666;

@@ -1,3 +1,13 @@
+@font-face {
+  font-family: Roboto;
+  src: url(./assets/fonts/roboto.ttf);
+}
+@font-face {
+  font-family: Inter;
+  src: url(./assets/fonts/inter.ttf);
+}
+
+
 :root {
   --primary-color: #ff055f;
   --neutral-100: #666666;
@@ -13,7 +23,7 @@
   padding: 0;
 }
 body {
-  font-family: "Roboto";
+  font-family: Roboto;
   background-color: var(--body-color);
 }
 li {
@@ -129,7 +139,7 @@ img {
   color: var(--neutral-0);
   padding: 0 16px;
   font-size: 15px;
-  font-family: "Roboto";
+  font-family: Roboto;
 }
 .search-icon button {
   background-color: transparent;
@@ -171,13 +181,13 @@ img {
   padding-bottom: 7px;
   padding-top: 8px;
   color: var(--neutral-0);
-  font-family: "Inter";
+  font-family: Inter;
   font-size: 40px;
   font-weight: bolder;
 }
 .hero-content p {
   color: var(--neutral-0);
-  font-family: "Inter";
+  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -229,7 +239,7 @@ img {
 }
 .main a {
   text-decoration: none;
-  font-family: "inter";
+  font-family: Inter;
   color: var(--neutral-0);
   font-size: 16px;
   font-weight: bold;
@@ -256,7 +266,7 @@ img {
   gap: 1px;
 }
 .card h1 {
-  font-family: "Roboto";
+  font-family: Roboto;
   font-size: 16px;
   color: var(--neutral-0);
   padding: 0 10px;
@@ -264,7 +274,7 @@ img {
 }
 .genre span,
 .genre h5 {
-  font-family: "Roboto";
+  font-family: Roboto;
   color: var(--neutral-0);
   font-size: 12px;
 }
