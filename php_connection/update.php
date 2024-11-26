@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Redirect to the dashboard
-        header("Location: ../dashboard/dashboard.php");
+        header("Location: ../dashboard/index.php");
         exit();
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;

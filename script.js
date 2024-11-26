@@ -258,6 +258,7 @@ const userInput = document.getElementById('userInput');
 const passwordinput = document.getElementById('passwordInput');
 const emailInput1 = document.getElementById("loginEmailInput");
 const passwordInput1 = document.getElementById('passwordInputlogin');
+const passwordinput1=document.getElementById('passwordInput1');
 const submitformBtn = document.getElementById('submitFormBtn');
 const responseMessage = document.getElementById('responseMessage');
 const loginResponseMessage = document.getElementById('loginResponseMessage')
@@ -275,7 +276,7 @@ function validateForm() {
     const email = emailinput.value;
     const username = userInput.value;
     const password = passwordinput.value;
-    const confirmPassword = passwordInput1.value;
+    const confirmPassword = passwordinput1.value;
 
     // Validate email
     if (!emailPattern.test(email)) {
