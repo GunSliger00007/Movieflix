@@ -145,7 +145,8 @@ submitFormBtn.onclick = submitSignUpForm;
 
 
 loginLink.onclick = function (event) {
-    
+    const messageElement = document.getElementById('responseMessage');
+    messageElement.textContent = "";
     event.preventDefault();
     
     signupForm.style.display = 'none';
@@ -162,14 +163,18 @@ if (reviewLink) {
         
         // If the user is not logged in, show the signup form
         if (!username) {
+            const messageElement = document.getElementById('responseMessage');
+            messageElement.textContent = "";
             popupOverlay.style.display = 'block';  // Show popup
             signupForm.style.display = 'block';
             loginForm.style.display='none'; 
-            const messageElement=document.getElementById('responseMessage');   // Show signup form
+              // Show signup form
             if (messageElement) {
                 messageElement.textContent = "Please sign up to leave a review.";
             }
         } else {
+            const messageElement = document.getElementById('responseMessage');
+            messageElement.textContent = "";
             console.log('lol');
             popupOverlay.style.display='block';
             signupForm.style.display='none';
@@ -184,16 +189,19 @@ if (wishlistLink) {
         
         // If the user is not logged in (i.e., username is empty)
         if (!username) {
+            const messageElement = document.getElementById('responseMessage');
+            messageElement.textContent = "";
             popupOverlay.style.display = 'block';  // Show the popup overlay
             signupForm.style.display = 'block';    // Show the signup form
             loginForm.style.display = 'none';      // Hide the login form (if applicable)
 
-            const messageElement = document.getElementById('responseMessage');   // Display a message
+               // Display a message
             if (messageElement) {
-                messageElement.textContent = "Please sign up to add to wishlist.";
+                messageElement.textContent = "Please sign up to go to wishlist.";
             }
         } else {
-            // If the user is logged in, allow the form to be submitted
+            const messageElement = document.getElementById('responseMessage');
+            messageElement.textContent = "";
             window.location.href = 'watchlist.php'; // Submit the form normally
         }
     };
@@ -204,14 +212,14 @@ if (wishlistButton) {
         
         // If the user is not logged in (i.e., username is empty)
         if (!username) {
+            const messageElement = document.getElementById('responseMessage'); 
+            messageElement.textContent = "";
             popupOverlay.style.display = 'block';  // Show the popup overlay
             signupForm.style.display = 'block';    // Show the signup form
             loginForm.style.display = 'none';      // Hide the login form (if applicable)
 
-            const messageElement = document.getElementById('responseMessage');   // Display a message
-            if (messageElement) {
-                messageElement.textContent = "Please sign up to add to wishlist.";
-            }
+     // Display a message
+            
         } else {
             const formData = new FormData(document.getElementById('wishlistForm'));  // Gather form data
 
@@ -242,7 +250,8 @@ function  SignupIfnotLoggedIn(){
     console.log("signin");
 }
 function SignupEvent(){
-    
+    const messageElement = document.getElementById('responseMessage');
+    messageElement.textContent = "";
     loginForm.style.display = 'none';
     signupForm.style.display = 'block';
     
@@ -250,6 +259,8 @@ function SignupEvent(){
 }
 signupLink.onclick = function (event) {
    event.preventDefault();
+    const messageElement = document.getElementById('responseMessage');
+    messageElement.textContent = "";
    SignupEvent();
 };
 // Get elements
