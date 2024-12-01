@@ -87,7 +87,8 @@ $result = $conn->query($sql);
             <div class="popup-content">
                 <p>Welcome to our website!</p>
                 <p>Sign up to receive exclusive offers:</p>
-                <form action="../php_connection/upload.php" method="POST" enctype="multipart/form-data">
+                <form action="../php_connection/upload.php" method="POST" enctype="multipart/form-data" id="uploadform">
+                    <span id="UploadError" style="color:red;"></span>
                     <label for="title">Title:</label>
                     <input type="text" id="title" name="title" maxlength="255" required><br><br>
 
@@ -100,11 +101,11 @@ $result = $conn->query($sql);
                     <label for="genre">Genre:</label>
                     <input type="text" id="genre" name="genre" maxlength="255" required><br><br>
 
-                    <label for="duration">Duration (in minutes):</label>
+                    <label for="duration">Duration:</label>
                     <input type="number" id="duration" name="duration" required><br><br>
 
                     <label for="category">Categories:</label>
-                    <select name="category_id[]" multiple required>
+                    <select name="category_id[]" id="Categories" required>
                         <?php
                         // Fetch categories from the database
                         $category_query = "SELECT category_id, category_name FROM categories";
@@ -149,15 +150,11 @@ $result = $conn->query($sql);
                     <input type="text" id="genre1" name="genre" maxlength="255" required><br><br>
 
                     <label for="duration">Duration (in minutes):</label>
-                    <input type="number" id="duration1" name="duration" required><br><br>
+                    <input type="text" id="duration1" name="duration" required><br><br>
 
-                    <label for="movie_file">Upload Movie File:</label>
-                    <input type="file" id="movie_file1" name="movie_file" accept="video/*" required><br>
-
-                    <label for="cover_image">Upload Cover Image:</label>
-                    <input type="file" id="cover_image1" name="cover_image" accept="image/*" required><br>
-
-                    <select name="category_id[]" multiple required>
+                    
+                    <label for="category">Categories:</label>
+                    <select name="category_id[]" id="Categories1" required>
                         <?php
                         // Fetch categories from the database
                         $category_query = "SELECT category_id, category_name FROM categories";
@@ -166,7 +163,12 @@ $result = $conn->query($sql);
                             echo '<option value="' . $category_row['category_id'] . '">' . $category_row['category_name'] . '</option>';
                         }
                         ?>
-                    </select>
+                    </select><br><br> 
+                    <label for="movie_file">Upload Movie File:</label>
+                    <input type="file" id="movie_file1" name="movie_file" accept="video/*" required><br>
+
+                    <label for="cover_image">Upload Cover Image:</label>
+                    <input type="file" id="cover_image1" name="cover_image" accept="image/*" required><br>
 
                     <input type="submit" value="Submit Movie">
                 </form>

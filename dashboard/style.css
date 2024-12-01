@@ -171,8 +171,22 @@ body {
   color: #333;
 }
 
-.popup #emailInput,
-.popup1 #emailInput {
+.popup #title,
+.popup #description,
+.pop #release_date,
+.popup #genre,
+.popup #duration,
+.popup #Categories,
+.popup #movie_file,
+.popup #cover_image,
+.popup1 #title1,
+.popup1 #description1,
+.pop1 #release_date1,
+.popup1 #genre1,
+.popup1 #duration1,
+.popup1 #Categories1,
+.popup1 #movie_file1,
+.popup1 #cover_image1 {
   font-family: Inter;
   width: 80%;
   padding: 10px;
