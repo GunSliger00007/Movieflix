@@ -80,7 +80,7 @@ $result = $conn->query($sql);
             <a href="categories.php">Categories</a>
           </li>
           <li>
-            <a href="watchlist.php" id="wishlistLink">Watchlist</a>
+            <a href="watchlist.php" id="wishlistLink">Wishlist</a>
           </li>
 
         </ul>
@@ -97,7 +97,7 @@ $result = $conn->query($sql);
 
         </div>
         <div class="right-btn">
-          <?php
+        <?php
           session_start();  // Start the session
 
           if (isset($_SESSION['username'])) {
@@ -108,10 +108,10 @@ $result = $conn->query($sql);
             echo '<a href="#">' . $shortenedUsername . '</a>';
             echo '<a href="logout.php">Log out</a>';
           } else {
-            echo '<a href="#" id="login">Log in</a>';
+            echo '<a href="#" id="loginSpecial">Log in</a>';
             echo '<a href="#" id="signup">Sign up</a>';
           }
-          ?>￼
+          ?>
         </div>
       </div>
     </div>
@@ -233,7 +233,7 @@ $result = $conn->query($sql);
       <span class="close" id="closePopup">&times;</span>
       <div class="popup-content" id="signupForm">
         <p>Welcome to our website!</p>
-        <p>login up to receive exclusive offers:</p>
+        
         <p id="responseMessage" style="color: red;"></p>
         <form action="register.php" method="post" id="registerForm">
           <input type="email" name="email" placeholder="Your email" id="emailInput">
@@ -246,13 +246,14 @@ $result = $conn->query($sql);
         <p>Already have an account? <a href="#" id="loginLink">Please login</a></p>
       </div>
       <div class="popup-content" id="loginForm" style="display: none;">
-        <form method="POST" action="login.php" onsubmit="return validateForm()">
-          <input type="email" placeholder="Your email" id="emailInput" name="email" required>
-          <input type="password" placeholder="Your password" id="passwordInput" name="password" required>
-          <button id="loginFormBtn">Login</button>
+      <p id="loginResponseMessage" style="color: red;"></p>
+        <form method="POST" action="login.php" id="loginForm1">
+          <input  name="email1" id="loginEmailInput" placeholder="Enter your email"  >
+          <input type="password" name="password2" id="passwordInputlogin"  placeholder="Enter your password" required>
+          <button id="loginFormBtn" type="submit">Login</button>
         </form>
         <p>Don't have an account? <a href="#" id="signupLink">Sign Up</a></p>
-        <?php if (isset($error)): ?>
+        <?php if (isset($error)): ?>https://www.youtube.com/watch?v=qnwodXSC0bc
           <p style="color:red;"><?php echo $error; ?></p>
         <?php endif; ?>
         <p id="responseMessage" style="color:red;"></p>

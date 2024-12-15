@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>HTML5 Login Form with Validation Example</title>
+  <title>Admin Login</title>
   
   <link rel="stylesheet" href="styles.css">
   <style>

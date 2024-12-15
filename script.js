@@ -98,7 +98,11 @@ const wishlistButton=document.getElementById('wishlistButton');
 
 // Function to open the popup
 function openPopup() {
+    const messageElement = document.getElementById('responseMessage');
+    messageElement.textContent = "";
+    loginForm.style.display='none'
     popupOverlay.style.display = 'block';
+    signupForm.style.display='block';
 }
 
 // Function to close the popup
@@ -141,8 +145,20 @@ popupOverlay.onclick = function (event) {
 // Handle form submission for signup
 submitFormBtn.onclick = submitSignUpForm;
 
+document.getElementById('loginSpecial').onclick=function(event){
+    const messageElement = document.getElementById('responseMessage');
+    messageElement.textContent = "";
+    event.preventDefault();
+    
+    signupForm.style.display = 'none';
+    popupOverlay.style.display='block';
+    loginForm.style.display = 'block';
 
+    popup.style.width = '23%';
+    
 
+    popup.style.width = '23%';
+}
 
 loginLink.onclick = function (event) {
     const messageElement = document.getElementById('responseMessage');
@@ -163,16 +179,20 @@ if (reviewLink) {
         
         // If the user is not logged in, show the signup form
         if (!username) {
+            document.getElementById('reviewInput').value='';
+            document.getElementById('reviewResponseMessage').textContent = '';
             const messageElement = document.getElementById('responseMessage');
             messageElement.textContent = "";
+            loginForm.style.display='none'; 
             popupOverlay.style.display = 'block';  // Show popup
             signupForm.style.display = 'block';
-            loginForm.style.display='none'; 
+            
               // Show signup form
             if (messageElement) {
                 messageElement.textContent = "Please sign up to leave a review.";
             }
         } else {
+            document.getElementById('reviewResponseMessage').textContent = '';
             const messageElement = document.getElementById('responseMessage');
             messageElement.textContent = "";
             console.log('lol');
@@ -359,7 +379,7 @@ loginForm.addEventListener('submit', function (event) {
                 if (data.status === 'success') {
                     window.location.href = ''; // Redirect on success
                 } else {
-                    loginResponseMessage.textContent = data.message + data.password + data.email; // Show error message
+                    loginResponseMessage.textContent = data.message; // Show error message
                 }
             })
             .catch(error => {
@@ -415,3 +435,34 @@ video.addEventListener('pause', function () {
 video.addEventListener('play', function () {
     playButton.style.display = 'none'; // Ensure play button is hidden when video is playing
 });
+function validateReviewForm() {
+    var review = document.getElementById('reviewInput').value.trim();
+    var rating = document.querySelector('input[name="rate"]:checked');
+    
+    // Count words in the review
+    var wordCount = review.split(/\s+/).filter(function(word) {
+        return word.length > 0;
+    }).length;
+
+    // Check if the review is empty
+    if (!review) {
+        document.getElementById('reviewResponseMessage').textContent = 'Review is required.';
+        return false;
+    }
+
+    // Check if the review exceeds 30 words
+    if (wordCount > 30) {
+        document.getElementById('reviewResponseMessage').textContent = 'Review must be 30 words or less. You have ' + wordCount + ' words.';
+        return false;
+    }
+
+    // Check if a rating is selected
+    if (!rating) {
+        document.getElementById('reviewResponseMessage').textContent = 'Please select a rating.';
+        return false;
+    }
+
+    // Clear the message if the form is valid
+    document.getElementById('reviewResponseMessage').textContent = '';
+    return true;
+}

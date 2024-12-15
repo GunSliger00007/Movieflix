@@ -104,43 +104,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Handle form submission
-    submitForm1.addEventListener('click', handleFormSubmission);
-});
-
-
-document.forms['uploadform'].addEventListener('submit', function(e) {
-    // Get the form elements
-    const title = document.getElementById('title');
-    const description = document.getElementById('description');
-    const duration = document.getElementById('duration');
-    const errorSpan = document.getElementById('uploadError');
     
-    // Clear previous errors
-    errorSpan.textContent = '';
-
-    let isValid = true; // Flag to check if form is valid
-
-    // Title validation: must be less than 255 characters
-    if (title.value.length > 255) {
-        errorSpan.textContent = 'Title cannot be longer than 255 characters.';
-        isValid = false;
-    }
-
-    // Description validation: must be between 10 and 500 characters
-    if (description.value.length < 10 || description.value.length > 500) {
-        errorSpan.textContent = 'Description must be between 10 and 500 characters.';
-        isValid = false;
-    }
-
-    // Duration validation: must be a whole number
-    if (!Number.isInteger(Number(duration.value))) {
-        errorSpan.textContent = 'Duration must be a whole number.';
-        isValid = false;
-    }
-
-    // If form is invalid, prevent submission
-    if (!isValid) {
-        e.preventDefault(); // Prevent form from submitting
-    }
 });
 

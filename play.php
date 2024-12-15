@@ -3,7 +3,7 @@ session_start();
 include "./php_connection/connection.php";
 if (isset($_GET['id'])) {
   $id = $_GET['id'];
-  $sql = "SELECT movie_id, title, release_date,file_path, genre,cover_image, duration,created_at FROM movies where movie_id=$id";
+  $sql = "SELECT movie_id, title, release_date,file_path,description,genre,cover_image, duration,created_at FROM movies where movie_id=$id";
   $result = $conn->query($sql);
   $sql1="SELECT u.username, r.review_text, r.rating, COUNT(r.review_text) AS total_reviews FROM reviews r JOIN users u ON r.user_id = u.user_id WHERE r.movie_id = $id GROUP BY u.username, r.review_text, r.rating;";
   $result1=$conn->query($sql1);
@@ -41,6 +41,7 @@ if (isset($_GET['id'])) {
           </svg>
         </a>
       </div>
+     
       <div class="menu-btn">
         <img src="../assets/images/menu-line.svg" alt="icon" />
       </div>
@@ -53,7 +54,7 @@ if (isset($_GET['id'])) {
             <a href="categories.php">Categories</a>
           </li>
           <li>
-            <a href="watchlist.php" id="wishlistLink">Watchlist</a>
+            <a href="watchlist.php" id="wishlistLink">Wishlist</a>
           </li>
         </ul>
         <div class="search-menu-wrapper">
@@ -69,7 +70,7 @@ if (isset($_GET['id'])) {
 
         </div>
         <div class="right-btn">
-          <?php
+        <?php
           session_start();  // Start the session
 
           if (isset($_SESSION['username'])) {
@@ -81,11 +82,14 @@ if (isset($_GET['id'])) {
             echo '<a href="#">' . $shortenedUsername.'</a>';
             echo '<a href="logout.php" >Log out</a>';
             echo '<input type="hidden" id="signup">';
+            echo '<input type="hidden" id="loginSpecial">';
           } else {
-            echo '<a href="#" id="login">Log in</a>';
+            echo '<a href="#" id="loginSpecial">Log in</a>';
             echo '<a href="#" id="signup">Sign up</a>';
           }
           ?>
+        
+
         </div>
 
 
@@ -119,10 +123,7 @@ if (isset($_GET['id'])) {
 
               </div>
               <p class="descp">
-                A listless Wade Wilson toils away in civilian life with his days as
-                the morally flexible mercenary, Deadpool, behind him. But when his
-                homeworld faces an existential threat, Wade must reluctantly suit-up
-                again with an even more reluctant Wolverine.
+              <?php echo $row['description'] ?>
               </p>
               <div class="all-detail">
                 <ul>
@@ -135,7 +136,7 @@ if (isset($_GET['id'])) {
                 </ul>
               <?php } ?>
               </div>
-            </div>
+            </div >
           </div>
           <div class="review">
             <span class="total-review">
@@ -202,10 +203,11 @@ if (isset($_GET['id'])) {
         <p id="responseMessage" style="color:red;"></p>
 
       </div>
-      <div class="popup-content" id="reviewForm" style="display: none;">
+      <div class="popup-content" id="reviewForm" style="display: none;" >
         <p id="reviewResponseMessage" style="color: red;"></p>
-        <form method="POST" action="add_review.php">
-          <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
+        <form method="POST" action="add_review.php" onsubmit="return validateReviewForm()">
+        <p id="reviewResponseMessage" style="color: red;"></p>
+          <input type="hidden"  name="user_id" value="<?php echo $user_id ?>">
           <input type="hidden" name="movie_id" value="<?php echo $id ?>">
           <textarea name="review" id="reviewInput" placeholder="Write your review here" rows="4" cols="50"></textarea>
           <div class="rate">

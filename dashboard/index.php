@@ -86,7 +86,7 @@ $result = $conn->query($sql);
             <span class="close" id="closePopup">&times;</span>
             <div class="popup-content">
                 <p>Welcome to our website!</p>
-                <p>Sign up to receive exclusive offers:</p>
+
                 <form action="../php_connection/upload.php" method="POST" enctype="multipart/form-data" id="uploadform">
                     <span id="UploadError" style="color:red;"></span>
                     <label for="title">Title:</label>
@@ -117,7 +117,7 @@ $result = $conn->query($sql);
                     </select><br><br> <!-- Closing select tag added -->
 
                     <label for="movie_file">Upload Movie File:</label>
-                    <input type="file" id="movie_file" name="movie_file" accept="video/*" required><br>
+                    <input type="file" id="movie_file" name="movie_file" accept=".mkv, .mp4, video/*" required><br>
 
                     <label for="cover_image">Upload Cover Image:</label>
                     <input type="file" id="cover_image" name="cover_image" accept="image/*" required><br><br>
@@ -134,8 +134,8 @@ $result = $conn->query($sql);
             <span class="close1" id="closePopup1">&times;</span>
             <div class="popup-content1">
                 <p>Welcome to our website!</p>
-                <p>Sign up to receive exclusive offers:</p>
-                <form action="../php_connection/update.php" method="POST" enctype="multipart/form-data">
+               
+                <form action="../php_connection/update.php" method="POST" enctype="multipart/form-data" id="updateform">
                 <input type="hidden" name="id" id="movie_id1" value="">
                     <label for="title">Title:</label>
                     <input type="text" id="title1" name="title" maxlength="255" required><br><br>
@@ -165,7 +165,7 @@ $result = $conn->query($sql);
                         ?>
                     </select><br><br> 
                     <label for="movie_file">Upload Movie File:</label>
-                    <input type="file" id="movie_file1" name="movie_file" accept="video/*" required><br>
+                    <input type="file" id="movie_file1" name="movie_file" accept=".mkv, .mp4, video/*" required><br>
 
                     <label for="cover_image">Upload Cover Image:</label>
                     <input type="file" id="cover_image1" name="cover_image" accept="image/*" required><br>
@@ -176,6 +176,170 @@ $result = $conn->query($sql);
             </div>
         </div>
     </div>
+    <script>
+    // Validate the upload form
+    document.getElementById('uploadform').addEventListener('submit', function(event) {
+        // Validate Title (max 20 words)
+        let title = document.getElementById('title').value;
+        if (title.trim() === "") {
+            alert("Title is required!");
+            event.preventDefault();
+            return;
+        }
+        let titleWordCount = title.trim().split(/\s+/).length;
+        if (titleWordCount > 20) {
+            alert("Title cannot be more than 20 words!");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Description (max 50 words)
+        let description = document.getElementById('description').value;
+        if (description.trim() === "") {
+            alert("Description is required!");
+            event.preventDefault();
+            return;
+        }
+        let descriptionWordCount = description.trim().split(/\s+/).length;
+        if (descriptionWordCount > 50) {
+            alert("Description cannot be more than 50 words!");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Release Date
+        let releaseDate = document.getElementById('release_date').value;
+        if (releaseDate.trim() === "") {
+            alert("Release Date is required!");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Genre (max 3 words)
+        let genre = document.getElementById('genre').value;
+        let genreWordCount = genre.trim().split(/\s+/).length;
+        if (genreWordCount > 3) {
+            alert("Genre cannot be more than 3 words!");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Duration
+        let duration = document.getElementById('duration').value;
+        if (duration.trim() === "") {
+            alert("Duration is required!");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Category
+        let category = document.getElementById('Categories').value;
+        if (!category) {
+            alert("Category is required!");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Movie File
+        let movieFile = document.getElementById('movie_file').files.length;
+        if (movieFile === 0) {
+            alert("Movie file is required!");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Cover Image
+        let coverImage = document.getElementById('cover_image').files.length;
+        if (coverImage === 0) {
+            alert("Cover image is required!");
+            event.preventDefault();
+            return;
+        }
+    });
+
+    // Validate the update form
+    document.getElementById('updateform').addEventListener('submit', function(event) {
+        // Validate Title (max 20 words)
+        let title = document.getElementById('title1').value;
+        if (title.trim() === "") {
+            alert("Title is required!");
+            event.preventDefault();
+            return;
+        }
+        let titleWordCount = title.trim().split(/\s+/).length;
+        if (titleWordCount > 20) {
+            alert("Title cannot be more than 20 words!");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Description (max 50 words)
+        let description = document.getElementById('description1').value;
+        if (description.trim() === "") {
+            alert("Description is required!");
+            event.preventDefault();
+            return;
+        }
+        let descriptionWordCount = description.trim().split(/\s+/).length;
+        if (descriptionWordCount > 50) {
+            alert("Description cannot be more than 50 words!");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Release Date
+        let releaseDate = document.getElementById('release_date1').value;
+        if (releaseDate.trim() === "") {
+            alert("Release Date is required!");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Genre (max 3 words)
+        let genre = document.getElementById('genre1').value;
+        let genreWordCount = genre.trim().split(/\s+/).length;
+        if (genreWordCount > 3) {
+            alert("Genre cannot be more than 3 words!");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Duration
+        let duration = document.getElementById('duration1').value;
+        if (duration.trim() === "") {
+            alert("Duration is required!");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Category
+        let category = document.getElementById('Categories1').value;
+        if (!category) {
+            alert("Category is required!");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Movie File
+        let movieFile = document.getElementById('movie_file1').files.length;
+        if (movieFile === 0) {
+            alert("Movie file is required!");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Cover Image
+        let coverImage = document.getElementById('cover_image1').files.length;
+        if (coverImage === 0) {
+            alert("Cover image is required!");
+            event.preventDefault();
+            return;
+        }
+    });
+</script>
+
+
+
     <script src="lane.js"></script>
 </body>
 

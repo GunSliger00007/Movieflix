@@ -1,3 +1,7 @@
+Share
+
+
+You said:
 <?php
 include("connection.php"); // Ensure connection.php includes the database connection
 

@@ -86,8 +86,8 @@ $result = $conn->query($sql);
             <div class="popup-content">
                 <p>Welcome to our website!</p>
                 <p>Sign up to receive exclusive offers:</p>
-                <form action="add_category.php" method="POST">
-                    <input type="text" name="category_name" placeholder="Category Name" required>
+                <form action="add_category.php" method="POST" id="categoryForm">
+                    <input type="text" name="category_name" id="category_name" placeholder="Category Name" required>
                     <button type="submit">Add Category</button>
                 </form>
 
@@ -121,7 +121,7 @@ $result = $conn->query($sql);
                     
                     
                     <label for="movie_file">Upload Movie File:</label>
-                    <input type="file" id="movie_file1" name="movie_file" accept="video/*" required><br>
+                    <input type="file" id="movie_file" name="movie_file" accept=".mkv, .mp4, video/*" required>
 
                     <label for="cover_image">Upload Cover Image:</label>
                     <input type="file" id="cover_image1" name="cover_image" accept="image/*" required><br>
@@ -133,6 +133,19 @@ $result = $conn->query($sql);
             </div>
         </div>
     </div>
+    <script>
+    document.getElementById('categoryForm').addEventListener('submit', function(event) {
+        // Get category name value
+        let categoryName = document.getElementById('category_name').value;
+
+        // Validate Category Name (only one word allowed)
+        let categoryWordCount = categoryName.trim().split(/\s+/).length;
+        if (categoryWordCount > 1) {
+            alert("Category Name cannot be more than 1 word!");
+            event.preventDefault();  // Prevent form submission
+        }
+    });
+</script>
     <script src="lane.js"></script>
 </body>
 
