@@ -1,7 +1,25 @@
 <?php
 session_start();
 include('./php_connection/connection.php');
-$sql = "SELECT m.movie_id, m.title, m.release_date, m.genre, m.cover_image, m.duration, m.created_at, AVG(r.rating) AS average_rating, COUNT(r.rating) AS total_ratings FROM movies m LEFT JOIN reviews r ON m.movie_id = r.movie_id GROUP BY m.movie_id;";
+$sql = "
+    SELECT 
+        m.movie_id, 
+        m.title, 
+        m.release_date, 
+        m.genre, 
+        m.cover_image, 
+        m.duration, 
+        m.created_at, 
+        AVG(r.rating) AS average_rating, 
+        COUNT(r.rating) AS total_ratings, 
+        c.category_name 
+    FROM movies m
+    LEFT JOIN reviews r ON m.movie_id = r.movie_id
+    LEFT JOIN movie_categories mc ON m.movie_id = mc.movie_id
+    LEFT JOIN categories c ON mc.category_id = c.category_id
+    GROUP BY m.movie_id, c.category_name;
+";
+
 $result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
@@ -118,16 +136,63 @@ $result = $conn->query($sql);
        
       </div>
     </div>
+    <form id="filterForm">
+      <?php
+        $q= "select category_name from categories";
+        $r=$conn->query($q);
+      ?>
+    <label>Category:
+  
+    <select name="Category" id="categoryFilter">
+   
+
+      <?php
+         if($r->num_rows>0){
+          echo '<option value="">All</option>'; 
+            while($rows=$r->fetch_assoc()){
+              echo '<option value="' . $rows['category_name'] . '">' . $rows['category_name'] . '</option>';
+            }
+      
+         }
+      ?>
+      <!-- Add more genres -->
+    </select>
+  </label>
+  <?php
+    $q1='select distinct year(release_date) as release_date from movies';
+    $r1= $conn->query($q1);
+    
+  ?>
+  <label>Release Year:
+  <select name="year" id="yearFilter">
+    <?php
+      if ($r1->num_rows > 0) {
+          echo '<option value="">All</option>';  // Display the "All" option by default
+          while ($rows = $r1->fetch_assoc()) {
+              echo '<option value="' . $rows['release_date'] . '">' . $rows['release_date'] . '</option>';
+          }
+      }
+  ?>
+
+    </select>
+  </label>
+  
+  
+  
+  <button type="submit">Filter</button>
+</form>
+
+<div id="moviesList"></div>
     <div class="movies-list">
 
       <div class="column">
-        <?php while ($row = $result->fetch_assoc()) { ?>
+      <?php while ($row = $result->fetch_assoc()) { ?>
           <a href="play.php?id=<?php echo $row['movie_id'] ?>" class="card">
             <img src="./php_connection/<?php echo $row['cover_image'] ?>">
             <h1><?php echo $row['title'] ?></h1>
             <div class="genre">
 
-              <span><?php echo $row['genre'] ?></span>
+              <span><?php echo $row['category_name'] ?></span>
               <div class="rate">
                 <img src="assets/images/Frame (1).svg" width="11.41" height="10.85">
                 <h5><?php echo (number_format($row["average_rating"],1))?></h5>
@@ -241,8 +306,42 @@ $result = $conn->query($sql);
     } else {
       console.log("User is not logged in.");
     }
-  </script>
 
+  document.addEventListener('DOMContentLoaded', function() {
+    // Select the form and the column where movies will be displayed
+    const filterForm = document.getElementById('filterForm');
+    const column = document.querySelector('.column');
+
+    // Handle the form submission
+    filterForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get selected category and year values
+      const category = document.querySelector('select[name="Category"]').value;
+      const year = document.querySelector('select[name="year"]').value;
+
+      // Create a query string for the data to be sent
+      const queryString = `category=${encodeURIComponent(category)}&year=${encodeURIComponent(year)}`;
+
+      // Create an XMLHttpRequest to fetch the movie list
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', 'fetch_movies.php?' + queryString, true);
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          // Update the column with the response (movie list)
+          column.innerHTML = xhr.responseText;
+        }
+      };
+
+      // Send the request
+      xhr.send();
+    });
+  });
+
+
+  </script>
+  <script src="filter.js"></script>
   <script src="script.js"></script>
 </body>
 
