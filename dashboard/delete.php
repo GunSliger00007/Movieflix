@@ -1,9 +1,9 @@
 <?php
 include("../php_connection/connection.php"); // Include your database connection
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Get the movie ID from the POST request
-    $movie_id = $_POST['id'];
+if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) {
+    // Get the movie ID from the GET request
+    $movie_id = $_GET['id'];
 
     // Fetch the movie details to get file paths
     $sql = "SELECT file_path, cover_image FROM movies WHERE movie_id = $movie_id";
@@ -40,6 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $conn->close();
 } else {
-    echo "Invalid request method.";
+    echo "Invalid request method or missing movie ID.";
 }
 ?>

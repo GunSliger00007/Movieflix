@@ -1,6 +1,6 @@
 @font-face {
   font-family: Roboto;
-  src:url(../assets/fonts/roboto.ttf)
+  src: url(../assets/fonts/roboto.ttf);
 }
 @font-face {
   font-family: Inter;
@@ -22,6 +22,11 @@
 body {
   font-family: Roboto;
   background-color: #fff;
+}
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .container {
   max-width: 1012px;
@@ -208,6 +213,10 @@ body {
   line-height: normal;
   width: 91px;
   height: 40px;
+  .movie-column .update_img {
+    width: 13.5px;
+    height: 15px;
+  }
   border: 1px solid var(--primary-color);
 }
 .movie-column .update_img {
@@ -216,9 +225,57 @@ body {
 }
 
 @media screen and (max-width: 600px) {
-  
 }
-.movie-card-link{
+.movie-card-link {
   text-decoration: none;
   color: inherit;
+}
+.movies-list .column {
+  display: grid;
+  gap: 20px;
+  padding-top: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(207px, 1fr));
+}
+.genre {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+.rate {
+  display: flex;
+  gap: 1px;
+}
+.genre-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 16px;
+}
+.card h1 {
+  font-family: Roboto;
+  font-size: 16px;
+  color: var(--neutral-0);
+  padding: 0 10px;
+  margin: 8px 0;
+}
+.genre span,
+.genre h5 {
+  font-family: Roboto;
+  color: var(--neutral-0);
+  font-size: 12px;
+}
+.column .card {
+  border-radius: 8px;
+  background: #1b1b1b;
+  border-radius: 8px;
+  background: #1b1b1b;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.card img {
+  transition: 0.2s all ease-in-out;
+}
+.card:hover img {
+  transform: scale(1.03);
 }

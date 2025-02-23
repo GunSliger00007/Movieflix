@@ -2,12 +2,12 @@
 session_start();  // Start the session at the beginning of the file
 
 if (!isset($_SESSION['user_id'])) {
-    
+
     header("Location: login_form.php");
     exit();
 }
 include("../php_connection/connection.php");
-$sql = "SELECT movie_id, title, release_date, genre, duration,created_at FROM movies";
+$sql = "SELECT * FROM movies";
 $result = $conn->query($sql);
 
 ?>
@@ -18,7 +18,7 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DashBoard</title>
-   
+
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -27,7 +27,9 @@ $result = $conn->query($sql);
         <div class="aside">
             <div class="movie-logo">
                 <svg xmlns="http://www.w3.org/2000/svg" width="113" height="60" viewBox="0 0 113 60" fill="none">
-                    <path d="M14.5808 23.4622H17.2085L21.9168 28.1497L26.6252 23.4622H29.2529V36.3158H26.6252V27.0724L21.9168 31.5707L17.2085 27.0724V36.3158H14.5808V23.4622ZM32.0464 31.4638C32.0464 30.7675 32.1873 30.1152 32.4691 29.5066C32.7565 28.898 33.1627 28.3662 33.6877 27.9112C34.2182 27.4562 34.8565 27.0971 35.6025 26.8339C36.3541 26.5707 37.1968 26.4392 38.1308 26.4392C39.0647 26.4392 39.9047 26.5707 40.6507 26.8339C41.4023 27.0971 42.0406 27.4562 42.5656 27.9112C43.0961 28.3662 43.5022 28.898 43.784 29.5066C44.0714 30.1152 44.2151 30.7675 44.2151 31.4638C44.2151 32.1601 44.0714 32.8125 43.784 33.4211C43.5022 34.0296 43.0961 34.5614 42.5656 35.0164C42.0406 35.4715 41.4023 35.8306 40.6507 36.0937C39.9047 36.3569 39.0647 36.4885 38.1308 36.4885C37.1968 36.4885 36.3541 36.3569 35.6025 36.0937C34.8565 35.8306 34.2182 35.4715 33.6877 35.0164C33.1627 34.5614 32.7565 34.0296 32.4691 33.4211C32.1873 32.8125 32.0464 32.1601 32.0464 31.4638ZM34.6244 31.4638C34.6244 31.8531 34.7018 32.2232 34.8565 32.574C35.0167 32.9194 35.2461 33.2264 35.5445 33.495C35.8484 33.7582 36.2159 33.9693 36.647 34.1283C37.0835 34.2818 37.5781 34.3585 38.1308 34.3585C38.6834 34.3585 39.1752 34.2818 39.6062 34.1283C40.0428 33.9693 40.4103 33.7582 40.7087 33.495C41.0127 33.2264 41.242 32.9194 41.3967 32.574C41.557 32.2232 41.6371 31.8531 41.6371 31.4638C41.6371 31.0746 41.557 30.7045 41.3967 30.3536C41.242 30.0027 41.0127 29.6957 40.7087 29.4326C40.4103 29.1639 40.0428 28.9528 39.6062 28.7994C39.1752 28.6404 38.6834 28.5608 38.1308 28.5608C37.5781 28.5608 37.0835 28.6404 36.647 28.7994C36.2159 28.9528 35.8484 29.1639 35.5445 29.4326C35.2461 29.6957 35.0167 30.0027 34.8565 30.3536C34.7018 30.7045 34.6244 31.0746 34.6244 31.4638ZM45.3425 26.6036H48.1857L50.7305 32.4424L51.3937 34.0789L52.0568 32.4424L54.6017 26.6036H57.4447L52.8112 36.3158H49.9762L45.3425 26.6036ZM60.4538 25.2878C60.2108 25.2878 59.9896 25.2549 59.7907 25.1892C59.5976 25.1179 59.4315 25.0247 59.2936 24.9095C59.1551 24.7889 59.0474 24.6518 58.97 24.4984C58.8983 24.3394 58.8623 24.1722 58.8623 23.9967C58.8623 23.8158 58.8983 23.6486 58.97 23.495C59.0474 23.336 59.1551 23.199 59.2936 23.0839C59.4315 22.9687 59.5976 22.8783 59.7907 22.8125C59.9896 22.7412 60.2108 22.7056 60.4538 22.7056C60.7026 22.7056 60.9239 22.7412 61.117 22.8125C61.3159 22.8783 61.4846 22.9687 61.6226 23.0839C61.761 23.199 61.8661 23.336 61.9377 23.495C62.0151 23.6486 62.0539 23.8158 62.0539 23.9967C62.0539 24.1722 62.0151 24.3394 61.9377 24.4984C61.8661 24.6518 61.761 24.7889 61.6226 24.9095C61.4846 25.0247 61.3159 25.1179 61.117 25.1892C60.9239 25.2549 60.7026 25.2878 60.4538 25.2878ZM59.2273 26.6118H61.6809V36.3158H59.2273V26.6118ZM64.3664 31.4309C64.3664 30.773 64.5017 30.1453 64.7728 29.5477C65.0433 28.9446 65.4333 28.4128 65.9415 27.9523C66.4497 27.4918 67.0715 27.1245 67.8063 26.8503C68.5469 26.5762 69.3872 26.4392 70.3262 26.4392C71.2604 26.4392 72.1003 26.5789 72.8462 26.8585C73.5979 27.1327 74.2335 27.5109 74.7528 27.9934C75.278 28.4759 75.6786 29.0433 75.955 29.6957C76.2367 30.3482 76.3778 31.0472 76.3778 31.7927C76.3778 31.8859 76.3752 31.9874 76.3693 32.0971C76.3693 32.2012 76.364 32.2972 76.3529 32.3848H67.1017C67.2068 32.6754 67.3755 32.9413 67.6078 33.1826C67.845 33.4238 68.141 33.6321 68.4943 33.8076C68.8482 33.983 69.2572 34.1201 69.7214 34.2187C70.1856 34.3119 70.6997 34.3585 71.2631 34.3585C71.827 34.3585 72.3878 34.301 72.9459 34.1858C73.504 34.0653 74.0372 33.9145 74.5459 33.7336L75.3746 35.5921C75.0542 35.7401 74.7279 35.8717 74.3963 35.9868C74.0706 36.0965 73.7279 36.1897 73.3687 36.2664C73.0149 36.3377 72.6419 36.3925 72.2499 36.4309C71.8626 36.4693 71.4541 36.4885 71.0228 36.4885C69.923 36.4885 68.9585 36.3569 68.1299 36.0937C67.3007 35.8306 66.6073 35.4715 66.0492 35.0164C65.4911 34.5614 65.0709 34.0268 64.7892 33.4128C64.5075 32.7988 64.3664 32.1382 64.3664 31.4309ZM73.7746 30.4852C73.6865 30.2166 73.548 29.9671 73.3602 29.7368C73.1783 29.5011 72.9485 29.2983 72.6721 29.1283C72.3963 28.9528 72.0753 28.8158 71.7109 28.7171C71.3459 28.6184 70.9453 28.569 70.5087 28.569C70.0445 28.569 69.6217 28.6212 69.2408 28.7253C68.8593 28.8295 68.5251 28.9693 68.2376 29.1447C67.95 29.3202 67.7097 29.523 67.5166 29.7533C67.3283 29.9836 67.1903 30.2275 67.1017 30.4852H73.7746ZM80.0914 28.4375H78.4166V26.6118H80.0914C80.0914 25.9539 80.1853 25.3701 80.3731 24.8602C80.5609 24.3448 80.832 23.9117 81.1853 23.5608C81.5445 23.2045 81.9785 22.9331 82.4867 22.7467C83.0008 22.5603 83.5785 22.4671 84.2194 22.4671C84.6671 22.4671 85.1064 22.5109 85.5372 22.5987C85.9685 22.6809 86.3499 22.8015 86.6815 22.9605L85.8109 25.0082C85.6783 24.9315 85.4905 24.8602 85.2475 24.7944C85.0098 24.7286 84.7472 24.6957 84.4597 24.6957C83.8963 24.6957 83.44 24.8547 83.092 25.1727C82.7493 25.4852 82.5668 25.9649 82.5451 26.6118H85.6369V28.4375H82.5451V36.3158H80.0914V28.4375ZM87.5929 22.6727H90.0466V36.3158H87.5929V22.6727ZM94.4896 25.2878C94.2467 25.2878 94.0254 25.2549 93.8265 25.1892C93.6334 25.1179 93.4673 25.0247 93.3294 24.9095C93.1909 24.7889 93.0832 24.6518 93.0058 24.4984C92.9342 24.3394 92.8981 24.1722 92.8981 23.9967C92.8981 23.8158 92.9342 23.6486 93.0058 23.495C93.0832 23.336 93.1909 23.199 93.3294 23.0839C93.4673 22.9687 93.6334 22.8783 93.8265 22.8125C94.0254 22.7412 94.2467 22.7056 94.4896 22.7056C94.7384 22.7056 94.9597 22.7412 95.1528 22.8125C95.3517 22.8783 95.5204 22.9687 95.6584 23.0839C95.7968 23.199 95.9019 23.336 95.9735 23.495C96.0509 23.6486 96.0897 23.8158 96.0897 23.9967C96.0897 24.1722 96.0509 24.3394 95.9735 24.4984C95.9019 24.6518 95.7968 24.7889 95.6584 24.9095C95.5204 25.0247 95.3517 25.1179 95.1528 25.1892C94.9597 25.2549 94.7384 25.2878 94.4896 25.2878ZM93.2631 26.6118H95.7167V36.3158H93.2631V26.6118ZM101.403 31.4638L97.3581 26.6036H100.491L102.945 29.5642L105.275 26.6036H108.333L104.528 31.4556L108.573 36.3158H105.44L102.912 33.2813L100.566 36.3158H97.5072L101.403 31.4638Z" fill="#393939" />
+                    <path
+                        d="M14.5808 23.4622H17.2085L21.9168 28.1497L26.6252 23.4622H29.2529V36.3158H26.6252V27.0724L21.9168 31.5707L17.2085 27.0724V36.3158H14.5808V23.4622ZM32.0464 31.4638C32.0464 30.7675 32.1873 30.1152 32.4691 29.5066C32.7565 28.898 33.1627 28.3662 33.6877 27.9112C34.2182 27.4562 34.8565 27.0971 35.6025 26.8339C36.3541 26.5707 37.1968 26.4392 38.1308 26.4392C39.0647 26.4392 39.9047 26.5707 40.6507 26.8339C41.4023 27.0971 42.0406 27.4562 42.5656 27.9112C43.0961 28.3662 43.5022 28.898 43.784 29.5066C44.0714 30.1152 44.2151 30.7675 44.2151 31.4638C44.2151 32.1601 44.0714 32.8125 43.784 33.4211C43.5022 34.0296 43.0961 34.5614 42.5656 35.0164C42.0406 35.4715 41.4023 35.8306 40.6507 36.0937C39.9047 36.3569 39.0647 36.4885 38.1308 36.4885C37.1968 36.4885 36.3541 36.3569 35.6025 36.0937C34.8565 35.8306 34.2182 35.4715 33.6877 35.0164C33.1627 34.5614 32.7565 34.0296 32.4691 33.4211C32.1873 32.8125 32.0464 32.1601 32.0464 31.4638ZM34.6244 31.4638C34.6244 31.8531 34.7018 32.2232 34.8565 32.574C35.0167 32.9194 35.2461 33.2264 35.5445 33.495C35.8484 33.7582 36.2159 33.9693 36.647 34.1283C37.0835 34.2818 37.5781 34.3585 38.1308 34.3585C38.6834 34.3585 39.1752 34.2818 39.6062 34.1283C40.0428 33.9693 40.4103 33.7582 40.7087 33.495C41.0127 33.2264 41.242 32.9194 41.3967 32.574C41.557 32.2232 41.6371 31.8531 41.6371 31.4638C41.6371 31.0746 41.557 30.7045 41.3967 30.3536C41.242 30.0027 41.0127 29.6957 40.7087 29.4326C40.4103 29.1639 40.0428 28.9528 39.6062 28.7994C39.1752 28.6404 38.6834 28.5608 38.1308 28.5608C37.5781 28.5608 37.0835 28.6404 36.647 28.7994C36.2159 28.9528 35.8484 29.1639 35.5445 29.4326C35.2461 29.6957 35.0167 30.0027 34.8565 30.3536C34.7018 30.7045 34.6244 31.0746 34.6244 31.4638ZM45.3425 26.6036H48.1857L50.7305 32.4424L51.3937 34.0789L52.0568 32.4424L54.6017 26.6036H57.4447L52.8112 36.3158H49.9762L45.3425 26.6036ZM60.4538 25.2878C60.2108 25.2878 59.9896 25.2549 59.7907 25.1892C59.5976 25.1179 59.4315 25.0247 59.2936 24.9095C59.1551 24.7889 59.0474 24.6518 58.97 24.4984C58.8983 24.3394 58.8623 24.1722 58.8623 23.9967C58.8623 23.8158 58.8983 23.6486 58.97 23.495C59.0474 23.336 59.1551 23.199 59.2936 23.0839C59.4315 22.9687 59.5976 22.8783 59.7907 22.8125C59.9896 22.7412 60.2108 22.7056 60.4538 22.7056C60.7026 22.7056 60.9239 22.7412 61.117 22.8125C61.3159 22.8783 61.4846 22.9687 61.6226 23.0839C61.761 23.199 61.8661 23.336 61.9377 23.495C62.0151 23.6486 62.0539 23.8158 62.0539 23.9967C62.0539 24.1722 62.0151 24.3394 61.9377 24.4984C61.8661 24.6518 61.761 24.7889 61.6226 24.9095C61.4846 25.0247 61.3159 25.1179 61.117 25.1892C60.9239 25.2549 60.7026 25.2878 60.4538 25.2878ZM59.2273 26.6118H61.6809V36.3158H59.2273V26.6118ZM64.3664 31.4309C64.3664 30.773 64.5017 30.1453 64.7728 29.5477C65.0433 28.9446 65.4333 28.4128 65.9415 27.9523C66.4497 27.4918 67.0715 27.1245 67.8063 26.8503C68.5469 26.5762 69.3872 26.4392 70.3262 26.4392C71.2604 26.4392 72.1003 26.5789 72.8462 26.8585C73.5979 27.1327 74.2335 27.5109 74.7528 27.9934C75.278 28.4759 75.6786 29.0433 75.955 29.6957C76.2367 30.3482 76.3778 31.0472 76.3778 31.7927C76.3778 31.8859 76.3752 31.9874 76.3693 32.0971C76.3693 32.2012 76.364 32.2972 76.3529 32.3848H67.1017C67.2068 32.6754 67.3755 32.9413 67.6078 33.1826C67.845 33.4238 68.141 33.6321 68.4943 33.8076C68.8482 33.983 69.2572 34.1201 69.7214 34.2187C70.1856 34.3119 70.6997 34.3585 71.2631 34.3585C71.827 34.3585 72.3878 34.301 72.9459 34.1858C73.504 34.0653 74.0372 33.9145 74.5459 33.7336L75.3746 35.5921C75.0542 35.7401 74.7279 35.8717 74.3963 35.9868C74.0706 36.0965 73.7279 36.1897 73.3687 36.2664C73.0149 36.3377 72.6419 36.3925 72.2499 36.4309C71.8626 36.4693 71.4541 36.4885 71.0228 36.4885C69.923 36.4885 68.9585 36.3569 68.1299 36.0937C67.3007 35.8306 66.6073 35.4715 66.0492 35.0164C65.4911 34.5614 65.0709 34.0268 64.7892 33.4128C64.5075 32.7988 64.3664 32.1382 64.3664 31.4309ZM73.7746 30.4852C73.6865 30.2166 73.548 29.9671 73.3602 29.7368C73.1783 29.5011 72.9485 29.2983 72.6721 29.1283C72.3963 28.9528 72.0753 28.8158 71.7109 28.7171C71.3459 28.6184 70.9453 28.569 70.5087 28.569C70.0445 28.569 69.6217 28.6212 69.2408 28.7253C68.8593 28.8295 68.5251 28.9693 68.2376 29.1447C67.95 29.3202 67.7097 29.523 67.5166 29.7533C67.3283 29.9836 67.1903 30.2275 67.1017 30.4852H73.7746ZM80.0914 28.4375H78.4166V26.6118H80.0914C80.0914 25.9539 80.1853 25.3701 80.3731 24.8602C80.5609 24.3448 80.832 23.9117 81.1853 23.5608C81.5445 23.2045 81.9785 22.9331 82.4867 22.7467C83.0008 22.5603 83.5785 22.4671 84.2194 22.4671C84.6671 22.4671 85.1064 22.5109 85.5372 22.5987C85.9685 22.6809 86.3499 22.8015 86.6815 22.9605L85.8109 25.0082C85.6783 24.9315 85.4905 24.8602 85.2475 24.7944C85.0098 24.7286 84.7472 24.6957 84.4597 24.6957C83.8963 24.6957 83.44 24.8547 83.092 25.1727C82.7493 25.4852 82.5668 25.9649 82.5451 26.6118H85.6369V28.4375H82.5451V36.3158H80.0914V28.4375ZM87.5929 22.6727H90.0466V36.3158H87.5929V22.6727ZM94.4896 25.2878C94.2467 25.2878 94.0254 25.2549 93.8265 25.1892C93.6334 25.1179 93.4673 25.0247 93.3294 24.9095C93.1909 24.7889 93.0832 24.6518 93.0058 24.4984C92.9342 24.3394 92.8981 24.1722 92.8981 23.9967C92.8981 23.8158 92.9342 23.6486 93.0058 23.495C93.0832 23.336 93.1909 23.199 93.3294 23.0839C93.4673 22.9687 93.6334 22.8783 93.8265 22.8125C94.0254 22.7412 94.2467 22.7056 94.4896 22.7056C94.7384 22.7056 94.9597 22.7412 95.1528 22.8125C95.3517 22.8783 95.5204 22.9687 95.6584 23.0839C95.7968 23.199 95.9019 23.336 95.9735 23.495C96.0509 23.6486 96.0897 23.8158 96.0897 23.9967C96.0897 24.1722 96.0509 24.3394 95.9735 24.4984C95.9019 24.6518 95.7968 24.7889 95.6584 24.9095C95.5204 25.0247 95.3517 25.1179 95.1528 25.1892C94.9597 25.2549 94.7384 25.2878 94.4896 25.2878ZM93.2631 26.6118H95.7167V36.3158H93.2631V26.6118ZM101.403 31.4638L97.3581 26.6036H100.491L102.945 29.5642L105.275 26.6036H108.333L104.528 31.4556L108.573 36.3158H105.44L102.912 33.2813L100.566 36.3158H97.5072L101.403 31.4638Z"
+                        fill="#393939" />
                     <path d="M61.0094 17.9863V1.05264H1.06104V58.9474H61.0094V42.0137" stroke="#393939" />
                 </svg>
             </div>
@@ -50,35 +52,43 @@ $result = $conn->query($sql);
                     <h1>Movie list</h1>
 
                     <button id="addmovies" type="submit">Add movies</button>
-                    
+
                 </div>
-                <div class="movie-card">
-                    <?php while ($row = $result->fetch_assoc()) { ?>
+                <div id="moviesList"></div>
+                <div class="movies-list">
 
-                        <div class="movie-column">
-                            <div class="movie-header">
+                    <div class="column">
+                        <?php while ($row = $result->fetch_assoc()) { ?>
+                            <a href="#" class="card">
+                                <img src="../php_connection/<?php echo $row['cover_image'] ?>" onclick="openPopup1(<?php echo $row['movie_id']; ?>)">
+                                <div class="genre-wrapper">
+                                    <h1><?php echo $row['title'] ?></h1>
+                                    <div class="genre">
+                                        <span><?php echo $row['category_name'] ?></span>
+                                        <div class="rate">
+                                            
+                                        <img src="../assets/images/Frame 199.svg" width="11.41" height="10.85" alt="Delete Movie" id="deleteImage<?php echo $row['movie_id']; ?>" style="cursor: pointer;">
+                                           
+                                            <h5><?php echo (number_format($row["average_rating"], 1)) ?></h5>
+                                        </div>
+                                        <script>
+                                                document.getElementById("deleteImage<?php echo $row['movie_id']; ?>").addEventListener("click", function() {
+                                                    if (confirm("Are you sure you want to delete this movie?")) {
+                                                        window.location.href = "delete.php?id=<?php echo $row['movie_id']; ?>";
+                                                    }
+                                                });
+                                            </script>
+                                    </div>
+                                </div>
+                            </a>
+                        <?php } ?>
 
-                                <h1><?php echo $row['title']; ?></h1>
-                                <form action="delete.php" method="POST">
-                                    <input type="hidden" id="movie_id" name="id" value="<?php echo $row['movie_id'] ?>">
-                                    <button onclick="myFunction()" style="border: none; background: none; padding: 0;">
-                                        <img src="../assets/images/Frame 199.svg" alt="Button Image">
-                                    </button>
-                                </form>
-                                <a href="#" class="movie-card-link" onclick="openPopup1(<?php echo $row['movie_id']; ?>)">
-                                    <img class="update_img" src="../assets/images/loop2.svg">
-                                </a>
-                            </div>
-                            <div class="movie-date">
-                                <h1><?php echo $row['release_date']; ?></h1>
-                            </div>
-                        </div>
-
-                    <?php } ?>
+                    </div>
 
                 </div>
             </div>
         </div>
+    </div>
     </div>
     </div>
     <div class="popup-overlay" id="popupOverlay">
@@ -134,9 +144,9 @@ $result = $conn->query($sql);
             <span class="close1" id="closePopup1">&times;</span>
             <div class="popup-content1">
                 <p>Welcome to our website!</p>
-               
+
                 <form action="../php_connection/update.php" method="POST" enctype="multipart/form-data" id="updateform">
-                <input type="hidden" name="id" id="movie_id1" value="">
+                    <input type="hidden" name="id" id="movie_id1" value="">
                     <label for="title">Title:</label>
                     <input type="text" id="title1" name="title" maxlength="255" required><br><br>
 
@@ -152,7 +162,7 @@ $result = $conn->query($sql);
                     <label for="duration">Duration (in minutes):</label>
                     <input type="text" id="duration1" name="duration" required><br><br>
 
-                    
+
                     <label for="category">Categories:</label>
                     <select name="category_id[]" id="Categories1" required>
                         <?php
@@ -163,7 +173,7 @@ $result = $conn->query($sql);
                             echo '<option value="' . $category_row['category_id'] . '">' . $category_row['category_name'] . '</option>';
                         }
                         ?>
-                    </select><br><br> 
+                    </select><br><br>
                     <label for="movie_file">Upload Movie File:</label>
                     <input type="file" id="movie_file1" name="movie_file" accept=".mkv, .mp4, video/*" required><br>
 
@@ -177,166 +187,166 @@ $result = $conn->query($sql);
         </div>
     </div>
     <script>
-    // Validate the upload form
-    document.getElementById('uploadform').addEventListener('submit', function(event) {
-        // Validate Title (max 20 words)
-        let title = document.getElementById('title').value;
-        if (title.trim() === "") {
-            alert("Title is required!");
-            event.preventDefault();
-            return;
-        }
-        let titleWordCount = title.trim().split(/\s+/).length;
-        if (titleWordCount > 20) {
-            alert("Title cannot be more than 20 words!");
-            event.preventDefault();
-            return;
-        }
+        // Validate the upload form
+        document.getElementById('uploadform').addEventListener('submit', function(event) {
+            // Validate Title (max 20 words)
+            let title = document.getElementById('title').value;
+            if (title.trim() === "") {
+                alert("Title is required!");
+                event.preventDefault();
+                return;
+            }
+            let titleWordCount = title.trim().split(/\s+/).length;
+            if (titleWordCount > 20) {
+                alert("Title cannot be more than 20 words!");
+                event.preventDefault();
+                return;
+            }
 
-        // Validate Description (max 50 words)
-        let description = document.getElementById('description').value;
-        if (description.trim() === "") {
-            alert("Description is required!");
-            event.preventDefault();
-            return;
-        }
-        let descriptionWordCount = description.trim().split(/\s+/).length;
-        if (descriptionWordCount > 50) {
-            alert("Description cannot be more than 50 words!");
-            event.preventDefault();
-            return;
-        }
+            // Validate Description (max 50 words)
+            let description = document.getElementById('description').value;
+            if (description.trim() === "") {
+                alert("Description is required!");
+                event.preventDefault();
+                return;
+            }
+            let descriptionWordCount = description.trim().split(/\s+/).length;
+            if (descriptionWordCount > 50) {
+                alert("Description cannot be more than 50 words!");
+                event.preventDefault();
+                return;
+            }
 
-        // Validate Release Date
-        let releaseDate = document.getElementById('release_date').value;
-        if (releaseDate.trim() === "") {
-            alert("Release Date is required!");
-            event.preventDefault();
-            return;
-        }
+            // Validate Release Date
+            let releaseDate = document.getElementById('release_date').value;
+            if (releaseDate.trim() === "") {
+                alert("Release Date is required!");
+                event.preventDefault();
+                return;
+            }
 
-        // Validate Genre (max 3 words)
-        let genre = document.getElementById('genre').value;
-        let genreWordCount = genre.trim().split(/\s+/).length;
-        if (genreWordCount > 3) {
-            alert("Genre cannot be more than 3 words!");
-            event.preventDefault();
-            return;
-        }
+            // Validate Genre (max 3 words)
+            let genre = document.getElementById('genre').value;
+            let genreWordCount = genre.trim().split(/\s+/).length;
+            if (genreWordCount > 3) {
+                alert("Genre cannot be more than 3 words!");
+                event.preventDefault();
+                return;
+            }
 
-        // Validate Duration
-        let duration = document.getElementById('duration').value;
-        if (duration.trim() === "") {
-            alert("Duration is required!");
-            event.preventDefault();
-            return;
-        }
+            // Validate Duration
+            let duration = document.getElementById('duration').value;
+            if (duration.trim() === "") {
+                alert("Duration is required!");
+                event.preventDefault();
+                return;
+            }
 
-        // Validate Category
-        let category = document.getElementById('Categories').value;
-        if (!category) {
-            alert("Category is required!");
-            event.preventDefault();
-            return;
-        }
+            // Validate Category
+            let category = document.getElementById('Categories').value;
+            if (!category) {
+                alert("Category is required!");
+                event.preventDefault();
+                return;
+            }
 
-        // Validate Movie File
-        let movieFile = document.getElementById('movie_file').files.length;
-        if (movieFile === 0) {
-            alert("Movie file is required!");
-            event.preventDefault();
-            return;
-        }
+            // Validate Movie File
+            let movieFile = document.getElementById('movie_file').files.length;
+            if (movieFile === 0) {
+                alert("Movie file is required!");
+                event.preventDefault();
+                return;
+            }
 
-        // Validate Cover Image
-        let coverImage = document.getElementById('cover_image').files.length;
-        if (coverImage === 0) {
-            alert("Cover image is required!");
-            event.preventDefault();
-            return;
-        }
-    });
+            // Validate Cover Image
+            let coverImage = document.getElementById('cover_image').files.length;
+            if (coverImage === 0) {
+                alert("Cover image is required!");
+                event.preventDefault();
+                return;
+            }
+        });
 
-    // Validate the update form
-    document.getElementById('updateform').addEventListener('submit', function(event) {
-        // Validate Title (max 20 words)
-        let title = document.getElementById('title1').value;
-        if (title.trim() === "") {
-            alert("Title is required!");
-            event.preventDefault();
-            return;
-        }
-        let titleWordCount = title.trim().split(/\s+/).length;
-        if (titleWordCount > 20) {
-            alert("Title cannot be more than 20 words!");
-            event.preventDefault();
-            return;
-        }
+        // Validate the update form
+        document.getElementById('updateform').addEventListener('submit', function(event) {
+            // Validate Title (max 20 words)
+            let title = document.getElementById('title1').value;
+            if (title.trim() === "") {
+                alert("Title is required!");
+                event.preventDefault();
+                return;
+            }
+            let titleWordCount = title.trim().split(/\s+/).length;
+            if (titleWordCount > 20) {
+                alert("Title cannot be more than 20 words!");
+                event.preventDefault();
+                return;
+            }
 
-        // Validate Description (max 50 words)
-        let description = document.getElementById('description1').value;
-        if (description.trim() === "") {
-            alert("Description is required!");
-            event.preventDefault();
-            return;
-        }
-        let descriptionWordCount = description.trim().split(/\s+/).length;
-        if (descriptionWordCount > 50) {
-            alert("Description cannot be more than 50 words!");
-            event.preventDefault();
-            return;
-        }
+            // Validate Description (max 50 words)
+            let description = document.getElementById('description1').value;
+            if (description.trim() === "") {
+                alert("Description is required!");
+                event.preventDefault();
+                return;
+            }
+            let descriptionWordCount = description.trim().split(/\s+/).length;
+            if (descriptionWordCount > 50) {
+                alert("Description cannot be more than 50 words!");
+                event.preventDefault();
+                return;
+            }
 
-        // Validate Release Date
-        let releaseDate = document.getElementById('release_date1').value;
-        if (releaseDate.trim() === "") {
-            alert("Release Date is required!");
-            event.preventDefault();
-            return;
-        }
+            // Validate Release Date
+            let releaseDate = document.getElementById('release_date1').value;
+            if (releaseDate.trim() === "") {
+                alert("Release Date is required!");
+                event.preventDefault();
+                return;
+            }
 
-        // Validate Genre (max 3 words)
-        let genre = document.getElementById('genre1').value;
-        let genreWordCount = genre.trim().split(/\s+/).length;
-        if (genreWordCount > 3) {
-            alert("Genre cannot be more than 3 words!");
-            event.preventDefault();
-            return;
-        }
+            // Validate Genre (max 3 words)
+            let genre = document.getElementById('genre1').value;
+            let genreWordCount = genre.trim().split(/\s+/).length;
+            if (genreWordCount > 3) {
+                alert("Genre cannot be more than 3 words!");
+                event.preventDefault();
+                return;
+            }
 
-        // Validate Duration
-        let duration = document.getElementById('duration1').value;
-        if (duration.trim() === "") {
-            alert("Duration is required!");
-            event.preventDefault();
-            return;
-        }
+            // Validate Duration
+            let duration = document.getElementById('duration1').value;
+            if (duration.trim() === "") {
+                alert("Duration is required!");
+                event.preventDefault();
+                return;
+            }
 
-        // Validate Category
-        let category = document.getElementById('Categories1').value;
-        if (!category) {
-            alert("Category is required!");
-            event.preventDefault();
-            return;
-        }
+            // Validate Category
+            let category = document.getElementById('Categories1').value;
+            if (!category) {
+                alert("Category is required!");
+                event.preventDefault();
+                return;
+            }
 
-        // Validate Movie File
-        let movieFile = document.getElementById('movie_file1').files.length;
-        if (movieFile === 0) {
-            alert("Movie file is required!");
-            event.preventDefault();
-            return;
-        }
+            // Validate Movie File
+            let movieFile = document.getElementById('movie_file1').files.length;
+            if (movieFile === 0) {
+                alert("Movie file is required!");
+                event.preventDefault();
+                return;
+            }
 
-        // Validate Cover Image
-        let coverImage = document.getElementById('cover_image1').files.length;
-        if (coverImage === 0) {
-            alert("Cover image is required!");
-            event.preventDefault();
-            return;
-        }
-    });
-</script>
+            // Validate Cover Image
+            let coverImage = document.getElementById('cover_image1').files.length;
+            if (coverImage === 0) {
+                alert("Cover image is required!");
+                event.preventDefault();
+                return;
+            }
+        });
+    </script>
 
 
 

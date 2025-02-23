@@ -1,0 +1,224 @@
+@font-face {
+    font-family: Roboto;
+    src:url(../assets/fonts/roboto.ttf)
+  }
+  @font-face {
+    font-family: Inter;
+    src: url(../assets/fonts/inter.ttf);
+  }
+  :root {
+    --primary-color: #ff055f;
+    --neutral-100: #666666;
+    --neutral-75: #999999;
+    --neutral-50: #cfcfcf;
+    --neutral-25: #e8e8e8;
+    --neutral-0: #ffffff;
+    --neutral-1000: #393939;
+  }
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: Roboto;
+    background-color: #fff;
+  }
+  .container {
+    max-width: 1012px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .main-div {
+    display: flex;
+    justify-content: space-between;
+  }
+  .aside {
+    width: 20%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-right: 1px solid var(--neutral-50);
+    height: 1024px;
+    padding-top: 40px;
+    position: fixed;
+  }
+  
+  .movie-card {
+    display: grid;
+    gap: 20px;
+    padding-top: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  .movie-nav {
+    justify-content: space-between;
+    display: flex;
+    margin: 40px 0;
+  }
+  .movie-list {
+    margin-left: 270.8px;
+  }
+  .movie-list h1 {
+    font-family: Inter;
+    font-size: 16px;
+  }
+  .movie-list button {
+    border-radius: 12px;
+    background: var(--primary-color, #ff055f);
+    font-family: Inter;
+    color: var(--neutral-0, #fff);
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    width: 132px;
+    height: 40px;
+    border: 1px solid var(--primary-color);
+  }
+  .main-div .aside svg {
+    width: 113px;
+    height: 60px;
+    color: var(--neutral-1000);
+  }
+  
+  .nav {
+    padding-right: 43px;
+  }
+  .nav .movie-list-nav {
+    margin: 30px;
+  }
+  
+  .nav a {
+    font-family: Inter;
+    text-decoration: none;
+    color: var(--neutral-1000);
+  }
+  .nav .active {
+    font-weight: bold;
+  }
+  .movie-list {
+    width: 100%;
+  }
+  
+  .movie-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 70px;
+    margin-left: 149px;
+    margin-right: 149px;
+  }
+  .movie-column {
+    height: 69px;
+    border: 1px solid #bbbbbb;
+    border-radius: 8px;
+  }
+  .movie-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 7px;
+  }
+  .movie-date {
+    margin-left: 7px;
+  }
+  .movie-header h1 {
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+  }
+  .movie-date h1 {
+    font-style: normal;
+    font-weight: 400;
+    color: var(--neutral-100);
+  }
+  .popup-overlay,
+  .popup-overlay1 {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .popup,
+  .popup1 {
+    font-family: Inter;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .popup-content,
+  .popup-content1 {
+    text-align: center;
+  }
+  
+  .popup .close,
+  .popup1 .close1 {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .popup #title,
+  .popup #description,
+  .pop #release_date,
+  .popup #genre,
+  .popup #duration,
+  .popup #Categories,
+  .popup #movie_file,
+  .popup #cover_image,
+  .popup1 #title1,
+  .popup1 #description1,
+  .pop1 #release_date1,
+  .popup1 #genre1,
+  .popup1 #duration1,
+  .popup1 #Categories1,
+  .popup1 #movie_file1,
+  .popup1 #cover_image1 {
+    font-family: Inter;
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .popup button,
+  .popup1 button {
+    border-radius: 12px;
+    background: var(--primary-color, #ff055f);
+    font-family: Inter;
+    color: var(--neutral-0, #fff);
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    width: 91px;
+    height: 40px;
+    border: 1px solid var(--primary-color);
+  }
+  .movie-column .update_img {
+    width: 13.5px;
+    height: 15px;
+  }
+  
+  @media screen and (max-width: 600px) {
+    
+  }
+  .movie-card-link{
+    text-decoration: none;
+    color: inherit;
+  }
