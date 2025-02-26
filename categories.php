@@ -91,8 +91,9 @@ $result = $conn->query($sql);
               <button>
                 <img src="assets/images/Frame.svg">
               </button>
+              <ul id="searchResults" class="search-results-list"></ul>
               <form>
-                <ul id="searchResults" class="search-results-list"></ul>
+                
           </div>
 
         </div>

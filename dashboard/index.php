@@ -7,7 +7,21 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 include("../php_connection/connection.php");
-$sql = "SELECT * FROM movies";
+$sql = "SELECT 
+        m.movie_id, 
+        m.title, 
+        m.release_date, 
+        m.cover_image, 
+        m.duration, 
+        m.created_at, 
+        AVG(r.rating) AS average_rating, 
+        COUNT(r.rating) AS total_ratings, 
+        c.category_name 
+    FROM movies m
+    LEFT JOIN reviews r ON m.movie_id = r.movie_id
+    LEFT JOIN movie_categories mc ON m.movie_id = mc.movie_id
+    LEFT JOIN categories c ON mc.category_id = c.category_id
+    GROUP BY m.movie_id, c.category_name";
 $result = $conn->query($sql);
 
 ?>
@@ -69,7 +83,7 @@ $result = $conn->query($sql);
                                             
                                         <img src="../assets/images/Frame 199.svg" width="11.41" height="10.85" alt="Delete Movie" id="deleteImage<?php echo $row['movie_id']; ?>" style="cursor: pointer;">
                                            
-                                            <h5><?php echo (number_format($row["average_rating"], 1)) ?></h5>
+                                           
                                         </div>
                                         <script>
                                                 document.getElementById("deleteImage<?php echo $row['movie_id']; ?>").addEventListener("click", function() {
@@ -110,7 +124,7 @@ $result = $conn->query($sql);
 
                     
                     <label for="duration">Duration:</label>
-                    <input type="number" id="duration" name="duration" required><br><br>
+                    <input type="number" id="duration" name="duration" min=0 required><br><br>
 
                     <label for="category">Categories:</label>
                     <select name="category_id[]" id="Categories" required>
@@ -157,7 +171,8 @@ $result = $conn->query($sql);
 
                    
                     <label for="duration">Duration (in minutes):</label>
-                    <input type="text" id="duration1" name="duration" required><br><br>
+                    <input type="number" id="duration1" name="duration" min="0" required><br><br>
+
 
 
                     <label for="category">Categories:</label>

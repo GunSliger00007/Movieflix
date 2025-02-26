@@ -31,7 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Handle movie file upload
     if ($movie_file['error'] === UPLOAD_ERR_OK) {
-        $movie_file_path = $movie_file_dir . basename($movie_file['name']);
+        $unique_movie_filename = uniqid() . '_' . basename($movie_file['name']); // Generate unique ID for the movie file
+        $movie_file_path = $movie_file_dir . $unique_movie_filename;
         if (!move_uploaded_file($movie_file['tmp_name'], $movie_file_path)) {
             echo "Error uploading movie file.<br>";
         }
@@ -41,7 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Handle cover image upload
     if ($cover_image['error'] === UPLOAD_ERR_OK) {
-        $cover_image_path = $image_file_dir . basename($cover_image['name']);
+        $unique_image_filename = uniqid() . '_' . basename($cover_image['name']); // Generate unique ID for the cover image
+        $cover_image_path = $image_file_dir . $unique_image_filename;
         if (!move_uploaded_file($cover_image['tmp_name'], $cover_image_path)) {
             echo "Error uploading cover image.<br>";
         }

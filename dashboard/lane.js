@@ -141,7 +141,7 @@ document.getElementById('moviefile_name').addEventListener('click', function () 
 
 document.getElementById('movie_file1').addEventListener('change', function (event) {
     const file = event.target.files[0];
-    const allowedTypes = ['video/mp4', 'video/webm', 'video/avi'];  // Example allowed video file types
+    const allowedTypes = ['video/mp4','video/mkv'];  // Example allowed video file types
     const maxSize = 2.5 * 1024 * 1024 * 1024;  // Max file size 2.5GB (in bytes)
 
     // Validate file type

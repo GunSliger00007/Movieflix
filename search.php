@@ -57,8 +57,9 @@ include('./php_connection/connection.php');
               <button>
                 <img src="assets/images/Frame.svg">
               </button>
+              <ul id="searchResults" class="search-results-list"></ul>
             </form>
-            <ul id="searchResults" class="search-results-list"></ul>
+            
           </div>
 
         </div>
@@ -161,7 +162,7 @@ include('./php_connection/connection.php');
 
   </div>
   </div>
-  <div class="footer">
+  <div class="footer" style="position: absolute; bottom:0;">
     <div class="content container">
       <div class="footer-logo">
         <a href="#">

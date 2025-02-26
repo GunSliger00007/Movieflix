@@ -471,19 +471,19 @@
   }
   #searchResults {
     list-style-type: none; /* Remove bullet points */
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove default padding */
     max-height: 200px; /* Limit the height for scrolling */
     overflow-y: auto; /* Enable vertical scrolling */
     background-color: #fff; /* Set background color */
     border-radius: 4px; /* Rounded corners */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     position: absolute; /* Allow floating below input */
+    top: 45px;
+    left: 0;
     width: 100%; /* Make it the same width as the input */
     z-index: 1000; /* Ensure it stays on top */
-    margin-top: 236px;
     display: inline;
   }
+  
   .popup button {
     background-color: #4caf50;
   
