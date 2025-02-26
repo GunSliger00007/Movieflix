@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Handle active class toggle for navigation links
- 
+
 
     let activeClass = document.querySelectorAll(".nav a");
 
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const titleInput = document.getElementById('title1');
     const descriptionInput = document.getElementById('description1');
     const releaseDateInput = document.getElementById('release_date1');
-    const genreInput = document.getElementById('genre1');
+
     const durationInput = document.getElementById('duration1');
     const updateImgButtons = document.querySelectorAll('.update_img');
     const submitForm1 = document.getElementById('submitForm1');
@@ -62,13 +62,34 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.success) {
                     document.getElementById('movie_id1').value = movie_id;
                     console.log(movie_id)
+                    console.log(data);
                     titleInput.value = data.movie.title;
                     descriptionInput.value = data.movie.description;
                     releaseDateInput.value = data.movie.release_date;
-                    genreInput.value = data.movie.genre;
                     durationInput.value = data.movie.duration;
-                    document.getElementById('movie_file1').innerText = data.movie.file_path;
-                    document.getElementById('cover_image1').innerText = data.movie.cover_image;
+                    const categorySelect = document.getElementById("Categories1");
+
+                    // Clear any existing options in the select dropdown
+                    categorySelect.innerHTML = '';
+
+                    // Add the related categories first
+                    data.related_categories.forEach(function (category) {
+                        const option = document.createElement("option");
+                        option.value = category.category_id;
+                        option.textContent = category.category_name;
+                        categorySelect.appendChild(option);
+                    });
+
+                    // Then add the non-related categories
+                    data.non_related_categories.forEach(function (category) {
+                        const option = document.createElement("option");
+                        option.value = category.category_id;
+                        option.textContent = category.category_name;
+                        categorySelect.appendChild(option);
+                    });
+
+                    document.getElementById('moviefile_name').innerText = data.movie.file_path;
+                    document.getElementById('cover_image_name').innerText = data.movie.cover_image;
                     console.log(data.movie.file_path);
                     console.log(data.movie.cover_image);
                     currentMovieId = movie_id; // Store current movie ID for update
@@ -87,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
         titleInput.value = '';
         descriptionInput.value = '';
         releaseDateInput.value = '';
-        genreInput.value = '';
+
         durationInput.value = '';
     }
 
@@ -103,7 +124,90 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Handle form submission
-    
+
+
+});
+
+
+// Movie file selection logic (using div)
+document.getElementById('moviefile_name').addEventListener('click', function () {
+    const movieFileInput = document.getElementById('movie_file1');
+
+    // Only trigger the dialog if no file has been selected yet
+    if (!movieFileInput.files.length) {
+        movieFileInput.click();  // Trigger file input
+    }
+});
+
+document.getElementById('movie_file1').addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    const allowedTypes = ['video/mp4', 'video/webm', 'video/avi'];  // Example allowed video file types
+    const maxSize = 2.5 * 1024 * 1024 * 1024;  // Max file size 2.5GB (in bytes)
+
+    // Validate file type
+    if (file && !allowedTypes.includes(file.type)) {
+        alert('Invalid file type. Please select a video file (mp4, webm, avi).');
+        event.target.value = '';  // Clear the input
+        return;  // Stop further execution
+    }
+
+    // Validate file size
+    if (file && file.size > maxSize) {
+        alert('File size exceeds the limit of 2.5GB.');
+        event.target.value = '';  // Clear the input
+        return;  // Stop further execution
+    }
+
+    // If file is valid, display the name in the div
+    if (file) {
+        document.getElementById('moviefile_name').innerText = file.name;
+    }
+});
+
+// Cover image selection logic (using div)
+document.getElementById('cover_image_name').addEventListener('click', function () {
+    const coverImageInput = document.getElementById('cover_image1');
+
+    // Only trigger the dialog if no file has been selected yet
+    if (!coverImageInput.files.length) {
+        coverImageInput.click();  // Trigger file input
+    }
+});
+
+document.getElementById('cover_image1').addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];  // Example allowed image file types
+    const maxSize = 5 * 1024 * 1024;  // Max file size 5MB (in bytes)
+
+    // Validate file type
+    if (file && !allowedTypes.includes(file.type)) {
+        alert('Invalid file type. Please select an image file (jpg, png, gif).');
+        event.target.value = '';  // Clear the input
+        return;  // Stop further execution
+    }
+
+    // Validate file size
+    if (file && file.size > maxSize) {
+        alert('File size exceeds the limit of 5MB.');
+        event.target.value = '';  // Clear the input
+        return;  // Stop further execution
+    }
+
+    // If file is valid, display the name in the div
+    if (file) {
+        document.getElementById('cover_image_name').innerText = file.name;
+    }
+});
+
+// Form submission logic (for retaining cover image if not changed)
+document.getElementById('updateform').addEventListener('submit', function (event) {
+    const coverImageInput = document.getElementById('cover_image1');
+    const oldCoverImageInput = document.getElementById('old_cover_image');
+
+    // If no new cover image is selected, send the old cover image path
+    if (!coverImageInput.files.length) {
+        coverImageInput.disabled = true;  // Disable the file input to avoid sending empty file data
+        coverImageInput.value = oldCoverImageInput.value;  // Retain old cover image
+    }
 });
 

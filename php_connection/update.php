@@ -7,7 +7,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $release_date = $_POST['release_date'];
-    $genre = $_POST['genre'];
     $duration = $_POST['duration'];
 
     // Retrieve uploaded files
@@ -55,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             title = '$title', 
             description = '$description', 
             release_date = '$release_date', 
-            genre = '$genre', 
             duration = '$duration'";
 
     // Only update file paths if they were uploaded
@@ -69,30 +67,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sql .= " WHERE movie_id = $movie_id"; // Ensure you update the correct movie
 
     // Debugging: Print SQL query
-    echo "SQL Query: " . $sql . "<br>";
+    echo "SQL Query for movie update: " . $sql . "<br>";
 
     if ($conn->query($sql) === TRUE) {
         // Delete existing category associations
         $delete_categories_sql = "DELETE FROM movie_categories WHERE movie_id = $movie_id";
-        if (!$conn->query($delete_categories_sql)) {
+        if ($conn->query($delete_categories_sql)) {
+            echo "Categories deleted successfully.<br>";
+        } else {
             echo "Error deleting categories: " . $conn->error . "<br>";
+        }
+
+        // Debugging: Check if category_id exists and is an array
+        if (isset($_POST['category_id'])) {
+            echo "Categories received: " . implode(", ", $_POST['category_id']) . "<br>";
+        } else {
+            echo "No categories selected.<br>";
         }
 
         // Insert new categories if any are selected
         if (isset($_POST['category_id']) && !empty($_POST['category_id'])) {
             foreach ($_POST['category_id'] as $category_id) {
                 $category_sql = "INSERT INTO movie_categories (movie_id, category_id) VALUES ('$movie_id', '$category_id')";
+                // Debugging: Print each insert query
+                echo "Inserting category SQL: " . $category_sql . "<br>";
                 if (!$conn->query($category_sql)) {
                     echo "Error inserting category ID $category_id: " . $conn->error . "<br>";
+                } else {
+                    echo "Category ID $category_id inserted successfully.<br>";
                 }
             }
+        } else {
+            echo "No categories to insert.<br>";
         }
 
-        // Redirect to the dashboard
+        // Redirect to the dashboard after successful update
         header("Location: ../dashboard/index.php");
         exit();
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error updating movie: " . $sql . "<br>" . $conn->error;
     }
 }
 ?>

@@ -191,7 +191,16 @@ img {
 .popup1 #duration1,
 .popup1 #Categories1,
 .popup1 #movie_file1,
-.popup1 #cover_image1 {
+.popup1 #cover_image1 
+#release_date{
+  font-family: Inter;
+  width: 80%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.popup-overlay #release_date,.popup-overlay1 #release_date1{
   font-family: Inter;
   width: 80%;
   padding: 10px;
@@ -279,3 +288,112 @@ img {
 .card:hover img {
   transform: scale(1.03);
 }
+.file-upload {
+  width: 300px;
+  font-family: Arial, sans-serif;
+  padding-left: 131px;
+}
+
+.file-display {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  margin-top: 10px;
+}
+
+.file-icon {
+  background-color: red;
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  margin-right: 10px;
+  font-size: 12px;
+}
+
+#movie-file-name, #cover-image-name {
+  flex: 1;
+}
+
+.remove-file {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #888;
+}
+
+.file-error {
+  color: red;
+  font-size: 12px;
+}
+.file-upload {
+  width: 300px;
+  font-family: Arial, sans-serif;
+}
+
+.file-display {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.file-display.clickable:hover {
+  background-color: #eee;
+  border-color: #bbb;
+}
+
+.file-icon {
+  background-color: red;
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  margin-right: 10px;
+  font-size: 12px;
+}
+
+#movie-file-name, #cover-image-name {
+  flex: 1;
+}
+
+.remove-file {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #888;
+}
+
+.file-error {
+  color: red;
+  font-size: 12px;
+}
+
+.clickable-upload {
+  cursor: pointer;
+  color: #0056b3;
+  text-decoration: underline;
+}
+.file-upload-label {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+}
+
+.file-upload-label:hover {
+  background-color: #45a049;
+}
+

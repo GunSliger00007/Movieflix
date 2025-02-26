@@ -3,7 +3,7 @@ session_start();
 include "./php_connection/connection.php";
 if (isset($_GET['id'])) {
   $id = $_GET['id'];
-  $sql = "SELECT movie_id, title, release_date,file_path,description,genre,cover_image, duration,created_at FROM movies where movie_id=$id";
+  $sql = "SELECT movie_id, title, release_date,file_path,description,cover_image, duration,created_at FROM movies where movie_id=$id";
   $result = $conn->query($sql);
   $sql1="SELECT u.username, r.review_text, r.rating, COUNT(r.review_text) AS total_reviews FROM reviews r JOIN users u ON r.user_id = u.user_id WHERE r.movie_id = $id GROUP BY u.username, r.review_text, r.rating;";
   $result1=$conn->query($sql1);
@@ -128,8 +128,7 @@ if (isset($_GET['id'])) {
               <div class="all-detail">
                 <ul>
                   <li>Released: <span><?php echo $row['release_date'] ?></span></li>
-                  <li>Genre: <span><?php echo $row['genre'] ?></span></li>
-
+                  
                   <li>Duration: <span><?php echo $row['duration'] ?> min</span></li>
                   <li>Country: <span>United States of America</span></li>
 

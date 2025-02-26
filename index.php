@@ -6,7 +6,6 @@ $sql = "
         m.movie_id, 
         m.title, 
         m.release_date, 
-        m.genre, 
         m.cover_image, 
         m.duration, 
         m.created_at, 

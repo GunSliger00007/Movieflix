@@ -9,7 +9,7 @@ $sql = "
     movies.movie_id AS movie_id, 
     movies.title, 
     movies.cover_image AS image, 
-    movies.genre, 
+    
     movies.duration AS rating,
     AVG(r.rating) AS average_rating  
 FROM 
@@ -149,7 +149,7 @@ $result = $conn->query($sql);
         echo '<img src="./php_connection/' . htmlspecialchars($row['image'] ?: 'assets/images/default_image.png') . '" alt="' . htmlspecialchars($row['title']) . '">';
         echo '<h1>' . htmlspecialchars($row['title'] ?: 'Untitled Movie') . '</h1>';
         echo '<div class="genre">';
-        echo '<span>' . htmlspecialchars($row['genre'] ?: 'Genre Unknown') . '</span>';
+        echo '<span>' . htmlspecialchars($row['category_name'] ?: 'Genre Unknown') . '</span>';
         echo '<div class="rate">';
         echo '<img src="assets/images/Frame (1).svg" width="11.41" height="10.85">';
         echo '<h5>' . htmlspecialchars(number_format($row['average_rating'],1)) . '</h5>'; // Display duration

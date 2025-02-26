@@ -11,8 +11,8 @@ include('./php_connection/connection.php');
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Movieflix</title>
- 
-  <link rel="stylesheet" href="styles.css">
+
+  <link rel="stylesheet" href="wishlist.css">
 </head>
 
 <body>
@@ -81,12 +81,11 @@ include('./php_connection/connection.php');
           }
           ?>
         </div>
-                <?php
-                $sql = "SELECT 
+        <?php
+        $sql = "SELECT 
             m.movie_id,
             m.title AS movie_name,
             m.cover_image,
-            m.genre,
             AVG(r.rating) AS average_rating,
             COUNT(w.wishlist_id) AS total_wishlist
         FROM 
@@ -104,8 +103,8 @@ include('./php_connection/connection.php');
             average_rating DESC;
 
         ";
-            $result = $conn->query($sql);
-                ?>
+        $result = $conn->query($sql);
+        ?>
 
       </div>
     </div>
@@ -114,28 +113,28 @@ include('./php_connection/connection.php');
     <div class="container">
       <h2>Your Wishlist</h2>
       <div class="wishlist-items">
-  <?php if ($result->num_rows > 0) { ?>
-    <?php while ($row = $result->fetch_assoc()) { ?>
-      <div class="movie">
-        <a href="play.php?id=<?php echo $row['movie_id'] ?>">
-          <img src="./php_connection/<?php echo $row['cover_image'] ?>" alt="Movie Poster 1" class="movie-poster">
-        </a>
-        <div class="movie-info">
-          <h3><?php echo $row['title'] ?></h3>
-          <p>Genre: <?php echo $row['genre'] ?></p>
-          <p>Rating: <?php echo (number_format($row["average_rating"], 1)) ?>/5</p>
-          <form action="delete_watchlist.php" method="post">
-            <input type="hidden" name="movie_id" value="<?php echo $row['movie_id'] ?>">
-            <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
-            <button class="remove-btn">Remove from Wishlist</button>
-          </form>
-        </div>
+        <?php if ($result->num_rows > 0) { ?>
+          <?php while ($row = $result->fetch_assoc()) { ?>
+            <div class="movie">
+              <a href="play.php?id=<?php echo $row['movie_id'] ?>">
+                <img src="./php_connection/<?php echo $row['cover_image'] ?>" alt="Movie Poster 1" class="movie-poster">
+              </a>
+              <div class="movie-info">
+                <h3><?php echo $row['title'] ?></h3>
+               
+                <p>Rating: <?php echo (number_format($row["average_rating"], 1)) ?>/5</p>
+                <form action="delete_watchlist.php" method="post">
+                  <input type="hidden" name="movie_id" value="<?php echo $row['movie_id'] ?>">
+                  <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
+                  <button class="remove-btn">Remove from Wishlist</button>
+                </form>
+              </div>
+            </div>
+          <?php } ?>
+        <?php } else { ?>
+          <p>Nothing in wishlist</p>
+        <?php } ?>
       </div>
-    <?php } ?>
-  <?php } else { ?>
-    <p>Nothing in wishlist</p>
-  <?php } ?>
-</div>
 
     </div>
   </section>
@@ -203,7 +202,7 @@ include('./php_connection/connection.php');
       <span class="close" id="closePopup">&times;</span>
       <div class="popup-content" id="signupForm">
         <p>Welcome to our website!</p>
-        
+
         <p id="responseMessage" style="color: red;"></p>
         <form action="register.php" method="post" id="registerForm">
           <input type="email" name="email" placeholder="Your email" id="emailInput">

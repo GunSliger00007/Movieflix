@@ -108,14 +108,13 @@ $result = $conn->query($sql);
                     <label for="release_date">Release Date:</label>
                     <input type="date" id="release_date" name="release_date" required><br><br>
 
-                    <label for="genre">Genre:</label>
-                    <input type="text" id="genre" name="genre" maxlength="255" required><br><br>
-
+                    
                     <label for="duration">Duration:</label>
                     <input type="number" id="duration" name="duration" required><br><br>
 
                     <label for="category">Categories:</label>
                     <select name="category_id[]" id="Categories" required>
+                        <option id="category_move"></option>
                         <?php
                         // Fetch categories from the database
                         $category_query = "SELECT category_id, category_name FROM categories";
@@ -156,30 +155,23 @@ $result = $conn->query($sql);
                     <label for="release_date">Release Date:</label>
                     <input type="date" id="release_date1" name="release_date" required><br><br>
 
-                    <label for="genre">Genre:</label>
-                    <input type="text" id="genre1" name="genre" maxlength="255" required><br><br>
-
+                   
                     <label for="duration">Duration (in minutes):</label>
                     <input type="text" id="duration1" name="duration" required><br><br>
 
 
                     <label for="category">Categories:</label>
                     <select name="category_id[]" id="Categories1" required>
-                        <?php
-                        // Fetch categories from the database
-                        $category_query = "SELECT category_id, category_name FROM categories";
-                        $category_result = $conn->query($category_query);
-                        while ($category_row = $category_result->fetch_assoc()) {
-                            echo '<option value="' . $category_row['category_id'] . '">' . $category_row['category_name'] . '</option>';
-                        }
-                        ?>
+                      
                     </select><br><br>
-                    <label for="movie_file">Upload Movie File:</label>
-                    <input type="file" id="movie_file1" name="movie_file" accept=".mkv, .mp4, video/*" required><br>
-
-                    <label for="cover_image">Upload Cover Image:</label>
-                    <input type="file" id="cover_image1" name="cover_image" accept="image/*" required><br>
-
+                  
+                    <label for="movie_file" >Upload Movie File:</label>
+                    <input type="file" id="movie_file1" name="movie_file" accept=".mkv, .mp4, video/*" hidden><br>
+                    <div  id="moviefile_name" class="file-upload-label"></div>   
+                        <br>
+                    <label for="cover_image" >Upload Cover Image:</label>
+                    <input type="file" id="cover_image1" name="cover_image" accept="image/*"  hidden><br>
+                    <div  id="cover_image_name" class="file-upload-label"></div><br>     
                     <input type="submit" value="Submit Movie">
                 </form>
 
@@ -343,9 +335,12 @@ $result = $conn->query($sql);
             if (coverImage === 0) {
                 alert("Cover image is required!");
                 event.preventDefault();
-                return;
+                return;document.getElementById("release_date1").setAttribute("max", today);
             }
         });
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("release_date1").setAttribute("max", today);
+        document.getElementById("release_date").setAttribute("max", today);
     </script>
 
 
