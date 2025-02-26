@@ -5,7 +5,7 @@
   $year = $_GET['year'];
   
   // Start the base query
-  $query = "SELECT m.movie_id, m.title, m.cover_image, m.genre, m.release_date, c.category_name 
+  $query = "SELECT m.movie_id, m.title, m.cover_image, m.release_date, c.category_name 
             FROM movies m
             LEFT JOIN movie_categories mc ON m.movie_id = mc.movie_id
             LEFT JOIN categories c ON mc.category_id = c.category_id WHERE 1";
