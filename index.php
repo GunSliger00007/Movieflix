@@ -2,24 +2,69 @@
 session_start();
 include('./php_connection/connection.php');
 $sql = "
-    SELECT 
-        m.movie_id, 
-        m.title, 
-        m.release_date, 
-        m.cover_image, 
-        m.duration, 
-        m.created_at, 
-        AVG(r.rating) AS average_rating, 
-        COUNT(r.rating) AS total_ratings, 
-        c.category_name 
-    FROM movies m
-    LEFT JOIN reviews r ON m.movie_id = r.movie_id
-    LEFT JOIN movie_categories mc ON m.movie_id = mc.movie_id
-    LEFT JOIN categories c ON mc.category_id = c.category_id
-    GROUP BY m.movie_id, c.category_name;
+ SELECT 
+    m.movie_id, 
+    m.title, 
+    m.release_date, 
+    m.cover_image, 
+    m.duration, 
+    m.created_at, 
+    AVG(r.rating) AS average_rating, 
+    COUNT(r.rating) AS total_ratings, 
+    c.category_name 
+FROM movies m
+LEFT JOIN reviews r ON m.movie_id = r.movie_id
+LEFT JOIN movie_categories mc ON m.movie_id = mc.movie_id
+LEFT JOIN categories c ON mc.category_id = c.category_id
+GROUP BY m.movie_id, c.category_name
+ORDER BY average_rating DESC;
+
 ";
 
 $result = $conn->query($sql);
+
+// Fetch trending movies based on average rating
+
+
+
+// Load recommendation classes and compute personalized recommendations for logged-in users
+require_once __DIR__ . '/dashboard/RecommendationService.php';
+require_once __DIR__ . '/dashboard/SentimentService.php';
+$recommendations = [];
+if (isset($_SESSION['user_id'])) {
+    $userId = (int) $_SESSION['user_id'];
+
+    $countSql = "SELECT COUNT(*) AS cnt FROM reviews WHERE user_id = $userId";
+    $countRes = $conn->query($countSql);
+    if ($countRes) {
+        $cntRow = $countRes->fetch_assoc();
+        $userReviewCount = isset($cntRow['cnt']) ? (int) $cntRow['cnt'] : 0;
+
+        if ($userReviewCount >= 3) {
+            // Use the user's most recent reviewed movie as the seed for recommendations
+            $lastSql = "SELECT movie_id FROM reviews WHERE user_id = $userId ORDER BY created_at DESC LIMIT 1";
+            $lastRes = $conn->query($lastSql);
+            if ($lastRes && $lastRes->num_rows > 0) {
+                $lastRow = $lastRes->fetch_assoc();
+                $seedMovieId = (int) $lastRow['movie_id'];
+
+                $recService = new RecommendationService($conn);
+                $recommendedIds = $recService->recommend($seedMovieId, 6);
+
+                if (!empty($recommendedIds)) {
+                    $idsList = implode(',', array_map('intval', $recommendedIds));
+                    $movieSql = "SELECT movie_id, title, cover_image FROM movies WHERE movie_id IN ($idsList)";
+                    $movieRes = $conn->query($movieSql);
+                    if ($movieRes) {
+                        while ($m = $movieRes->fetch_assoc()) {
+                            $recommendations[] = $m;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -129,6 +174,10 @@ $result = $conn->query($sql);
 
 
             </div>
+
+            <!-- Trending movies (based on average rating) -->
+        
+
         </div>
         <form id="filterForm">
             <?php
@@ -198,11 +247,61 @@ $result = $conn->query($sql);
                     </div>
                 </a>
                 <?php } ?>
+              
+            </div>
+
+        </div>
+    </div>
+ <div class="main container">
+   
+
+       <?php if (!empty($recommendations)) { ?>
+       <div class="category_link">
+
+
+            <div class="current_link">
+                <a href="">Recommendation for you</a>
+            </div>
+            <div class="categories_link">
+
+
+            </div>
+
+            <!-- Trending movies (based on average rating) -->
+        
+
+        </div>
+        <div id="moviesList"></div>
+        <div class="movies-list">
+
+    <div class="movies-list">
+        <div class="column">
+            <?php foreach ($recommendations as $rec) { ?>
+                <a href="play.php?id=<?php echo $rec['movie_id']; ?>" class="card">
+                    <img src="./php_connection/<?php echo $rec['cover_image']; ?>">
+                    <div class="genre-wrapper">
+                        <div class="left-sec">
+                            <h1><?php echo htmlspecialchars($rec['title']); ?></h1>
+                            <span>Recommended</span>
+                        </div>
+                        <div class="genre">
+                            <div class="rate">
+                                <img src="assets/images/Frame (1).svg" width="11.41" height="10.85">
+                                <h5>★</h5>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            <?php } ?>
+        </div>
+    
+<?php } ?>
 
             </div>
 
         </div>
     </div>
+
     <div class="footer">
         <div class="content container">
             <div class="footer-logo">

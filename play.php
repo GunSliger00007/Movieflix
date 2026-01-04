@@ -7,6 +7,40 @@ if (isset($_GET['id'])) {
   $result = $conn->query($sql);
   $sql1="SELECT u.username, r.review_text, r.rating, COUNT(r.review_text) AS total_reviews FROM reviews r JOIN users u ON r.user_id = u.user_id WHERE r.movie_id = $id GROUP BY u.username, r.review_text, r.rating;";
   $result1=$conn->query($sql1);
+
+  // Load recommendation classes
+  require_once __DIR__ . '/dashboard/RecommendationService.php';
+  require_once __DIR__ . '/dashboard/SentimentService.php';
+
+  // Prepare recommendations only for logged-in users who have written at least 3 reviews
+  $recommendations = [];
+  if (isset($_SESSION['user_id'])) {
+      $userId = (int) $_SESSION['user_id'];
+
+      $countSql = "SELECT COUNT(*) AS cnt FROM reviews WHERE user_id = $userId";
+      $countRes = $conn->query($countSql);
+      if ($countRes) {
+          $cntRow = $countRes->fetch_assoc();
+          $userReviewCount = isset($cntRow['cnt']) ? (int) $cntRow['cnt'] : 0;
+
+          if ($userReviewCount >= 3) {
+              $recService = new RecommendationService($conn);
+              $recommendedIds = $recService->recommend($id, 5);
+
+              if (!empty($recommendedIds)) {
+                  // Fetch basic details for recommended movies
+                  $idsList = implode(',', array_map('intval', $recommendedIds));
+                  $movieSql = "SELECT movie_id, title, cover_image FROM movies WHERE movie_id IN ($idsList)";
+                  $movieRes = $conn->query($movieSql);
+                  if ($movieRes) {
+                      while ($m = $movieRes->fetch_assoc()) {
+                          $recommendations[] = $m;
+                      }
+                  }
+              }
+          }
+      }
+  }
 }
 ?>
 
@@ -172,6 +206,25 @@ if (isset($_GET['id'])) {
     </div>
     
   </main>
+
+<?php if (!empty($recommendations)) { ?>
+  <section class="recommendations" style="padding:20px; background:#f7f7f7;">
+    <div class="custom-container">
+      <h3>Recommended for you</h3>
+      <div class="rec-list" style="display:flex; gap:12px; flex-wrap:wrap;">
+        <?php foreach ($recommendations as $rec) { ?>
+          <div class="rec-item" style="width:140px;">
+            <a href="play.php?id=<?php echo $rec['movie_id']; ?>" style="text-decoration:none; color:inherit;">
+              <img src="./php_connection/<?php echo $rec['cover_image']; ?>" alt="<?php echo htmlspecialchars($rec['title']); ?>" style="width:100%; height:200px; object-fit:cover; border-radius:6px;" />
+              <p style="margin:8px 0 0; font-size:14px;"><?php echo htmlspecialchars($rec['title']); ?></p>
+            </a>
+          </div>
+        <?php } ?>
+      </div>
+    </div>
+  </section>
+<?php } ?>
+
   <div class="popup-overlay" id="popupOverlay" style="display: none;">
     <div class="popup" id="popup">
       <span class="close" id="closePopup">&times;</span>
