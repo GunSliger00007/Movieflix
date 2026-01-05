@@ -207,23 +207,7 @@ if (isset($_GET['id'])) {
     
   </main>
 
-<?php if (!empty($recommendations)) { ?>
-  <section class="recommendations" style="padding:20px; background:#f7f7f7;">
-    <div class="custom-container">
-      <h3>Recommended for you</h3>
-      <div class="rec-list" style="display:flex; gap:12px; flex-wrap:wrap;">
-        <?php foreach ($recommendations as $rec) { ?>
-          <div class="rec-item" style="width:140px;">
-            <a href="play.php?id=<?php echo $rec['movie_id']; ?>" style="text-decoration:none; color:inherit;">
-              <img src="./php_connection/<?php echo $rec['cover_image']; ?>" alt="<?php echo htmlspecialchars($rec['title']); ?>" style="width:100%; height:200px; object-fit:cover; border-radius:6px;" />
-              <p style="margin:8px 0 0; font-size:14px;"><?php echo htmlspecialchars($rec['title']); ?></p>
-            </a>
-          </div>
-        <?php } ?>
-      </div>
-    </div>
-  </section>
-<?php } ?>
+
 
   <div class="popup-overlay" id="popupOverlay" style="display: none;">
     <div class="popup" id="popup">

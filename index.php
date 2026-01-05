@@ -31,33 +31,58 @@ $result = $conn->query($sql);
 require_once __DIR__ . '/dashboard/RecommendationService.php';
 require_once __DIR__ . '/dashboard/SentimentService.php';
 $recommendations = [];
+
 if (isset($_SESSION['user_id'])) {
     $userId = (int) $_SESSION['user_id'];
 
+    // Count how many reviews the user has made
     $countSql = "SELECT COUNT(*) AS cnt FROM reviews WHERE user_id = $userId";
     $countRes = $conn->query($countSql);
+
     if ($countRes) {
         $cntRow = $countRes->fetch_assoc();
         $userReviewCount = isset($cntRow['cnt']) ? (int) $cntRow['cnt'] : 0;
 
         if ($userReviewCount >= 3) {
-            // Use the user's most recent reviewed movie as the seed for recommendations
+            // Use the most recent reviewed movie as the seed
             $lastSql = "SELECT movie_id FROM reviews WHERE user_id = $userId ORDER BY created_at DESC LIMIT 1";
             $lastRes = $conn->query($lastSql);
+
             if ($lastRes && $lastRes->num_rows > 0) {
                 $lastRow = $lastRes->fetch_assoc();
                 $seedMovieId = (int) $lastRow['movie_id'];
 
-                $recService = new RecommendationService($conn);
-                $recommendedIds = $recService->recommend($seedMovieId, 6);
+                // Fetch recommendations directly from the movie_recommendations table
+                $recSql = "SELECT recs_json FROM movie_recommendations WHERE movie_id = $seedMovieId";
+                $recRes = $conn->query($recSql);
 
-                if (!empty($recommendedIds)) {
-                    $idsList = implode(',', array_map('intval', $recommendedIds));
-                    $movieSql = "SELECT movie_id, title, cover_image FROM movies WHERE movie_id IN ($idsList)";
-                    $movieRes = $conn->query($movieSql);
-                    if ($movieRes) {
-                        while ($m = $movieRes->fetch_assoc()) {
-                            $recommendations[] = $m;
+                if ($recRes && $recRes->num_rows > 0) {
+                    $recRow = $recRes->fetch_assoc();
+                    $recommendedIds = json_decode($recRow['recs_json'], true);
+
+                    if (!empty($recommendedIds)) {
+                        // Fetch movie details for these recommended IDs
+                        $idsList = implode(',', array_map('intval', $recommendedIds));
+                    $movieSql = "
+    SELECT 
+        m.movie_id, 
+        m.title, 
+        m.cover_image, 
+        GROUP_CONCAT(DISTINCT c.category_name SEPARATOR ', ') AS categories,
+        IFNULL(AVG(r.rating), 0) AS avg_rating
+    FROM movies m
+    LEFT JOIN movie_categories mc ON m.movie_id = mc.movie_id
+    LEFT JOIN categories c ON mc.category_id = c.category_id
+    LEFT JOIN reviews r ON m.movie_id = r.movie_id
+    WHERE m.movie_id IN ($idsList)
+    GROUP BY m.movie_id
+";
+                                                $movieRes = $conn->query($movieSql);
+
+                        if ($movieRes) {
+                            while ($m = $movieRes->fetch_assoc()) {
+                                $recommendations[] = $m;
+                            }
                         }
                     }
                 }
@@ -65,6 +90,7 @@ if (isset($_SESSION['user_id'])) {
         }
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -282,12 +308,14 @@ if (isset($_SESSION['user_id'])) {
                     <div class="genre-wrapper">
                         <div class="left-sec">
                             <h1><?php echo htmlspecialchars($rec['title']); ?></h1>
-                            <span>Recommended</span>
+                            
+                            <span><?php echo $rec['categories']; ?></span>
                         </div>
                         <div class="genre">
                             <div class="rate">
                                 <img src="assets/images/Frame (1).svg" width="11.41" height="10.85">
-                                <h5>★</h5>
+                               <h5><?php echo number_format($rec['avg_rating'], 1); ?></h5>
+
                             </div>
                         </div>
                     </div>
