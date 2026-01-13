@@ -68,7 +68,7 @@ $movies_result1 = $conn->query("SELECT movie_id, title FROM movies");
         <div class="movie-list">
             <div class="container">
                 <div class="movie-nav ">
-                    <h1>Categories list</h1>
+                    <h1>Reviews list</h1>
 
                     <button id="addmovies" type="submit">Add reviews</button>
                 </div>
@@ -166,7 +166,7 @@ $movies_result1 = $conn->query("SELECT movie_id, title FROM movies");
             <span class="close1" id="closePopup1">&times;</span>
             <div class="popup-content1">
                 <p>Welcome to our website!</p>
-                <p>Sign up to receive exclusive offers:</p>
+                <p></p>
                 <form method="post" action="update_review.php">
                     <label for="user_id">User:</label>
                     <select name="user_id" required>

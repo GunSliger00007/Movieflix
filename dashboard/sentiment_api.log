@@ -1,0 +1,69 @@
+2026-01-07 07:58:05 [INFO] Starting Flask Sentiment API
+2026-01-07 07:58:05 [WARNING]  * Debugger is active!
+2026-01-07 07:58:05 [INFO]  * Debugger PIN: 108-854-813
+2026-01-07 07:58:08 [INFO] Starting Flask Sentiment API
+2026-01-07 07:58:08 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-01-07 07:58:08 [INFO] [33mPress CTRL+C to quit[0m
+2026-01-07 07:58:08 [INFO]  * Restarting with stat
+2026-01-07 07:58:09 [INFO] Starting Flask Sentiment API
+2026-01-07 07:58:09 [WARNING]  * Debugger is active!
+2026-01-07 07:58:09 [INFO]  * Debugger PIN: 108-854-813
+2026-01-07 08:04:58 [INFO] Prediction: text='I love this movie! It was fantastic and amazing!...' score=0.863
+2026-01-07 08:04:58 [INFO] 127.0.0.1 - - [07/Jan/2026 08:04:58] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:04:58 [INFO] Prediction: text='This movie is terrible. I hate it....' score=0.178
+2026-01-07 08:04:58 [INFO] 127.0.0.1 - - [07/Jan/2026 08:04:58] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:04:58 [INFO] Prediction: text='It was okay, not great but not bad either....' score=0.262
+2026-01-07 08:04:58 [INFO] 127.0.0.1 - - [07/Jan/2026 08:04:58] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:04:58 [INFO] Prediction: text='Amazing and awesome, but a bit boring in the middl...' score=0.626
+2026-01-07 08:04:58 [INFO] 127.0.0.1 - - [07/Jan/2026 08:04:58] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:09 [INFO] Starting Flask Sentiment API
+2026-01-07 08:05:09 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-01-07 08:05:09 [INFO] [33mPress CTRL+C to quit[0m
+2026-01-07 08:05:09 [INFO]  * Restarting with stat
+2026-01-07 08:05:10 [INFO] Starting Flask Sentiment API
+2026-01-07 08:05:10 [WARNING]  * Debugger is active!
+2026-01-07 08:05:10 [INFO]  * Debugger PIN: 108-854-813
+2026-01-07 08:05:15 [INFO] Prediction: text='I love this movie! It was fantastic and amazing!...' score=0.863
+2026-01-07 08:05:15 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:15] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:15 [INFO] Prediction: text='This movie is terrible. I hate it....' score=0.178
+2026-01-07 08:05:15 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:15] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:15 [INFO] Prediction: text='It was okay, not great but not bad either....' score=0.262
+2026-01-07 08:05:15 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:15] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:15 [INFO] Prediction: text='Amazing and awesome, but a bit boring in the middl...' score=0.626
+2026-01-07 08:05:15 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:15] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:16 [INFO] Prediction: text='I love this movie! It was fantastic and amazing!...' score=0.863
+2026-01-07 08:05:16 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:16] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:16 [INFO] Prediction: text='This movie is terrible. I hate it....' score=0.178
+2026-01-07 08:05:16 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:16] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:16 [INFO] Prediction: text='It was okay, not great but not bad either....' score=0.262
+2026-01-07 08:05:16 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:16] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:16 [INFO] Prediction: text='Amazing and awesome, but a bit boring in the middl...' score=0.626
+2026-01-07 08:05:16 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:16] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:16 [INFO] Prediction: text='I love this movie! It was fantastic and amazing!...' score=0.863
+2026-01-07 08:05:16 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:16] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:16 [INFO] Prediction: text='This movie is terrible. I hate it....' score=0.178
+2026-01-07 08:05:16 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:16] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:16 [INFO] Prediction: text='It was okay, not great but not bad either....' score=0.262
+2026-01-07 08:05:16 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:16] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:16 [INFO] Prediction: text='Amazing and awesome, but a bit boring in the middl...' score=0.626
+2026-01-07 08:05:16 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:16] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:16 [INFO] Prediction: text='I love this movie! It was fantastic and amazing!...' score=0.863
+2026-01-07 08:05:16 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:16] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:16 [INFO] Prediction: text='This movie is terrible. I hate it....' score=0.178
+2026-01-07 08:05:16 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:16] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:16 [INFO] Prediction: text='It was okay, not great but not bad either....' score=0.262
+2026-01-07 08:05:16 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:16] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:16 [INFO] Prediction: text='Amazing and awesome, but a bit boring in the middl...' score=0.626
+2026-01-07 08:05:16 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:16] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:17 [INFO] Prediction: text='I love this movie! It was fantastic and amazing!...' score=0.863
+2026-01-07 08:05:17 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:17] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:17 [INFO] Prediction: text='This movie is terrible. I hate it....' score=0.178
+2026-01-07 08:05:17 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:17] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:17 [INFO] Prediction: text='It was okay, not great but not bad either....' score=0.262
+2026-01-07 08:05:17 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:17] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:17 [INFO] Prediction: text='Amazing and awesome, but a bit boring in the middl...' score=0.626
+2026-01-07 08:05:17 [INFO] 127.0.0.1 - - [07/Jan/2026 08:05:17] "POST /predict HTTP/1.1" 200 -
+2026-01-07 08:05:26 [INFO]  * Detected change in '/opt/lampp/htdocs/Movieflix/dashboard/app.py', reloading
+2026-01-07 08:05:26 [INFO]  * Restarting with stat

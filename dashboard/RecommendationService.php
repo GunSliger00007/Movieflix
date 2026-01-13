@@ -1,162 +1,148 @@
 <?php
-
 class RecommendationService
 {
     private $conn;
-    private $sentimentService;
+    private $flaskApiUrl;
 
-    public function __construct($conn)
+    public function __construct($conn, $flaskApiUrl = "http://localhost:5000/predict")
     {
         $this->conn = $conn;
-        $this->sentimentService = new SentimentService();
+        $this->flaskApiUrl = $flaskApiUrl;
     }
 
-    /* ===============================
-       PUBLIC METHOD
-       =============================== */
-    public function recommend($movieId, $limit = 5, $store = true)
+    /**
+     * Save a new review and calculate sentiment
+     */
+    public function saveReview($userId, $movieId, $reviewText)
     {
+        $userId = (int)$userId;
         $movieId = (int)$movieId;
+        $reviewText = mysqli_real_escape_string($this->conn, $reviewText);
 
-        // 1️⃣ Try to fetch stored recommendations first
-        if ($store) {
-            $stored = $this->getStoredRecommendations($movieId);
-            if ($stored !== null && count($stored) > 0) {
-                return $stored;
-            }
+        // 1️⃣ Insert review
+        $sql = "INSERT INTO reviews (user_id, movie_id, review_text) VALUES ($userId, $movieId, '$reviewText')";
+        if (!mysqli_query($this->conn, $sql)) {
+            die("SQL Error inserting review: " . mysqli_error($this->conn));
         }
 
-        // 2️⃣ Compute recommendations
-        $targetVector = $this->buildVector($movieId);
-        $scores = [];
+        // 2️⃣ Get the inserted review ID
+        $reviewId = mysqli_insert_id($this->conn);
 
-        $movies = $this->getAllMoviesExcept($movieId);
+        // 3️⃣ Get sentiment score from Flask API
+        $score = $this->callFlaskApi($reviewText);
+        $score = min(max((float)$score, 0), 1);
 
-        foreach ($movies as $movie) {
-            $vector = $this->buildVector($movie['movie_id']);
+        // 4️⃣ Update sentiment_score
+        $sqlUpdate = "UPDATE reviews SET sentiment_score = $score WHERE review_id = $reviewId";
+        mysqli_query($this->conn, $sqlUpdate) or die("SQL Error updating sentiment: " . mysqli_error($this->conn));
 
-            $cosine = $this->cosineSimilarity($targetVector, $vector);
-            $sentiment = $this->getAverageSentiment($movie['movie_id']);
-
-            // Weight sentiment lightly
-            $finalScore = $cosine + (0.1 * $sentiment);
-
-            if ($finalScore > 0) {
-                $scores[$movie['movie_id']] = $finalScore;
-            }
-        }
-
-        // Sort and get top N
-        arsort($scores);
-        $topMovies = array_slice(array_keys($scores), 0, $limit);
-
-        // 3️⃣ Store recommendations for next time
-        if ($store) {
-            $this->storeRecommendations($movieId, $topMovies);
-        }
-
-        return $topMovies;
+        return $reviewId;
     }
 
-    /* ===============================
-       PRIVATE METHODS
-       =============================== */
-
-    private function buildVector($movieId)
+    /**
+     * Recommend movies for a user based on their liked movies
+     */
+    public function recommendForUser($userId)
     {
-        $movieId = (int)$movieId;
-        $vector = [];
+        $userId = (int)$userId; // ensure integer
 
+        // 1️⃣ Get movies the user liked (sentiment_score > 0.7)
+        $sql = "SELECT movie_id FROM reviews WHERE user_id = $userId AND sentiment_score > 0.5";
+        $result = mysqli_query($this->conn, $sql);
+        if (!$result) die("SQL Error: " . mysqli_error($this->conn));
+
+        $likedMovieIds = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $likedMovieIds[] = (int)$row['movie_id'];
+        }
+        if (empty($likedMovieIds)) return []; // no liked movies
+
+        $likedMovieIdsList = implode(',', $likedMovieIds);
+
+        // 2️⃣ Get categories of liked movies
+        $sql = "SELECT DISTINCT category_id FROM movie_categories WHERE movie_id IN ($likedMovieIdsList)";
+        $result = mysqli_query($this->conn, $sql);
+        if (!$result) die("SQL Error: " . mysqli_error($this->conn));
+
+        $likedCategories = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $likedCategories[] = (int)$row['category_id'];
+        }
+        if (empty($likedCategories)) return []; // no categories found
+
+        $categoryList = implode(',', $likedCategories);
+
+        // 3️⃣ Recommend movies in same categories excluding already reviewed movies
         $sql = "
-            SELECT c.category_name
-            FROM movie_categories mc
-            JOIN categories c ON mc.category_id = c.category_id
-            WHERE mc.movie_id = $movieId
+            SELECT m.movie_id, m.title, m.description, m.release_date, m.duration, m.file_path, m.cover_image,
+                   GROUP_CONCAT(DISTINCT r.review_text SEPARATOR ' | ') AS reviews
+            FROM movies m
+            JOIN movie_categories mc ON m.movie_id = mc.movie_id
+            LEFT JOIN reviews r ON m.movie_id = r.movie_id AND r.sentiment_score > 0.5
+            WHERE mc.category_id IN ($categoryList)
+              AND m.movie_id NOT IN (
+                  SELECT movie_id FROM reviews WHERE user_id = $userId
+              )
+            GROUP BY m.movie_id, m.title, m.description, m.release_date, m.duration, m.file_path, m.cover_image
+        
         ";
         $result = mysqli_query($this->conn, $sql);
-        if (!$result) die("SQL Error in buildVector: " . mysqli_error($this->conn));
+        if (!$result) die("SQL Error: " . mysqli_error($this->conn));
+
+        $recommended = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $recommended[] = $row;
+        }
+
+        return $recommended;
+    }
+
+    /**
+     * Update sentiment scores for all reviews using Flask API
+     */
+    public function updateReviewSentiments()
+    {
+        $sql = "SELECT review_id, review_text FROM reviews";
+        $result = mysqli_query($this->conn, $sql);
+        if (!$result) die("SQL Error: " . mysqli_error($this->conn));
 
         while ($row = mysqli_fetch_assoc($result)) {
-            $vector[$row['category_name']] = 1;
+            $reviewId = (int)$row['review_id'];
+            $text = $row['review_text'];
+
+            // Call Flask API for sentiment
+            $score = $this->callFlaskApi($text);
+
+            // Ensure score is float between 0 and 1
+            $score = min(max((float)$score, 0), 1);
+
+            $sqlUpdate = "UPDATE reviews SET sentiment_score = $score WHERE review_id = $reviewId";
+            mysqli_query($this->conn, $sqlUpdate) or die("SQL Error updating sentiment: " . mysqli_error($this->conn));
+        }
+    }
+
+    /**
+     * Call Flask API for sentiment score
+     */
+    private function callFlaskApi($text)
+    {
+        $ch = curl_init($this->flaskApiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['text' => $text]));
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+
+        $response = curl_exec($ch);
+        if ($response === false) {
+            echo "Curl Error: " . curl_error($ch) . "\n";
+            curl_close($ch);
+            return 0.5; // fallback neutral
         }
 
-        return $vector;
-    }
-
-    private function cosineSimilarity($v1, $v2)
-    {
-        $dot = 0; $mag1 = 0; $mag2 = 0;
-
-        foreach ($v1 as $key => $val) {
-            $dot += $val * ($v2[$key] ?? 0);
-            $mag1 += $val * $val;
-        }
-        foreach ($v2 as $val) $mag2 += $val * $val;
-
-        return ($mag1 == 0 || $mag2 == 0) ? 0 : $dot / (sqrt($mag1) * sqrt($mag2));
-    }
-
-    private function getAverageSentiment($movieId)
-    {
-        $movieId = (int)$movieId;
-        $sql = "SELECT review_text FROM reviews WHERE movie_id = $movieId";
-        $result = mysqli_query($this->conn, $sql);
-        if (!$result) die("SQL Error in getAverageSentiment: " . mysqli_error($this->conn));
-
-        $totalScore = 0;
-        $count = 0;
-
-        while ($row = mysqli_fetch_assoc($result)) {
-            $totalScore += $this->sentimentService->analyze($row['review_text']);
-            $count++;
-        }
-
-        return $count > 0 ? $totalScore / $count : 0;
-    }
-
-    private function getAllMoviesExcept($movieId)
-    {
-        $movieId = (int)$movieId;
-        $sql = "SELECT movie_id FROM movies WHERE movie_id != $movieId";
-        $result = mysqli_query($this->conn, $sql);
-        if (!$result) die("SQL Error in getAllMoviesExcept: " . mysqli_error($this->conn));
-
-        $movies = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $movies[] = $row;
-        }
-
-        return $movies;
-    }
-
-    /* ===============================
-       DATABASE STORAGE METHODS
-       =============================== */
-
-    private function storeRecommendations($movieId, $topMovies)
-    {
-        $movieId = (int)$movieId;
-        $json = json_encode($topMovies);
-
-        $sql = "
-            INSERT INTO movie_recommendations (movie_id, recs_json, updated_at)
-            VALUES ($movieId, '$json', NOW())
-            ON DUPLICATE KEY UPDATE
-                recs_json = '$json',
-                updated_at = NOW()
-        ";
-        $result = mysqli_query($this->conn, $sql);
-        if (!$result) die("SQL Error in storeRecommendations: " . mysqli_error($this->conn));
-    }
-
-    private function getStoredRecommendations($movieId)
-    {
-        $movieId = (int)$movieId;
-        $sql = "SELECT recs_json FROM movie_recommendations WHERE movie_id = $movieId";
-        $result = mysqli_query($this->conn, $sql);
-        if (!$result) die("SQL Error in getStoredRecommendations: " . mysqli_error($this->conn));
-
-        $row = mysqli_fetch_assoc($result);
-        return $row ? json_decode($row['recs_json'], true) : null;
+        curl_close($ch);
+        $data = json_decode($response, true);
+        return isset($data['score']) ? (float)$data['score'] : 0.5;
     }
 }
+?>

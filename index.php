@@ -27,69 +27,19 @@ $result = $conn->query($sql);
 
 
 
-// Load recommendation classes and compute personalized recommendations for logged-in users
+
 require_once __DIR__ . '/dashboard/RecommendationService.php';
-require_once __DIR__ . '/dashboard/SentimentService.php';
-$recommendations = [];
 
+// Only proceed if user is logged in
 if (isset($_SESSION['user_id'])) {
-    $userId = (int) $_SESSION['user_id'];
+    $userId = $_SESSION['user_id'];
 
-    // Count how many reviews the user has made
-    $countSql = "SELECT COUNT(*) AS cnt FROM reviews WHERE user_id = $userId";
-    $countRes = $conn->query($countSql);
-
-    if ($countRes) {
-        $cntRow = $countRes->fetch_assoc();
-        $userReviewCount = isset($cntRow['cnt']) ? (int) $cntRow['cnt'] : 0;
-
-        if ($userReviewCount >= 3) {
-            // Use the most recent reviewed movie as the seed
-            $lastSql = "SELECT movie_id FROM reviews WHERE user_id = $userId ORDER BY created_at DESC LIMIT 1";
-            $lastRes = $conn->query($lastSql);
-
-            if ($lastRes && $lastRes->num_rows > 0) {
-                $lastRow = $lastRes->fetch_assoc();
-                $seedMovieId = (int) $lastRow['movie_id'];
-
-                // Fetch recommendations directly from the movie_recommendations table
-                $recSql = "SELECT recs_json FROM movie_recommendations WHERE movie_id = $seedMovieId";
-                $recRes = $conn->query($recSql);
-
-                if ($recRes && $recRes->num_rows > 0) {
-                    $recRow = $recRes->fetch_assoc();
-                    $recommendedIds = json_decode($recRow['recs_json'], true);
-
-                    if (!empty($recommendedIds)) {
-                        // Fetch movie details for these recommended IDs
-                        $idsList = implode(',', array_map('intval', $recommendedIds));
-                    $movieSql = "
-    SELECT 
-        m.movie_id, 
-        m.title, 
-        m.cover_image, 
-        GROUP_CONCAT(DISTINCT c.category_name SEPARATOR ', ') AS categories,
-        IFNULL(AVG(r.rating), 0) AS avg_rating
-    FROM movies m
-    LEFT JOIN movie_categories mc ON m.movie_id = mc.movie_id
-    LEFT JOIN categories c ON mc.category_id = c.category_id
-    LEFT JOIN reviews r ON m.movie_id = r.movie_id
-    WHERE m.movie_id IN ($idsList)
-    GROUP BY m.movie_id
-";
-                                                $movieRes = $conn->query($movieSql);
-
-                        if ($movieRes) {
-                            while ($m = $movieRes->fetch_assoc()) {
-                                $recommendations[] = $m;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+    $recommender = new RecommendationService($conn);
+    $recommender->updateReviewSentiments();
+    $recommendedMovies = $recommender->recommendForUser($userId);
+  
+   
+} 
 
 ?>
 <!DOCTYPE html>
@@ -147,7 +97,7 @@ if (isset($_SESSION['user_id'])) {
                 </div>
                 <div class="right-btn">
                     <?php
-          session_start();  // Start the session
+         
 
           if (isset($_SESSION['username'])) {
             // Slice the first five letters of the username
@@ -281,7 +231,7 @@ if (isset($_SESSION['user_id'])) {
  <div class="main container">
    
 
-       <?php if (!empty($recommendations)) { ?>
+       <?php if (!empty($recommendedMovies)) { ?>
        <div class="category_link">
 
 
@@ -302,7 +252,7 @@ if (isset($_SESSION['user_id'])) {
 
     <div class="movies-list">
         <div class="column">
-            <?php foreach ($recommendations as $rec) { ?>
+            <?php foreach ($recommendedMovies as $rec) { ?>
                 <a href="play.php?id=<?php echo $rec['movie_id']; ?>" class="card">
                     <img src="./php_connection/<?php echo $rec['cover_image']; ?>">
                     <div class="genre-wrapper">

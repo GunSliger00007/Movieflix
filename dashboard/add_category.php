@@ -1,19 +1,28 @@
 <?php
-include("../php_connection/connection.php"); // Ensure connection.php includes the database connection
+include("../php_connection/connection.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Retrieve form data
-    $category_name = $_POST['category_name'];
 
-    // Insert category into the database
+    $category_name = trim($_POST['category_name']);
+
+    // Check duplicate
+    $checkSql = "SELECT category_id FROM categories WHERE category_name = '$category_name'";
+    $checkResult = $conn->query($checkSql);
+
+    if ($checkResult->num_rows > 0) {
+        header("Location: categories.php?error=exists");
+        exit;
+    }
+
+    // Insert category
     $sql = "INSERT INTO categories (category_name) VALUES ('$category_name')";
 
     if ($conn->query($sql) === TRUE) {
-        echo "New category created successfully.";
-        // Optionally redirect to another page
-        header("Location: categories.php"); // Redirect to a page that lists categories
+        header("Location: categories.php?success=1");
+        exit;
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        header("Location: categories.php?error=failed");
+        exit;
     }
 }
 ?>

@@ -7,43 +7,9 @@ if (isset($_GET['id'])) {
   $result = $conn->query($sql);
   $sql1="SELECT u.username, r.review_text, r.rating, COUNT(r.review_text) AS total_reviews FROM reviews r JOIN users u ON r.user_id = u.user_id WHERE r.movie_id = $id GROUP BY u.username, r.review_text, r.rating;";
   $result1=$conn->query($sql1);
-
-  // Load recommendation classes
-  require_once __DIR__ . '/dashboard/RecommendationService.php';
-  require_once __DIR__ . '/dashboard/SentimentService.php';
-
-  // Prepare recommendations only for logged-in users who have written at least 3 reviews
-  $recommendations = [];
-  if (isset($_SESSION['user_id'])) {
-      $userId = (int) $_SESSION['user_id'];
-
-      $countSql = "SELECT COUNT(*) AS cnt FROM reviews WHERE user_id = $userId";
-      $countRes = $conn->query($countSql);
-      if ($countRes) {
-          $cntRow = $countRes->fetch_assoc();
-          $userReviewCount = isset($cntRow['cnt']) ? (int) $cntRow['cnt'] : 0;
-
-          if ($userReviewCount >= 3) {
-              $recService = new RecommendationService($conn);
-              $recommendedIds = $recService->recommend($id, 5);
-
-              if (!empty($recommendedIds)) {
-                  // Fetch basic details for recommended movies
-                  $idsList = implode(',', array_map('intval', $recommendedIds));
-                  $movieSql = "SELECT movie_id, title, cover_image FROM movies WHERE movie_id IN ($idsList)";
-                  $movieRes = $conn->query($movieSql);
-                  if ($movieRes) {
-                      while ($m = $movieRes->fetch_assoc()) {
-                          $recommendations[] = $m;
-                      }
-                  }
-              }
-          }
-      }
-  }
 }
+  // Load recommendation classes
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 

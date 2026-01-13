@@ -48,6 +48,23 @@ $result = $conn->query($sql);
             <div class="container">
                 <div class="movie-nav ">
                     <h1>Categories list</h1>
+                    <?php if (isset($_GET['error'])): ?>
+                    <div style="color:red; margin-bottom:10px;">
+                        <?php
+                        if ($_GET['error'] == 'exists') {
+                            echo "⚠ Category already exists!";
+                        } elseif ($_GET['error'] == 'failed') {
+                            echo "⚠ Something went wrong. Try again.";
+                        }
+                        ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (isset($_GET['success'])): ?>
+                    <div style="color:green; margin-bottom:10px;">
+                        ✅ Category added successfully!
+                    </div>
+                <?php endif; ?>
 
                     <button id="addmovies" type="submit">Add Categories</button>
                 </div>
