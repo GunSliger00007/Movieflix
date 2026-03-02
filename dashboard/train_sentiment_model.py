@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 
-# ----------- Helper function to clean text -------------
+
 def clean_text(text):
     text = text.lower()  # lowercase
     text = re.sub(r"<.*?>", "", text)  # remove HTML tags
@@ -40,15 +40,12 @@ vectorizer = TfidfVectorizer()
 X_train_vec = vectorizer.fit_transform(X_train)
 X_test_vec = vectorizer.transform(X_test)
 
-# ----------- Train Naive Bayes classifier -------------
 classifier = MultinomialNB()
 classifier.fit(X_train_vec, y_train)
 
-# ----------- Test accuracy ---------------------------
 accuracy = classifier.score(X_test_vec, y_test)
 print(f"Test Accuracy: {accuracy:.4f}")
 
-# ----------- Save model and vectorizer ---------------
 model_data = {
     "vectorizer": vectorizer,
     "classifier": classifier

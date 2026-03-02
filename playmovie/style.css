@@ -278,7 +278,7 @@
 }
 .rate:not(:checked) > label {
     float:right;
-    width:1em;
+    width:0.6em;
     overflow:hidden;
     white-space:nowrap;
     cursor:pointer;

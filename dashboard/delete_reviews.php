@@ -13,13 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->fetch();
     $stmt->close();
 
-    if ($movie_id) {
-       
-        $stmt = $conn->prepare("DELETE FROM movie_recommendations WHERE movie_id = ?");
-        $stmt->bind_param("i", $movie_id);
-        $stmt->execute();
-        $stmt->close();
-    }
+  
 
    
     $stmt = $conn->prepare("DELETE FROM reviews WHERE review_id = ?");
