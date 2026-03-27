@@ -352,8 +352,25 @@ if (isset($_SESSION['user_id'])) {
                     <input type="username" name="username" placeholder="your username" id="userInput" required>
                     <input type="password" name="password1" placeholder="password" id="passwordInput" required>
                     <input type="password" placeholder="password" id="passwordInput1">
+                    
+                    <div class="preferences-section" style="margin-top: 15px; text-align: left;     margin-left: 47px;">
+                        <p style="margin-bottom: 10px; font-weight: bold; color: #1b1a1aff;">Select your preferences:</p>
+                        <div class="category-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 150px; overflow-y: auto; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 5px;    margin-left: 46px;">
+                            <?php
+                            $cat_query = "SELECT * FROM categories";
+                            $cat_result = $conn->query($cat_query);
+                            if ($cat_result->num_rows > 0) {
+                                while($cat_row = $cat_result->fetch_assoc()) {
+                                    echo '<label style="color: #080808ff; display: flex; align-items: center; gap: 5px; cursor: pointer; font-size: 0.9em;">';
+                                    echo '<input type="checkbox" name="preferences[]" value="' . $cat_row['category_id'] . '"> ' . htmlspecialchars($cat_row['category_name']);
+                                    echo '</label>';
+                                }
+                            }
+                            ?>
+                        </div>
+                    </div>
 
-                    <button id="submitFormBtn">Sign Up</button>
+                    <button id="submitFormBtn" style="margin-top: 20px;">Sign Up</button>
                 </form>
                 <p>Already have an account? <a href="#" id="loginLink">Please login</a></p>
             </div>

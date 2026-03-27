@@ -40,63 +40,114 @@ class RecommendationService
     }
 
     /**
-     * Recommend movies for a user based on their liked movies
+     * Recommend movies for a user based on their liked movies or preferences
      */
     public function recommendForUser($userId)
     {
-        $userId = (int)$userId; // ensure integer
+        $userId = (int)$userId;
 
-        // 1️⃣ Get movies the user liked (sentiment_score > 0.7)
-        $sql = "SELECT movie_id FROM reviews WHERE user_id = $userId AND sentiment_score > 0.5";
+        // 1️⃣ Get the latest review for this user
+        $sql = "SELECT movie_id, sentiment_score 
+                FROM reviews 
+                WHERE user_id = $userId 
+                ORDER BY review_id DESC 
+                LIMIT 1";
         $result = mysqli_query($this->conn, $sql);
+
         if (!$result) die("SQL Error: " . mysqli_error($this->conn));
 
-        $likedMovieIds = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $likedMovieIds[] = (int)$row['movie_id'];
+        $row = mysqli_fetch_assoc($result);
+
+        // 2️⃣ If no reviews yet, check for user preferences
+        if (!$row) {
+            $pref_sql = "SELECT category_id FROM user_preferences WHERE user_id = $userId";
+            $pref_result = mysqli_query($this->conn, $pref_sql);
+            $preferences = [];
+            while ($pref_row = mysqli_fetch_assoc($pref_result)) {
+                $preferences[] = (int)$pref_row['category_id'];
+            }
+
+            if (!empty($preferences)) {
+                $categoryList = implode(',', $preferences);
+                $sql = "
+                    SELECT m.movie_id, m.title, m.description, m.release_date, m.duration, m.cover_image,
+                           IFNULL(AVG(r.rating), 0) as avg_rating,
+                           GROUP_CONCAT(DISTINCT c.category_name SEPARATOR ', ') as categories
+                    FROM movies m
+                    JOIN movie_categories mc ON m.movie_id = mc.movie_id
+                    JOIN categories c ON mc.category_id = c.category_id
+                    LEFT JOIN reviews r ON m.movie_id = r.movie_id
+                    WHERE mc.category_id IN ($categoryList)
+                    GROUP BY m.movie_id
+                    ORDER BY m.release_date DESC
+                    LIMIT 5
+                ";
+            } else {
+                // If no preferences either, recommend latest movies
+                $sql = "
+                    SELECT m.movie_id, m.title, m.description, m.release_date, m.duration, m.cover_image,
+                           IFNULL(AVG(r.rating), 0) as avg_rating,
+                           GROUP_CONCAT(DISTINCT c.category_name SEPARATOR ', ') as categories
+                    FROM movies m
+                    LEFT JOIN movie_categories mc ON m.movie_id = mc.movie_id
+                    LEFT JOIN categories c ON mc.category_id = c.category_id
+                    LEFT JOIN reviews r ON m.movie_id = r.movie_id
+                    GROUP BY m.movie_id
+                    ORDER BY m.release_date DESC
+                    LIMIT 5
+                ";
+            }
+            $result = mysqli_query($this->conn, $sql);
+            $recommended = [];
+            while ($movie = mysqli_fetch_assoc($result)) {
+                $recommended[] = $movie;
+            }
+            return $recommended;
         }
-        if (empty($likedMovieIds)) return []; // no liked movies
 
-        $likedMovieIdsList = implode(',', $likedMovieIds);
+        // 3️⃣ If latest review exists but not positive, return empty
+        if ((float)$row['sentiment_score'] <= 0.5) {
+            return [];
+        }
 
-        // 2️⃣ Get categories of liked movies
-        $sql = "SELECT DISTINCT category_id FROM movie_categories WHERE movie_id IN ($likedMovieIdsList)";
+        // 4️⃣ If latest review is positive, use recommendation logic
+        $likedMovieId = (int)$row['movie_id'];
+
+        // Get categories of the liked movie
+        $sql = "SELECT category_id FROM movie_categories WHERE movie_id = $likedMovieId";
         $result = mysqli_query($this->conn, $sql);
-        if (!$result) die("SQL Error: " . mysqli_error($this->conn));
-
         $likedCategories = [];
         while ($row = mysqli_fetch_assoc($result)) {
             $likedCategories[] = (int)$row['category_id'];
         }
-        if (empty($likedCategories)) return []; // no categories found
+        if (empty($likedCategories)) return [];
 
         $categoryList = implode(',', $likedCategories);
 
-        // 3️⃣ Recommend movies in same categories excluding already reviewed movies
+        // Recommend other movies in same categories excluding latest review
         $sql = "
-            SELECT m.movie_id, m.title, m.description, m.release_date, m.duration, m.file_path, m.cover_image,
-                   GROUP_CONCAT(DISTINCT r.review_text SEPARATOR ' | ') AS reviews
+            SELECT m.movie_id, m.title, m.description, m.release_date, m.duration, m.cover_image,
+                   IFNULL(AVG(r.rating), 0) as avg_rating,
+                   GROUP_CONCAT(DISTINCT c.category_name SEPARATOR ', ') as categories
             FROM movies m
             JOIN movie_categories mc ON m.movie_id = mc.movie_id
-            LEFT JOIN reviews r ON m.movie_id = r.movie_id AND r.sentiment_score > 0.5
-            WHERE mc.category_id IN ($categoryList)
-              AND m.movie_id NOT IN (
-                  SELECT movie_id FROM reviews WHERE user_id = $userId
-              )
-            GROUP BY m.movie_id, m.title, m.description, m.release_date, m.duration, m.file_path, m.cover_image
-        
+            JOIN categories c ON mc.category_id = c.category_id
+            LEFT JOIN reviews r ON m.movie_id = r.movie_id
+            LEFT JOIN (
+                SELECT movie_id FROM reviews WHERE user_id = $userId ORDER BY review_id DESC LIMIT 1
+            ) latest_review ON m.movie_id = latest_review.movie_id
+            WHERE mc.category_id IN ($categoryList) AND latest_review.movie_id IS NULL
+            GROUP BY m.movie_id
+            ORDER BY m.release_date DESC
+            LIMIT 5
         ";
         $result = mysqli_query($this->conn, $sql);
-        if (!$result) die("SQL Error: " . mysqli_error($this->conn));
-
         $recommended = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $recommended[] = $row;
+        while ($movie = mysqli_fetch_assoc($result)) {
+            $recommended[] = $movie;
         }
-
         return $recommended;
     }
-
     /**
      * Update sentiment scores for all reviews using Flask API
      */

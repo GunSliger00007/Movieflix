@@ -22,9 +22,19 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         if (mysqli_query($conn, $sql)) {
             // Return success message in JSON format
-            $_SESSION['user_id'] = mysqli_insert_id($conn);  // Store user ID
+            $user_id = mysqli_insert_id($conn);
+            $_SESSION['user_id'] = $user_id;  // Store user ID
             $_SESSION['username'] = $user;
             $_SESSION['email'] = $email;
+
+            // Insert preferences if any
+            if (isset($_POST['preferences']) && is_array($_POST['preferences'])) {
+                foreach ($_POST['preferences'] as $category_id) {
+                    $category_id = intval($category_id);
+                    $pref_sql = "INSERT INTO user_preferences (user_id, category_id) VALUES ('$user_id', '$category_id')";
+                    mysqli_query($conn, $pref_sql);
+                }
+            }
             echo json_encode(['status' => 'success', 'message' => 'User registered successfully.']);
         } else {
             // Return error message if insert failed
