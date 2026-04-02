@@ -106,7 +106,7 @@ class RecommendationService
         }
 
         // 3️⃣ If latest review exists but not positive, return empty
-        if ((float)$row['sentiment_score'] <= 0.5) {
+        if ((float)$row['sentiment_score'] <= 0.6) {
             return [];
         }
 
@@ -188,12 +188,12 @@ class RecommendationService
         if ($response === false) {
             echo "Curl Error: " . curl_error($ch) . "\n";
             curl_close($ch);
-            return 0.5; // fallback neutral
+            return 0.65; // fallback neutral
         }
 
         curl_close($ch);
         $data = json_decode($response, true);
-        return isset($data['score']) ? (float)$data['score'] : 0.5;
+        return isset($data['score']) ? (float)$data['score'] : 0.65;
     }
 }
 ?>
